@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'ENSA',
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
         primaryColor: kPrimaryColor,
         accentColor: kAccentColor,
         fontFamily: 'Magdelin Alt',

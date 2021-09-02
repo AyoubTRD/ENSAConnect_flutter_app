@@ -19,6 +19,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: _pages[_currentIndex],
       appBar: _appBars[_currentIndex],
       floatingActionButton: Container(
@@ -38,6 +39,7 @@ class _MainScreenState extends State<MainScreen> {
         elevation: 0.0,
         shape: CircularNotchedRectangle(),
         notchMargin: 9.0,
+        color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
           child: Row(

@@ -14,53 +14,57 @@ class FeedPage extends StatefulWidget {
 class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(kDefaultPadding),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Ensocial',
-                  style: Theme.of(context).textTheme.headline2,
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Ionicons.notifications_outline),
-                  color: kTextSecondary,
-                )
-              ],
-            ),
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(
+            right: kDefaultPadding,
+            left: kDefaultPadding,
+            top: kDefaultPadding + MediaQuery.of(context).padding.top,
+            bottom: 0,
           ),
-          Expanded(
-            child: ListView(
-              physics: BouncingScrollPhysics(),
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: kDefaultPadding),
-                  child: Text(
-                    'Featured stories',
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                ),
-                SizedBox(
-                  height: 8.0,
-                ),
-                SizedBox(
-                  height: 100.0,
-                  child: StoriesPreview(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(kDefaultPadding),
-                  child: Posts(),
-                ),
-              ],
-            ),
+          color: Colors.transparent,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Ensocial',
+                style: Theme.of(context).textTheme.headline2,
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Ionicons.notifications_outline),
+                color: kTextSecondary,
+              )
+            ],
           ),
-        ],
-      ),
+        ),
+        Expanded(
+          child: ListView(
+            physics: BouncingScrollPhysics(),
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: kDefaultPadding),
+                child: Text(
+                  'Featured stories',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              SizedBox(
+                height: 100.0,
+                child: StoriesPreview(),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(kDefaultPadding),
+                child: Posts(),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

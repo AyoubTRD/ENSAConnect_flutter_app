@@ -1,3 +1,5 @@
+import 'package:ensa/utils/constants.dart';
+import 'package:ensa/widgets/post_widget.dart';
 import 'package:flutter/material.dart';
 
 class Posts extends StatelessWidget {
@@ -5,6 +7,15 @@ class Posts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Column(
+      children: posts
+          .map(
+            (e) => FeedPost(
+              e,
+              key: Key(e.id),
+            ),
+          )
+          .toList(),
+    );
   }
 }

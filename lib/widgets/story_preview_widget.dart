@@ -28,7 +28,6 @@ class StoryPreview extends StatelessWidget {
             strokeWidth: 1.5,
             dashPattern: [6.5],
             child: Container(
-              margin: createStory ? const EdgeInsets.all(1.0) : null,
               height: createStory ? 65.0 - 2.0 : 65.0,
               width: createStory ? 65.0 - 2.0 : 65.0,
               padding: EdgeInsets.all(2),
