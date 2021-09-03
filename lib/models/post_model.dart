@@ -7,6 +7,7 @@ class Post {
     this.content,
     required this.images,
     required this.videos,
+    required this.videoThumbnails,
     required this.createdAt,
     required this.commentsCount,
     required this.reactionsCount,
@@ -19,6 +20,7 @@ class Post {
   final String? content;
   final List<String> images;
   final List<String> videos;
+  final List<String> videoThumbnails;
   final String createdAt;
   int commentsCount;
   int reactionsCount;

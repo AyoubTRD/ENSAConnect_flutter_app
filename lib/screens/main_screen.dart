@@ -1,4 +1,5 @@
 import 'package:ensa/pages/feed_page.dart';
+import 'package:ensa/screens/signin_screen.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
@@ -13,14 +14,30 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [FeedPage()];
-  final List<PreferredSizeWidget?> _appBars = [null];
+  final List<Widget> _pages = [FeedPage(), SigninScreen()];
+  final List<PreferredSizeWidget?> _appBars = [null, null];
+  final PageController _controller = PageController();
+
+  @override
+  void initState() {
+    _controller.addListener(() {
+      if (_controller.page == null) return;
+      setState(() {
+        _currentIndex = _controller.page!.round();
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: _pages[_currentIndex],
+      body: PageView(
+        controller: _controller,
+        physics: BouncingScrollPhysics(),
+        children: _pages,
+      ),
       appBar: _appBars[_currentIndex],
       floatingActionButton: Container(
         width: 70.0,
@@ -96,6 +113,8 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       _currentIndex = index;
     });
+    _controller.animateToPage(_currentIndex,
+        curve: Curves.easeOut, duration: Duration(milliseconds: 300));
   }
 }
 

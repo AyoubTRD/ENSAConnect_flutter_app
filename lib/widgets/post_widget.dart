@@ -1,5 +1,6 @@
 import 'package:ensa/models/post_model.dart';
 import 'package:ensa/utils/constants.dart';
+import 'package:ensa/widgets/post_media_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -82,12 +83,7 @@ class FeedPost extends StatelessWidget {
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              Image.network(
-                post.images[0],
-                height: 260.0,
-                width: MediaQuery.of(context).size.width - kDefaultPadding,
-                fit: BoxFit.cover,
-              ),
+              PostMedia(post),
               ClipPath(
                 clipper: MyClipper(),
                 child: Container(

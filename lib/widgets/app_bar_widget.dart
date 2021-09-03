@@ -35,7 +35,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Ionicons.chevron_back,
                   color: kTitleText,
                 ),
-                iconSize: 32.0,
+                iconSize: 26.0,
               )
             : null,
         title: title,

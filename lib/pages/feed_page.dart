@@ -32,7 +32,9 @@ class _FeedPageState extends State<FeedPage> {
                 style: Theme.of(context).textTheme.headline2,
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/notifications');
+                },
                 icon: Icon(Ionicons.notifications_outline),
                 color: kTextSecondary,
               )

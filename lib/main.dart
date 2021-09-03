@@ -1,5 +1,6 @@
 import 'package:ensa/screens/introduction_screen.dart';
 import 'package:ensa/screens/main_screen.dart';
+import 'package:ensa/screens/notifications_screen.dart';
 import 'package:ensa/screens/signin_screen.dart';
 import 'package:ensa/screens/signup_screen.dart';
 import 'package:ensa/utils/constants.dart';
@@ -32,6 +33,11 @@ class MyApp extends StatelessWidget {
             color: kTitleText,
             fontWeight: FontWeight.w600,
             fontSize: 50.0,
+          ),
+          headline3: TextStyle(
+            color: kTextPrimary,
+            fontWeight: FontWeight.w600,
+            fontSize: 32.0,
           ),
           headline4: TextStyle(
             color: kTitleText,
@@ -90,6 +96,9 @@ class MyApp extends StatelessWidget {
             return CupertinoPageRoute(builder: (_) => SignupScreen());
           case '/signin':
             return CupertinoPageRoute(builder: (_) => SigninScreen());
+          case '/notifications':
+            return CupertinoPageRoute(
+                builder: (_) => NotificationsScreen(), fullscreenDialog: true);
         }
       },
       initialRoute: '/',

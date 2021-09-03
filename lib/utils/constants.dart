@@ -73,6 +73,7 @@ List<Post> posts = [
     commentsCount: 13,
     images: [],
     videos: [],
+    videoThumbnails: [],
     createdAt: '2021-09-01T23:21:31.326Z',
   ),
   Post(
@@ -85,9 +86,11 @@ List<Post> posts = [
     reactionsCount: 165,
     commentsCount: 13,
     images: [
+      'https://images.unsplash.com/photo-1630484174453-fc1d0211ed71?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',
       'https://images.unsplash.com/photo-1630484174453-fc1d0211ed71?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80'
     ],
     videos: [],
+    videoThumbnails: [],
     createdAt: '2021-09-01T23:21:31.326Z',
   ),
   Post(
@@ -100,7 +103,12 @@ List<Post> posts = [
     images: [
       'https://images.unsplash.com/photo-1630484174453-fc1d0211ed71?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80'
     ],
-    videos: [],
+    videos: [
+      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'
+    ],
+    videoThumbnails: [
+      'https://images.unsplash.com/photo-1593352612961-cb75bd854415?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80'
+    ],
     createdAt: '2021-09-01T23:21:31.326Z',
   ),
 ];
