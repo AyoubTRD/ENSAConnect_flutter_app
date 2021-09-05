@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
             fontSize: 50.0,
           ),
           headline3: TextStyle(
-            color: kTextPrimary,
+            color: kAppBarText,
             fontWeight: FontWeight.w600,
             fontSize: 32.0,
           ),
@@ -101,7 +101,7 @@ class MyApp extends StatelessWidget {
                 builder: (_) => NotificationsScreen(), fullscreenDialog: true);
         }
       },
-      initialRoute: '/',
+      initialRoute: '/welcome',
     );
   }
 }

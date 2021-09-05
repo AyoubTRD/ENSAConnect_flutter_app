@@ -1,4 +1,5 @@
 import 'package:ensa/pages/feed_page.dart';
+import 'package:ensa/screens/chats_list_screen.dart';
 import 'package:ensa/screens/signin_screen.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +15,12 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [FeedPage(), SigninScreen()];
-  final List<PreferredSizeWidget?> _appBars = [null, null];
+  final List<Widget> _pages = [
+    FeedPage(),
+    SigninScreen(),
+    ChatsListScreen(),
+  ];
+  final List<PreferredSizeWidget?> _appBars = [null, null, null];
   final PageController _controller = PageController();
 
   @override

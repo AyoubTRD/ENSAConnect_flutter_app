@@ -1,4 +1,5 @@
 import 'package:ensa/models/notification_model.dart';
+import 'package:ensa/screens/paged_screen.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:ensa/widgets/app_bar_widget.dart';
 import 'package:ensa/widgets/notification_widget.dart';
@@ -10,6 +11,15 @@ final List<AppNotification> notifications = [
     type: NotificationType.FRIEND_REQUEST,
     user: users[0],
   ),
+  AppNotification(id: '10', type: NotificationType.POST_LIKED, user: users[0]),
+  AppNotification(
+      id: '9', type: NotificationType.COMMENT_REPLY, user: users[0]),
+  AppNotification(
+      id: '11', type: NotificationType.COMMENT_LIKED, user: users[0]),
+  AppNotification(id: '12', type: NotificationType.NEW_COMMENT, user: users[0]),
+  AppNotification(id: '13', type: NotificationType.NEW_POST, user: users[0]),
+  AppNotification(
+      id: '15', type: NotificationType.FRIEND_REQUEST_ACCEPTED, user: users[0]),
   AppNotification(
     id: '2',
     type: NotificationType.FRIEND_REQUEST,
@@ -30,77 +40,150 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
-  List<bool> _selectedTabs = [true, false];
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    List<AppNotification> friendRequestNotifications = notifications
+        .where((element) => element.type == NotificationType.FRIEND_REQUEST)
+        .toList();
+    List<AppNotification> activityNotifications = notifications
+        .where((element) => element.type != NotificationType.FRIEND_REQUEST)
+        .toList();
+
+    return PagedScreen(
+      pageNames: ['Friend Requests', 'Activity'],
+      pageCount: 2,
       appBar: MyAppBar(
+        centerTitle: true,
+        showBackButton: true,
         title: Text(
           'Notifications',
           style: Theme.of(context).textTheme.headline3,
         ),
-        centerTitle: true,
-        showBackButton: true,
       ),
-      body: Center(
-        child: Column(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
-              child: ToggleButtons(
-                isSelected: _selectedTabs,
-                constraints: BoxConstraints(
-                  minWidth:
-                      (MediaQuery.of(context).size.width - kDefaultPadding) / 2,
-                  minHeight: 45.0,
-                ),
-                borderRadius: BorderRadius.circular(8.0),
-                selectedColor: Colors.white,
-                color: kTextSecondary,
-                fillColor: Theme.of(context).primaryColor,
-                onPressed: (int index) {
-                  List<bool> selected = [false, false];
-                  selected[index] = true;
-                  setState(() {
-                    _selectedTabs = selected;
-                  });
-                },
-                children: [
-                  Text('Friend Requests'),
-                  Text('Activity'),
-                ],
-              ),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: kDefaultPadding, vertical: 8.0),
+              child: Text('${friendRequestNotifications.length} requests'),
             ),
             Expanded(
-              child: PageView(
-                children: [
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('${notifications.length} requests'),
-                        Expanded(
-                          child: ListView.separated(
-                            itemCount: notifications.length,
-                            itemBuilder: (_, i) => MyNotification(
-                              notifications[i],
-                              key: Key(notifications[i].id),
-                            ),
-                            separatorBuilder: (_, i) => Divider(),
-                          ),
-                        ),
-                      ],
-                    ),
+              child: ListView.separated(
+                physics: BouncingScrollPhysics(),
+                separatorBuilder: (_, i) => Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                  child: Divider(
+                    thickness: 1.0,
                   ),
-                ],
+                ),
+                itemCount: friendRequestNotifications.length,
+                itemBuilder: (_, i) => Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                  child: MyNotification(
+                    friendRequestNotifications[i],
+                    key: Key(friendRequestNotifications[i].id),
+                  ),
+                ),
               ),
             ),
           ],
         ),
-      ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: kDefaultPadding, vertical: 8.0),
+              child: Text('${activityNotifications.length} notifications'),
+            ),
+            Expanded(
+              child: ListView.separated(
+                physics: BouncingScrollPhysics(),
+                separatorBuilder: (_, i) => Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                  child: Divider(
+                    thickness: 1.0,
+                  ),
+                ),
+                itemCount: activityNotifications.length,
+                itemBuilder: (_, i) => Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                  child: MyNotification(
+                    activityNotifications[i],
+                    key: Key(activityNotifications[i].id),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
+
+    // return Scaffold(
+    //   appBar: MyAppBar(
+    //     title: Text(
+    //       'Notifications',
+    //       style: Theme.of(context).textTheme.headline3,
+    //     ),
+    //     centerTitle: true,
+    //     showBackButton: true,
+    //   ),
+    //   body: Center(
+    //     child: Column(
+    //       children: [
+    //         Container(
+    //           margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
+    //           child: Container(
+    //             decoration: BoxDecoration(
+    //               color: Colors.grey[200],
+    //               borderRadius: BorderRadius.circular(8.0),
+    //             ),
+    //             child: ToggleButtons(
+    //               isSelected: isSelected,
+    //               constraints: BoxConstraints(
+    //                 minWidth:
+    //                     (MediaQuery.of(context).size.width - kDefaultPadding) /
+    //                         2,
+    //                 minHeight: 43.0,
+    //               ),
+    //               selectedColor: Colors.white,
+    //               color: Colors.grey[800],
+    //               fillColor: Theme.of(context).primaryColor,
+    //               borderWidth: 0.0,
+    //               borderRadius: BorderRadius.circular(8.0),
+    //               onPressed: (int index) {
+    //                 setState(() {
+    //                   _currentIndex = index;
+    //                 });
+    //                 _scrollToPage();
+    //               },
+    //               children: [
+    //                 Text('Friend Requests'),
+    //                 Text('Activity'),
+    //               ],
+    //             ),
+    //           ),
+    //         ),
+    //         Expanded(
+    //           child: PageView(
+    //             controller: _controller,
+    //             physics: BouncingScrollPhysics(),
+    //             scrollDirection: Axis.horizontal,
+    //             children: [
+    //
+    //             ],
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }
