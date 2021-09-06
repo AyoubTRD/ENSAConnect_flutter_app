@@ -1,8 +1,8 @@
 import 'package:ensa/models/notification_model.dart';
 import 'package:flutter/material.dart';
 
-class MyNotification extends StatelessWidget {
-  const MyNotification(this._notification, {Key? key}) : super(key: key);
+class NotificationWidget extends StatelessWidget {
+  const NotificationWidget(this._notification, {Key? key}) : super(key: key);
 
   final AppNotification _notification;
 
@@ -22,54 +22,60 @@ class MyNotification extends StatelessWidget {
   }
 
   Widget _buildFriendRequestNotification(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        CircleAvatar(
-          backgroundColor: Theme.of(context).accentColor.withOpacity(0.1),
-          backgroundImage: NetworkImage(_notification.user!.profilePicture),
-          radius: 25.0,
-        ),
-        SizedBox(
-          width: 9.0,
-        ),
-        Expanded(
-          child: Text(
-            _notification.user!.fullName,
-            maxLines: 1,
-            style: Theme.of(context).textTheme.headline4,
+    return ListTile(
+      onTap: () {},
+      leading: CircleAvatar(
+        backgroundColor: Theme.of(context).accentColor.withOpacity(0.1),
+        backgroundImage: NetworkImage(_notification.user!.profilePicture),
+        radius: 32.5,
+      ),
+      title: Text(
+        _notification.user!.fullName,
+        maxLines: 1,
+        style: Theme.of(context).textTheme.headline4,
+      ),
+      subtitle: Text(
+        'Sent you a friend request',
+        style: TextStyle(fontSize: 16.0),
+      ),
+      contentPadding: EdgeInsets.zero,
+      dense: true,
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.red.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(50.0),
+            ),
+            child: IconButton(
+              onPressed: () {},
+              highlightColor: Colors.transparent,
+              icon: Icon(
+                Icons.delete_outline,
+                color: Colors.red,
+              ),
+            ),
           ),
-        ),
-        RawMaterialButton(
-          onPressed: () {},
-          fillColor: Colors.red.withOpacity(0.1),
-          elevation: 0.0,
-          focusElevation: 0.0,
-          constraints: BoxConstraints(minWidth: 70.0, minHeight: 30.0),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-          child: Text(
-            'Delete',
-            style: TextStyle(color: Colors.red, fontSize: 16.0),
+          SizedBox(
+            width: 10.0,
           ),
-        ),
-        SizedBox(
-          width: 10.0,
-        ),
-        RawMaterialButton(
-          onPressed: () {},
-          fillColor: Theme.of(context).primaryColor,
-          elevation: 0.0,
-          focusElevation: 0.0,
-          constraints: BoxConstraints(minWidth: 70.0, minHeight: 30.0),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-          child: Text(
-            'Confirm',
-            style: TextStyle(color: Colors.white, fontSize: 16.0),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.green.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(50.0),
+            ),
+            child: IconButton(
+              onPressed: () {},
+              highlightColor: Colors.transparent,
+              icon: Icon(
+                Icons.check,
+                color: Colors.green,
+              ),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -83,32 +89,20 @@ class MyNotification extends StatelessWidget {
       NotificationType.NEW_POST: 'Created a new post.',
     };
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        CircleAvatar(
-          radius: 25.0,
-          backgroundColor: Theme.of(context).accentColor.withOpacity(0.1),
-          backgroundImage: NetworkImage(_notification.user!.profilePicture),
-        ),
-        SizedBox(
-          width: 10.0,
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _notification.user!.fullName,
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            Text(text[_notification.type]!),
-          ],
-        ),
-      ],
+    return ListTile(
+      onTap: () {},
+      contentPadding: EdgeInsets.zero,
+      leading: CircleAvatar(
+        backgroundColor: Theme.of(context).accentColor.withOpacity(0.1),
+        backgroundImage: NetworkImage(_notification.user!.profilePicture),
+        radius: 32.5,
+      ),
+      title: Text(
+        _notification.user!.fullName,
+        maxLines: 1,
+        style: Theme.of(context).textTheme.headline4,
+      ),
+      subtitle: Text(text[_notification.type]!),
     );
   }
 }

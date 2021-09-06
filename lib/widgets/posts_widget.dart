@@ -8,7 +8,7 @@ class Posts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: posts
+      children: kPosts
           .map(
             (e) => FeedPost(
               e,

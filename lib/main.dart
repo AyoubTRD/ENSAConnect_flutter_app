@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
             backgroundColor: MaterialStateProperty.all(kPrimaryColor),
             elevation: MaterialStateProperty.all(0.0),
             padding: MaterialStateProperty.all(
-              EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
             ),
             shape: MaterialStateProperty.all(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
@@ -101,7 +101,7 @@ class MyApp extends StatelessWidget {
                 builder: (_) => NotificationsScreen(), fullscreenDialog: true);
         }
       },
-      initialRoute: '/welcome',
+      initialRoute: '/',
     );
   }
 }

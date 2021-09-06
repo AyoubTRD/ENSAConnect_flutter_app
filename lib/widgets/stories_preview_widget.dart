@@ -9,15 +9,15 @@ class StoriesPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Widget> storyWidgets = [];
 
-    for (int i = 0; i < stories.length; i++) {
-      final bool isLast = i == stories.length - 1;
+    for (int i = 0; i < kStories.length; i++) {
+      final bool isLast = i == kStories.length - 1;
       storyWidgets.add(
         Padding(
           padding: EdgeInsets.only(
             right: isLast ? kDefaultPadding : 8.0,
             left: kDefaultPadding,
           ),
-          child: StoryPreview(story: stories[i]),
+          child: StoryPreview(story: kStories[i]),
         ),
       );
     }

@@ -1,3 +1,5 @@
+import 'package:ensa/models/chat_model.dart';
+import 'package:ensa/models/message_model.dart';
 import 'package:ensa/models/post_model.dart';
 import 'package:ensa/models/story_model.dart';
 import 'package:ensa/models/user_model.dart';
@@ -14,7 +16,7 @@ const kTitleText = Color(0xFF2A355E);
 
 const kDefaultPadding = 20.0;
 
-const users = [
+const kUsers = [
   User(
     firstName: 'Ayoub',
     lastName: 'Taouarda',
@@ -59,14 +61,14 @@ const users = [
   ),
 ];
 
-List<Story> stories = users.map((e) => Story(user: e, images: [])).toList();
+List<Story> kStories = kUsers.map((e) => Story(user: e, images: [])).toList();
 
-List<Post> posts = [
+List<Post> kPosts = [
   Post(
     id: '2',
     content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dapibus in felis ac aliquam. Praesent urna leo, elementum id arcu finibus, maximus pharetra ligula. Donec sapien dolor, euismod pretium laoreet id, mattis congue nulla. Maecenas varius maximus condimentum. Donec dictum id ante vel congue. Proin consectetur sodales leo, eget gravida dolor pharetra ut. Vestibulum vitae venenatis nisl, a egestas turpis. Morbi sagittis tellus magna, vitae bibendum nulla rhoncus quis. Donec scelerisque ornare leo ut viverra. Quisque imperdiet egestas lectus, sit amet faucibus diam ultrices in. Ut eget tellus porttitor, pulvinar turpis at, cursus leo. Cras dapibus nunc risus, eget dictum ex porttitor sit amet. Cras ornare, arcu eu dignissim cursus, purus metus laoreet nulla, vitae finibus massa ligula vel enim. Donec fringilla pharetra auctor. Donec malesuada, mi nec accumsan scelerisque, justo augue egestas dui, eget tempor erat nisi ut elit.',
-    user: users[1],
+    user: kUsers[1],
     isBookmarked: true,
     isLiked: false,
     reactionsCount: 165,
@@ -80,7 +82,7 @@ List<Post> posts = [
     id: '3',
     content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dapibus in felis ac aliquam. Praesent urna leo, elementum id arcu finibus, maximus pharetra ligula. Donec sapien dolor, euismod pretium laoreet id, mattis congue nulla. Maecenas varius maximus condimentum. Donec dictum id ante vel congue. Proin consectetur sodales leo, eget gravida dolor pharetra ut. Vestibulum vitae venenatis nisl, a egestas turpis. Morbi sagittis tellus magna, vitae bibendum nulla rhoncus quis. Donec scelerisque ornare leo ut viverra. Quisque imperdiet egestas lectus, sit amet faucibus diam ultrices in. Ut eget tellus porttitor, pulvinar turpis at, cursus leo. Cras dapibus nunc risus, eget dictum ex porttitor sit amet. Cras ornare, arcu eu dignissim cursus, purus metus laoreet nulla, vitae finibus massa ligula vel enim. Donec fringilla pharetra auctor. Donec malesuada, mi nec accumsan scelerisque, justo augue egestas dui, eget tempor erat nisi ut elit.',
-    user: users[2],
+    user: kUsers[2],
     isBookmarked: false,
     isLiked: true,
     reactionsCount: 165,
@@ -95,7 +97,7 @@ List<Post> posts = [
   ),
   Post(
     id: '1',
-    user: users[0],
+    user: kUsers[0],
     isBookmarked: false,
     isLiked: false,
     reactionsCount: 165,
@@ -110,5 +112,56 @@ List<Post> posts = [
       'https://images.unsplash.com/photo-1593352612961-cb75bd854415?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80'
     ],
     createdAt: '2021-09-01T23:21:31.326Z',
+  ),
+];
+
+final List<Message> kMessages = [
+  Message(
+      id: '1',
+      user: kUsers[1],
+      text: 'Hello my world',
+      createdAt: '2021-09-01T23:21:31.326Z'),
+  Message(
+      id: '1',
+      user: kUsers[1],
+      text: 'Hello my world',
+      createdAt: '2021-09-01T23:21:31.326Z'),
+  Message(
+      id: '1',
+      user: kUsers[1],
+      text: 'Hello my world',
+      createdAt: '2021-09-01T23:21:31.326Z'),
+  Message(
+      id: '2',
+      user: kUsers[0],
+      text: 'I wish you a happy birthday my friend <3',
+      createdAt: '2021-09-01T23:21:31.326Z'),
+  Message(
+      id: '2',
+      user: kUsers[0],
+      text: 'I wish you a happy birthday my friend <3',
+      createdAt: '2021-09-01T23:21:31.326Z'),
+  Message(
+      id: '3',
+      user: kUsers[2],
+      text: 'Whats her name?',
+      createdAt: '2021-09-06T23:21:31.326Z'),
+];
+
+final List<Chat> kChats = [
+  Chat(
+    id: '1',
+    users: [kUsers[1]],
+    messages: [kMessages[0], kMessages[1]],
+  ),
+  Chat(
+    id: '2',
+    users: [kUsers[0]],
+    messages: [kMessages[3], kMessages[4]],
+  ),
+  Chat(
+    id: '3',
+    users: [kUsers[2]],
+    messages: [kMessages[5]],
   ),
 ];

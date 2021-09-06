@@ -9,26 +9,29 @@ final List<AppNotification> notifications = [
   AppNotification(
     id: '1',
     type: NotificationType.FRIEND_REQUEST,
-    user: users[0],
+    user: kUsers[0],
   ),
-  AppNotification(id: '10', type: NotificationType.POST_LIKED, user: users[0]),
+  AppNotification(id: '10', type: NotificationType.POST_LIKED, user: kUsers[0]),
   AppNotification(
-      id: '9', type: NotificationType.COMMENT_REPLY, user: users[0]),
+      id: '9', type: NotificationType.COMMENT_REPLY, user: kUsers[0]),
   AppNotification(
-      id: '11', type: NotificationType.COMMENT_LIKED, user: users[0]),
-  AppNotification(id: '12', type: NotificationType.NEW_COMMENT, user: users[0]),
-  AppNotification(id: '13', type: NotificationType.NEW_POST, user: users[0]),
+      id: '11', type: NotificationType.COMMENT_LIKED, user: kUsers[0]),
   AppNotification(
-      id: '15', type: NotificationType.FRIEND_REQUEST_ACCEPTED, user: users[0]),
+      id: '12', type: NotificationType.NEW_COMMENT, user: kUsers[0]),
+  AppNotification(id: '13', type: NotificationType.NEW_POST, user: kUsers[0]),
+  AppNotification(
+      id: '15',
+      type: NotificationType.FRIEND_REQUEST_ACCEPTED,
+      user: kUsers[0]),
   AppNotification(
     id: '2',
     type: NotificationType.FRIEND_REQUEST,
-    user: users[1],
+    user: kUsers[1],
   ),
   AppNotification(
     id: '3',
     type: NotificationType.FRIEND_REQUEST,
-    user: users[2],
+    user: kUsers[2],
   ),
 ];
 
@@ -75,15 +78,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 separatorBuilder: (_, i) => Container(
                   margin:
                       const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                  child: Divider(
-                    thickness: 1.0,
-                  ),
+                  child: Divider(),
                 ),
                 itemCount: friendRequestNotifications.length,
                 itemBuilder: (_, i) => Container(
                   margin:
                       const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                  child: MyNotification(
+                  child: NotificationWidget(
                     friendRequestNotifications[i],
                     key: Key(friendRequestNotifications[i].id),
                   ),
@@ -106,15 +107,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 separatorBuilder: (_, i) => Container(
                   margin:
                       const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                  child: Divider(
-                    thickness: 1.0,
-                  ),
+                  child: Divider(),
                 ),
                 itemCount: activityNotifications.length,
                 itemBuilder: (_, i) => Container(
                   margin:
                       const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                  child: MyNotification(
+                  child: NotificationWidget(
                     activityNotifications[i],
                     key: Key(activityNotifications[i].id),
                   ),

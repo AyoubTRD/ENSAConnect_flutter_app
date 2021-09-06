@@ -10,6 +10,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.showBackButton = true,
     this.title,
     this.centerTitle,
+    this.actions,
   }) : super(key: key);
 
   final Size preferredSize;
@@ -17,6 +18,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showBackButton;
   final Widget? title;
   final bool? centerTitle;
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             : null,
         title: title,
         centerTitle: centerTitle,
+        actions: actions,
       ),
     );
   }
