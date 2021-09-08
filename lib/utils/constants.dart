@@ -18,42 +18,49 @@ const kDefaultPadding = 20.0;
 
 const kUsers = [
   User(
+    id: '1',
     firstName: 'Ayoub',
     lastName: 'Taouarda',
     fullName: 'Ayoub Taouarda',
     profilePicture: 'https://picsum.photos/100/100',
   ),
   User(
+    id: '2',
     firstName: 'John',
     lastName: 'Smith',
     fullName: 'John Smith',
     profilePicture: 'https://picsum.photos/100/100',
   ),
   User(
+    id: '3',
     firstName: 'Loeuf',
     lastName: 'Artificiel',
     fullName: 'Loeuf Artificiel',
     profilePicture: 'https://picsum.photos/100/100',
   ),
   User(
+    id: '4',
     firstName: 'Abd Lhakim',
     lastName: 'Loeuf',
     fullName: 'Abd Lhakim Loeuf',
     profilePicture: 'https://picsum.photos/100/100',
   ),
   User(
+    id: '5',
     firstName: 'Ayoub',
     lastName: 'Taouarda',
     fullName: 'Ayoub Taouarda',
     profilePicture: 'https://picsum.photos/100/100',
   ),
   User(
+    id: '6',
     firstName: 'John',
     lastName: 'Smith',
     fullName: 'Ayoub Taouarda',
     profilePicture: 'https://picsum.photos/100/100',
   ),
   User(
+    id: '7',
     firstName: 'Howard',
     lastName: 'The coward',
     fullName: 'Ayoub Taouarda',
@@ -122,29 +129,29 @@ final List<Message> kMessages = [
       text: 'Hello my world',
       createdAt: '2021-09-01T23:21:31.326Z'),
   Message(
-      id: '1',
+      id: '6',
       user: kUsers[1],
       text: 'Hello my world',
       createdAt: '2021-09-01T23:21:31.326Z'),
   Message(
-      id: '1',
+      id: '7',
       user: kUsers[1],
       text: 'Hello my world',
       createdAt: '2021-09-01T23:21:31.326Z'),
   Message(
-      id: '2',
+      id: '5',
       user: kUsers[0],
       text: 'I wish you a happy birthday my friend <3',
       createdAt: '2021-09-01T23:21:31.326Z'),
   Message(
       id: '2',
       user: kUsers[0],
-      text: 'I wish you a happy birthday my friend <3',
+      text: 'I wish you a happy birthday my friend ',
       createdAt: '2021-09-01T23:21:31.326Z'),
   Message(
       id: '3',
       user: kUsers[2],
-      text: 'Whats her name?',
+      text: 'Whats your name?',
       createdAt: '2021-09-06T23:21:31.326Z'),
 ];
 
@@ -152,7 +159,7 @@ final List<Chat> kChats = [
   Chat(
     id: '1',
     users: [kUsers[1]],
-    messages: [kMessages[0], kMessages[1]],
+    messages: [kMessages[0], kMessages[5]],
   ),
   Chat(
     id: '2',

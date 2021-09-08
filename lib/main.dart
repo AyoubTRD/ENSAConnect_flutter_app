@@ -1,3 +1,4 @@
+import 'package:ensa/screens/chat_screen.dart';
 import 'package:ensa/screens/introduction_screen.dart';
 import 'package:ensa/screens/main_screen.dart';
 import 'package:ensa/screens/notifications_screen.dart';
@@ -99,9 +100,11 @@ class MyApp extends StatelessWidget {
           case '/notifications':
             return CupertinoPageRoute(
                 builder: (_) => NotificationsScreen(), fullscreenDialog: true);
+          case '/chat':
+            return CupertinoPageRoute(builder: (_) => ChatScreen());
         }
       },
-      initialRoute: '/',
+      initialRoute: '/chat',
     );
   }
 }

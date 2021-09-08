@@ -11,6 +11,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.title,
     this.centerTitle,
     this.actions,
+    this.toolbarHeight,
+    this.elevation = 0.0,
+    this.shadowColor,
   }) : super(key: key);
 
   final Size preferredSize;
@@ -19,13 +22,18 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? title;
   final bool? centerTitle;
   final List<Widget>? actions;
+  final double? toolbarHeight;
+  final Color? shadowColor;
+  final double elevation;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: AppBar(
-        elevation: 0,
+        shadowColor: shadowColor,
+        toolbarHeight: toolbarHeight,
+        elevation: elevation,
         backgroundColor: backgroundColor,
         leading: showBackButton
             ? IconButton(

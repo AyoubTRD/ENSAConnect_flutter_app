@@ -1,6 +1,7 @@
 import 'package:ensa/models/chat_model.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ChatPreview extends StatelessWidget {
   const ChatPreview(this._chat, {Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class ChatPreview extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         trailing: Text(
-          '1 hour',
+          timeago.format(DateTime.parse(_chat.messages[0].createdAt)),
           style: Theme.of(context)
               .textTheme
               .bodyText1
