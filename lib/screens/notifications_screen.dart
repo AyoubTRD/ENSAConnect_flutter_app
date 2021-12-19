@@ -36,6 +36,7 @@ final List<AppNotification> notifications = [
 ];
 
 class NotificationsScreen extends StatefulWidget {
+  static const routeName = '/notifications';
   const NotificationsScreen({Key? key}) : super(key: key);
 
   @override

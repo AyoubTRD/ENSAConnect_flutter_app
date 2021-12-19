@@ -1,4 +1,5 @@
 import 'package:ensa/models/chat_model.dart';
+import 'package:ensa/screens/chat_screen.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -16,7 +17,10 @@ class ChatPreview extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: ListTile(
         contentPadding: EdgeInsets.zero,
-        onTap: () {},
+        onTap: () {
+          Navigator.pushNamed(context, ChatScreen.routeName,
+              arguments: ChatScreenArguments(chatId: _chat.id));
+        },
         leading: CircleAvatar(
           backgroundColor: Theme.of(context).accentColor.withOpacity(0.1),
           radius: 32.5,

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class IntroductionScreen extends StatefulWidget {
+  static const routeName = '/welcome';
   const IntroductionScreen({Key? key}) : super(key: key);
 
   @override

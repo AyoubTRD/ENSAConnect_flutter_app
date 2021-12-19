@@ -28,6 +28,7 @@ class _MessageWidgetState extends State<MessageWidget> {
     return Align(
       alignment: isCurrentUser ? Alignment.topRight : Alignment.topLeft,
       child: Container(
+        width: double.infinity,
         margin: EdgeInsets.only(
           left: kDefaultPadding,
           right: kDefaultPadding,
@@ -63,6 +64,7 @@ class _MessageWidgetState extends State<MessageWidget> {
       children: [
         Container(
           padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+          width: isCurrentUser ? 300.0 : 250.0,
           decoration: BoxDecoration(
             color: isCurrentUser
                 ? Theme.of(context).accentColor.withOpacity(0.11)

@@ -8,18 +8,38 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  static const routeName = '/chat';
+  final String chatId;
+  const ChatScreen({Key? key, required this.chatId}) : super(key: key);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
+class ChatScreenArguments {
+  late String chatId;
+  ChatScreenArguments({required this.chatId});
+}
+
 class _ChatScreenState extends State<ChatScreen> {
-  final Chat _chat = kChats[0];
+  Chat? _chat;
   final User user = kUsers[2];
 
   @override
+  void initState() {
+    _chat = kChats.firstWhere((chat) => chat.id == widget.chatId);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_chat == null)
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(90.0),
@@ -33,11 +53,11 @@ class _ChatScreenState extends State<ChatScreen> {
             contentPadding: EdgeInsets.zero,
             leading: CircleAvatar(
               backgroundColor: Theme.of(context).accentColor.withOpacity(0.1),
-              backgroundImage: NetworkImage(_chat.users[0].profilePicture),
+              backgroundImage: NetworkImage(_chat!.users[0].profilePicture),
               radius: 25.0,
             ),
             title: Text(
-              _chat.users[0].fullName,
+              _chat!.users[0].fullName,
               maxLines: 1,
               style: Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
                     fontSize: 18.0,
@@ -72,10 +92,10 @@ class _ChatScreenState extends State<ChatScreen> {
               child: ListView.builder(
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.vertical,
-                itemCount: _chat.messages.length,
+                itemCount: _chat!.messages.length,
                 itemBuilder: (BuildContext context, int i) => Container(
                   margin: EdgeInsets.only(top: i == 0 ? kDefaultPadding : 0),
-                  child: MessageWidget(_chat.messages[i]),
+                  child: MessageWidget(_chat!.messages[i]),
                 ),
               ),
             ),

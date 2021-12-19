@@ -6,6 +6,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:validators/validators.dart';
 
 class SigninScreen extends StatefulWidget {
+  static const routeName = '/signin';
   const SigninScreen({Key? key}) : super(key: key);
 
   @override

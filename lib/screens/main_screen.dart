@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
 class MainScreen extends StatefulWidget {
+  static const routeName = '/';
   const MainScreen({Key? key}) : super(key: key);
 
   @override

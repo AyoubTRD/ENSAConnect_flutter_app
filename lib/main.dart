@@ -89,22 +89,26 @@ class MyApp extends StatelessWidget {
       ),
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
-          case '/':
+          case MainScreen.routeName:
             return CupertinoPageRoute(builder: (_) => MainScreen());
-          case '/welcome':
+          case IntroductionScreen.routeName:
             return CupertinoPageRoute(builder: (_) => IntroductionScreen());
-          case '/signup':
+          case SignupScreen.routeName:
             return CupertinoPageRoute(builder: (_) => SignupScreen());
-          case '/signin':
+          case SigninScreen.routeName:
             return CupertinoPageRoute(builder: (_) => SigninScreen());
-          case '/notifications':
+          case NotificationsScreen.routeName:
             return CupertinoPageRoute(
                 builder: (_) => NotificationsScreen(), fullscreenDialog: true);
-          case '/chat':
-            return CupertinoPageRoute(builder: (_) => ChatScreen());
+          case ChatScreen.routeName:
+            final args = settings.arguments as ChatScreenArguments;
+            return CupertinoPageRoute(
+                builder: (_) => ChatScreen(
+                      chatId: args.chatId,
+                    ));
         }
       },
-      initialRoute: '/chat',
+      initialRoute: '/',
     );
   }
 }
