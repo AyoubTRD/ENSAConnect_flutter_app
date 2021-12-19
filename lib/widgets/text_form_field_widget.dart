@@ -15,6 +15,7 @@ class MyTextFormField extends StatefulWidget {
     this.textCapitalization = TextCapitalization.none,
     this.validator,
     this.helperText,
+    this.onChanged,
   }) : super(key: key);
 
   final String labelText;
@@ -28,6 +29,7 @@ class MyTextFormField extends StatefulWidget {
   final bool autocorrect;
   final TextCapitalization textCapitalization;
   final String? Function(String?)? validator;
+  final Function(String)? onChanged;
 
   @override
   _MyTextFormFieldState createState() => _MyTextFormFieldState();
@@ -44,6 +46,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
         Text(widget.labelText),
         SizedBox(height: 8.0),
         TextFormField(
+          onChanged: widget.onChanged,
           autofocus: widget.autofocus,
           autocorrect: widget.autocorrect,
           textCapitalization: widget.textCapitalization,

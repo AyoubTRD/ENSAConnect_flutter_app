@@ -1,3 +1,4 @@
+import 'package:ensa/blocs/auth_bloc.dart';
 import 'package:ensa/screens/chat_screen.dart';
 import 'package:ensa/screens/introduction_screen.dart';
 import 'package:ensa/screens/main_screen.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ENSA',
+      title: 'ENSA Connect',
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         primaryColor: kPrimaryColor,
@@ -88,6 +89,15 @@ class MyApp extends StatelessWidget {
         ),
       ),
       onGenerateRoute: (RouteSettings settings) {
+        const protectedRoutes = [
+          MainScreen.routeName,
+          NotificationsScreen.routeName,
+          ChatScreen.routeName
+        ];
+        if (!authBloc.isAuthenticated.value &&
+            protectedRoutes.contains(settings.name)) {
+          return CupertinoPageRoute(builder: (_) => IntroductionScreen());
+        }
         switch (settings.name) {
           case MainScreen.routeName:
             return CupertinoPageRoute(builder: (_) => MainScreen());

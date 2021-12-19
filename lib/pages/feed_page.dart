@@ -28,8 +28,11 @@ class _FeedPageState extends State<FeedPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Ensocial',
-                style: Theme.of(context).textTheme.headline2,
+                'ENSA Connect',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline2
+                    ?.copyWith(fontSize: 35.0),
               ),
               IconButton(
                 onPressed: () {
