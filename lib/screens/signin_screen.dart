@@ -1,3 +1,5 @@
+import 'package:ensa/blocs/auth_bloc.dart';
+import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/screens/form_screen.dart';
 import 'package:ensa/widgets/text_form_field_widget.dart';
 import 'package:flutter/gestures.dart';
@@ -15,6 +17,53 @@ class SigninScreen extends StatefulWidget {
 
 class _SigninScreenState extends State<SigninScreen> {
   final _formKey = GlobalKey<FormState>();
+
+  String _email = '';
+  String _password = '';
+
+  bool _isLoading = false;
+
+  List<String> _invalidEmails = [];
+
+  Future<void> handleSubmit() async {
+    if (!_formKey.currentState!.validate()) {
+      const snackBar =
+          SnackBar(content: Text('Please enter valid information'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
+    }
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      final credentials = Credentials(email: _email, password: _password);
+      await authBloc.signIn(credentials);
+      Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+    } on InvalidEmailError {
+      const snackBar = SnackBar(
+        content: Text('The email you have entered does not exist'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      setState(() {
+        _invalidEmails.add(_email);
+      });
+    } on InvalidPasswordError {
+      const snackBar = SnackBar(
+        content: Text('The credentials you have entered are incorrect'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } catch (e) {
+      print(e);
+      const snackBar = SnackBar(
+        content: Text('Something went wrong'),
+        backgroundColor: Colors.red,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +99,20 @@ class _SigninScreenState extends State<SigninScreen> {
               hintText: 'name@example.com',
               keyboardType: TextInputType.emailAddress,
               icon: Icon(Ionicons.mail_outline),
+              onChanged: (v) {
+                setState(() {
+                  _email = v;
+                });
+              },
               validator: (String? value) {
                 if (value == null || value == '') {
                   return 'Please enter an email';
                 }
                 if (!isEmail(value)) {
                   return 'Please enter a valid email';
+                }
+                if (_invalidEmails.contains(value)) {
+                  return 'This email is not valid';
                 }
               },
             ),
@@ -68,6 +125,11 @@ class _SigninScreenState extends State<SigninScreen> {
               icon: Icon(
                 Ionicons.lock_closed_outline,
               ),
+              onChanged: (v) {
+                setState(() {
+                  _password = v;
+                });
+              },
               validator: (String? value) {
                 if (value == null || value == '') {
                   return 'Please enter a password';
@@ -84,13 +146,16 @@ class _SigninScreenState extends State<SigninScreen> {
             Container(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    Navigator.of(context)
-                        .pushNamedAndRemoveUntil('/', (route) => false);
-                  }
-                },
-                child: Text('Sign in'),
+                onPressed: _isLoading ? null : handleSubmit,
+                child: _isLoading
+                    ? SizedBox(
+                        width: 19.0,
+                        height: 19.0,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      )
+                    : Text('Sign in'),
               ),
             ),
             SizedBox(

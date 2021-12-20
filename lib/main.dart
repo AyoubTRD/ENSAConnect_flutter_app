@@ -5,11 +5,12 @@ import 'package:ensa/screens/main_screen.dart';
 import 'package:ensa/screens/notifications_screen.dart';
 import 'package:ensa/screens/signin_screen.dart';
 import 'package:ensa/screens/signup_screen.dart';
-import 'package:ensa/utils/constants.dart';
+import 'package:ensa/utils/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
@@ -18,107 +19,49 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ENSA Connect',
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        primaryColor: kPrimaryColor,
-        accentColor: kAccentColor,
-        fontFamily: 'Magdelin Alt',
-        textTheme: TextTheme(
-          headline1: TextStyle(
-            color: kTextPrimary,
-            fontWeight: FontWeight.w600,
-            fontSize: 50.0,
-          ),
-          headline2: TextStyle(
-            color: kTitleText,
-            fontWeight: FontWeight.w600,
-            fontSize: 50.0,
-          ),
-          headline3: TextStyle(
-            color: kAppBarText,
-            fontWeight: FontWeight.w600,
-            fontSize: 32.0,
-          ),
-          headline4: TextStyle(
-            color: kTitleText,
-            fontWeight: FontWeight.w600,
-            fontSize: 20.0,
-          ),
-          bodyText2: TextStyle(
-            color: kTextSecondary,
-            fontSize: 18.0,
-            height: 1.2,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(kPrimaryColor),
-            elevation: MaterialStateProperty.all(0.0),
-            padding: MaterialStateProperty.all(
-              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-            ),
-            shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-            ),
-            textStyle: MaterialStateProperty.all(
-              TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-                fontSize: 16.0,
-              ),
-            ),
-          ),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-        ),
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          centerTitle: true,
-          titleTextStyle: TextStyle(
-            color: kTitleText,
-            fontWeight: FontWeight.w600,
-            fontSize: 50.0,
-          ),
-        ),
-      ),
-      onGenerateRoute: (RouteSettings settings) {
-        const protectedRoutes = [
-          MainScreen.routeName,
-          NotificationsScreen.routeName,
-          ChatScreen.routeName
-        ];
-        if (!authBloc.isAuthenticated.value &&
-            protectedRoutes.contains(settings.name)) {
-          return CupertinoPageRoute(builder: (_) => IntroductionScreen());
-        }
-        switch (settings.name) {
-          case MainScreen.routeName:
-            return CupertinoPageRoute(builder: (_) => MainScreen());
-          case IntroductionScreen.routeName:
-            return CupertinoPageRoute(builder: (_) => IntroductionScreen());
-          case SignupScreen.routeName:
-            return CupertinoPageRoute(builder: (_) => SignupScreen());
-          case SigninScreen.routeName:
-            return CupertinoPageRoute(builder: (_) => SigninScreen());
-          case NotificationsScreen.routeName:
-            return CupertinoPageRoute(
-                builder: (_) => NotificationsScreen(), fullscreenDialog: true);
-          case ChatScreen.routeName:
-            final args = settings.arguments as ChatScreenArguments;
-            return CupertinoPageRoute(
-                builder: (_) => ChatScreen(
-                      chatId: args.chatId,
-                    ));
-        }
+    return StreamBuilder<bool>(
+      stream: authBloc.isReady,
+      builder: (context, snapshot) {
+        return MaterialApp(
+          title: 'ENSA Connect',
+          theme: theme,
+          initialRoute: '/',
+          onGenerateRoute: (RouteSettings settings) {
+            const protectedRoutes = [
+              MainScreen.routeName,
+              NotificationsScreen.routeName,
+              ChatScreen.routeName
+            ];
+            if (authBloc.isReady.value &&
+                !authBloc.isAuthenticated.value &&
+                protectedRoutes.contains(settings.name)) {
+              return CupertinoPageRoute(builder: (_) => IntroductionScreen());
+            }
+            switch (settings.name) {
+              case MainScreen.routeName:
+                return CupertinoPageRoute(builder: (_) => MainScreen());
+              case IntroductionScreen.routeName:
+                return CupertinoPageRoute(builder: (_) => IntroductionScreen());
+              case SignupScreen.routeName:
+                return CupertinoPageRoute(builder: (_) => SignupScreen());
+              case SigninScreen.routeName:
+                return CupertinoPageRoute(builder: (_) => SigninScreen());
+              case NotificationsScreen.routeName:
+                return CupertinoPageRoute(
+                  builder: (_) => NotificationsScreen(),
+                  fullscreenDialog: true,
+                );
+              case ChatScreen.routeName:
+                final args = settings.arguments as ChatScreenArguments;
+                return CupertinoPageRoute(
+                  builder: (_) => ChatScreen(
+                    chatId: args.chatId,
+                  ),
+                );
+            }
+          },
+        );
       },
-      initialRoute: '/',
     );
   }
 }
