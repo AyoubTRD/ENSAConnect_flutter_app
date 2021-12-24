@@ -32,6 +32,9 @@ class ChatPreview extends StatelessWidget {
         ),
         subtitle: Text(
           _chat.messages[0].text,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+          ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),

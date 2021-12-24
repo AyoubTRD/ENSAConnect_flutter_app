@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:ensa/blocs/auth_bloc.dart';
 import 'package:ensa/pages/feed_page.dart';
 import 'package:ensa/screens/chats_list_screen.dart';
@@ -52,7 +53,7 @@ class _MainScreenState extends State<MainScreen> {
           });
         });
         return Container(
-          color: Colors.white,
+          color: Theme.of(context).scaffoldBackgroundColor,
           child: AnimatedOpacity(
             duration: Duration(milliseconds: 300),
             opacity: _opacity,
@@ -83,7 +84,9 @@ class _MainScreenState extends State<MainScreen> {
                 elevation: 0.0,
                 shape: CircularNotchedRectangle(),
                 notchMargin: 9.0,
-                color: Colors.white,
+                color: AdaptiveTheme.of(context).mode == AdaptiveThemeMode.dark
+                    ? Color(0xFF101010)
+                    : Colors.white,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20.0, vertical: 8.0),

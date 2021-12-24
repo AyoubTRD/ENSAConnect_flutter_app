@@ -5,10 +5,12 @@ import 'package:ensa/models/story_model.dart';
 import 'package:ensa/models/user_model.dart';
 import 'package:flutter/material.dart';
 
-const kApiUrl = 'http://10.0.2.2:4000/graphql';
+const kApiUrl = 'https://ensa-connect-staging-api.herokuapp.com/graphql';
 
 const kPrimaryColor = Color(0xFF4C68DA);
+const kPrimaryColorLight = Color(0xFF6985FA);
 const kAccentColor = Color(0xFF40BADF);
+const kAccentColorLight = Color(0xFF52BBDE);
 
 // Text colors
 const kTextPrimary = Color(0xFF1A2552);

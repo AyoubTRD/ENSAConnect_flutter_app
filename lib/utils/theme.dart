@@ -1,6 +1,19 @@
 import 'package:ensa/utils/constants.dart';
 import 'package:flutter/material.dart';
 
+final appBarTitleTheme = TextStyle(
+  color: kTitleText,
+  fontWeight: FontWeight.w600,
+  fontSize: 50.0,
+);
+
+final appBarTheme = AppBarTheme(
+  backgroundColor: Colors.transparent,
+  elevation: 0.0,
+  centerTitle: true,
+  titleTextStyle: appBarTitleTheme,
+);
+
 final theme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
   primaryColor: kPrimaryColor,
@@ -58,14 +71,17 @@ final theme = ThemeData(
       borderRadius: BorderRadius.circular(15.0),
     ),
   ),
-  appBarTheme: AppBarTheme(
+  appBarTheme: appBarTheme,
+);
+
+final darkTheme = theme.copyWith(
+  brightness: Brightness.dark,
+  scaffoldBackgroundColor: Color(0xFF121212),
+  primaryColor: kPrimaryColor,
+  appBarTheme: appBarTheme.copyWith(
     backgroundColor: Colors.transparent,
-    elevation: 0.0,
-    centerTitle: true,
-    titleTextStyle: TextStyle(
-      color: kTitleText,
-      fontWeight: FontWeight.w600,
-      fontSize: 50.0,
+    titleTextStyle: appBarTitleTheme.copyWith(
+      color: Colors.white,
     ),
   ),
 );

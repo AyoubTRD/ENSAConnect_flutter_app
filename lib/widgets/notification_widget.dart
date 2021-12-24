@@ -102,7 +102,8 @@ class NotificationWidget extends StatelessWidget {
         maxLines: 1,
         style: Theme.of(context).textTheme.headline4,
       ),
-      subtitle: Text(text[_notification.type]!),
+      subtitle: Text(text[_notification.type]!,
+          style: TextStyle(fontWeight: FontWeight.w400)),
     );
   }
 }

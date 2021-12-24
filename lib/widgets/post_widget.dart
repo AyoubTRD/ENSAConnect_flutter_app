@@ -25,7 +25,7 @@ class FeedPost extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 38.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
       ),
       child: Column(
         children: [
@@ -63,6 +63,9 @@ class FeedPost extends StatelessWidget {
           if (_hasContent)
             Text(
               post.content!,
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+              ),
               maxLines: 5,
               overflow: TextOverflow.ellipsis,
             ),
@@ -107,7 +110,7 @@ class FeedPost extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       decoration: BoxDecoration(
         boxShadow: [_shadow],
-        color: Colors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(5.0),
       ),
       child: _buildBarBody(context),

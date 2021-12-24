@@ -19,14 +19,30 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 scalar DateTime
 
 type Mutation {
+  createPost(post: PostInput!): Post!
   createUser(user: UserInput!): AuthResult!
   deleteMe: Boolean!
   deleteToken: Boolean!
   updateUser(user: UpdateUserInput!): User!
 }
 
+type Post {
+  author: User!
+  createdAt: DateTime!
+  files: [String!]!
+  id: String!
+  text: String!
+  updatedAt: DateTime!
+}
+
+input PostInput {
+  files: [String!] = []
+  text: String = ""
+}
+
 type Query {
   getMe: User!
+  getPosts: [Post!]!
   getToken(credentials: Credentials!): AuthResult!
   getUser(id: String!): User
   getUsers: [User!]!

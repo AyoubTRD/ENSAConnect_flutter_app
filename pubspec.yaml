@@ -42,6 +42,7 @@ dependencies:
   rxdart: ^0.27.3
   http: ^0.13.4
   shared_preferences: ^2.0.11
+  adaptive_theme: ^2.3.0
 
 dev_dependencies:
   flutter_test:
