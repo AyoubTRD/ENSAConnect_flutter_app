@@ -27,10 +27,13 @@ class AuthBloc {
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
+
     if (token != null && token != '') {
       updateToAuthenticatedClient(token);
+
       final query = GetMeQuery();
-      final response = await client.execute(query);
+      final response = await apiClient.execute(query);
+
       if (response.hasErrors) {
         print(response.errors);
         await prefs.remove('token');
@@ -43,33 +46,35 @@ class AuthBloc {
   }
 
   void updateToAuthenticatedClient(String token) {
-    client =
-        ArtemisClient(kApiUrl, httpClient: AuthenticatedClient(token: token));
+    authClient.setToken(token);
   }
 
   void updateToRegularClient() {
-    client = ArtemisClient(kApiUrl);
+    authClient.removeToken();
   }
 
   void handleAuthSuccess(
       {required String token, required UserMixin user}) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('token', token);
+
     _currentUser.sink.add(user);
     _isAuthenticated.sink.add(true);
-    client =
-        ArtemisClient(kApiUrl, httpClient: AuthenticatedClient(token: token));
+
+    authClient.setToken(token);
   }
 
   Future<void> signUp(UserInput user) async {
     final variables = CreateUserArguments(user: user);
     final response =
-        await client.execute(CreateUserMutation(variables: variables));
+        await apiClient.execute(CreateUserMutation(variables: variables));
+
     if (response.hasErrors) {
       if (response.errors![0].message == 'email_taken') throw EmailTakenError();
       print(response.errors);
       throw AuthRequestError();
     }
+
     handleAuthSuccess(
         token: response.data!.createUser.token,
         user: response.data!.createUser.user);
@@ -78,15 +83,18 @@ class AuthBloc {
   Future<void> signIn(Credentials credentials) async {
     final variables = GetTokenArguments(credentials: credentials);
     final query = GetTokenQuery(variables: variables);
-    final response = await client.execute(query);
+    final response = await apiClient.execute(query);
+
     if (response.hasErrors) {
       if (response.errors![0].message == 'wrong_email')
         throw InvalidEmailError();
       if (response.errors![0].message == 'wrong_password')
         throw InvalidPasswordError();
+
       print(response.errors);
       throw AuthRequestError();
     }
+
     handleAuthSuccess(
         token: response.data!.getToken.token,
         user: response.data!.getToken.user);
