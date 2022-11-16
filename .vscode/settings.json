@@ -6,5 +6,6 @@
     "Ionicons",
     "Signin",
     "Signup"
-  ]
+  ],
+  "git.enabled": false
 }

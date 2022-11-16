@@ -27,6 +27,12 @@ final theme = ThemeData(
       fontWeight: FontWeight.w600,
       fontSize: 20.0,
     ),
+    bodyText1: const TextStyle(
+      color: kTextPrimary,
+      fontSize: 16.0,
+      height: 1.0,
+      fontWeight: FontWeight.w500,
+    ),
     bodyText2: const TextStyle(
       color: kTextSecondary,
       fontSize: 18.0,

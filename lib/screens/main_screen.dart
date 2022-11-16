@@ -1,5 +1,6 @@
 import 'package:ensa/blocs/auth_bloc.dart';
 import 'package:ensa/pages/feed_page.dart';
+import 'package:ensa/pages/settings_page.dart';
 import 'package:ensa/screens/chats_list_screen.dart';
 import 'package:ensa/screens/signin_screen.dart';
 import 'package:ensa/screens/splash_screen.dart';
@@ -23,8 +24,9 @@ class _MainScreenState extends State<MainScreen> {
     FeedPage(),
     SigninScreen(),
     ChatsListScreen(),
+    SettingsPage()
   ];
-  final List<PreferredSizeWidget?> _appBars = [null, null, null];
+  final List<PreferredSizeWidget?> _appBars = [null, null, null, null];
   final PageController _controller = PageController();
 
   @override

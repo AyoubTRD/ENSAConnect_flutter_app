@@ -18,11 +18,11 @@ class InvalidPasswordError extends InvalidCredentialsError {}
 class AuthBloc {
   BehaviorSubject<bool> _isReady = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> _isAuthenticated = BehaviorSubject.seeded(false);
-  BehaviorSubject<UserMixin> _currentUser = BehaviorSubject<UserMixin>();
+  BehaviorSubject<UserMixin?> _currentUser = BehaviorSubject<UserMixin?>();
 
   ValueStream<bool> get isReady => _isReady.stream;
   ValueStream<bool> get isAuthenticated => _isAuthenticated.stream;
-  ValueStream<UserMixin> get currentUser => _currentUser.stream;
+  ValueStream<UserMixin?> get currentUser => _currentUser.stream;
 
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
@@ -98,6 +98,16 @@ class AuthBloc {
     handleAuthSuccess(
         token: response.data!.getToken.token,
         user: response.data!.getToken.user);
+  }
+
+  Future<void> logout() async {
+    _isAuthenticated.sink.add(false);
+    _currentUser.sink.add(null);
+
+    authClient.removeToken();
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
   }
 
   void dispose() {
