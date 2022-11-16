@@ -14,8 +14,8 @@ class StoriesPreview extends StatelessWidget {
       storyWidgets.add(
         Padding(
           padding: EdgeInsets.only(
-            right: isLast ? kDefaultPadding : 8.0,
-            left: kDefaultPadding,
+            right: isLast ? 16.0 : 8.0,
+            left: 16.0,
           ),
           child: StoryPreview(story: kStories[i]),
         ),

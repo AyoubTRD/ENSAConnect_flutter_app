@@ -70,6 +70,7 @@ class _MainScreenState extends State<MainScreen> {
                 height: 70.0,
                 child: FittedBox(
                   child: FloatingActionButton(
+                    elevation: 10.0,
                     backgroundColor: Theme.of(context).primaryColor,
                     foregroundColor: Colors.white,
                     child: Icon(Ionicons.add),
@@ -80,7 +81,7 @@ class _MainScreenState extends State<MainScreen> {
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
               bottomNavigationBar: BottomAppBar(
-                elevation: 0.0,
+                elevation: 7.0,
                 shape: CircularNotchedRectangle(),
                 notchMargin: 9.0,
                 color: Colors.white,

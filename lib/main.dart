@@ -35,8 +35,10 @@ class MyApp extends StatelessWidget {
             if (authBloc.isReady.value &&
                 !authBloc.isAuthenticated.value &&
                 protectedRoutes.contains(settings.name)) {
+              print('We are rendering the unauthenticated app');
               return CupertinoPageRoute(builder: (_) => IntroductionScreen());
             }
+            print('We are rendering the authenticated app');
             switch (settings.name) {
               case MainScreen.routeName:
                 return CupertinoPageRoute(builder: (_) => MainScreen());
