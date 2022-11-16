@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'ENSA Connect',
           theme: theme,
-          initialRoute: '/',
+          initialRoute: IntroductionScreen.routeName,
           onGenerateRoute: (RouteSettings settings) {
             const protectedRoutes = [
               MainScreen.routeName,

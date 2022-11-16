@@ -56,7 +56,9 @@ class AuthBloc {
   void handleAuthSuccess(
       {required String token, required UserMixin user}) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('token', token);
+    await prefs.setString('token', token);
+
+    // Restart.restartApp();
 
     _currentUser.sink.add(user);
     _isAuthenticated.sink.add(true);

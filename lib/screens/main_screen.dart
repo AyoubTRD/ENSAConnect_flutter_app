@@ -2,6 +2,7 @@ import 'package:ensa/blocs/auth_bloc.dart';
 import 'package:ensa/pages/feed_page.dart';
 import 'package:ensa/pages/settings_page.dart';
 import 'package:ensa/screens/chats_list_screen.dart';
+import 'package:ensa/screens/notifications_screen.dart';
 import 'package:ensa/screens/signin_screen.dart';
 import 'package:ensa/screens/splash_screen.dart';
 import 'package:ensa/utils/constants.dart';
@@ -43,104 +44,82 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<bool>(
-      stream: authBloc.isReady,
-      builder: (context, snapshot) {
-        final isReady = snapshot.data ?? false;
-        if (!isReady) return SplashScreen();
-        Future.delayed(Duration(milliseconds: 1), () {
-          setState(() {
-            _opacity = 1;
-          });
-        });
-        return Container(
-          color: Colors.white,
-          child: AnimatedOpacity(
-            duration: Duration(milliseconds: 300),
-            opacity: _opacity,
-            curve: Curves.easeInOutCubic,
-            child: Scaffold(
-              extendBody: true,
-              body: PageView(
-                controller: _controller,
-                physics: BouncingScrollPhysics(),
-                children: _pages,
-              ),
-              appBar: _appBars[_currentIndex],
-              floatingActionButton: Container(
-                width: 70.0,
-                height: 70.0,
-                child: FittedBox(
-                  child: FloatingActionButton(
-                    elevation: 10.0,
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
-                    child: Icon(Ionicons.add),
-                    onPressed: () {},
-                  ),
-                ),
-              ),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
-              bottomNavigationBar: BottomAppBar(
-                elevation: 7.0,
-                shape: CircularNotchedRectangle(),
-                notchMargin: 9.0,
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 8.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            MyBottomBarItem(
-                              icon: Ionicons.home_outline,
-                              index: 0,
-                              onPressed: _onBottomBarItemPressed,
-                              currentIndex: _currentIndex,
-                            ),
-                            MyBottomBarItem(
-                              icon: Ionicons.search_outline,
-                              index: 1,
-                              onPressed: _onBottomBarItemPressed,
-                              currentIndex: _currentIndex,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 100.0,
-                      ),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            MyBottomBarItem(
-                              icon: Ionicons.chatbubble_outline,
-                              index: 2,
-                              onPressed: _onBottomBarItemPressed,
-                              currentIndex: _currentIndex,
-                            ),
-                            MyBottomBarItem(
-                              icon: Ionicons.person_outline,
-                              index: 3,
-                              onPressed: _onBottomBarItemPressed,
-                              currentIndex: _currentIndex,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+    return Scaffold(
+      extendBody: true,
+      body: PageView(
+        controller: _controller,
+        physics: BouncingScrollPhysics(),
+        children: _pages,
+      ),
+      appBar: _appBars[_currentIndex],
+      floatingActionButton: Container(
+        width: 70.0,
+        height: 70.0,
+        child: FittedBox(
+          child: FloatingActionButton(
+            elevation: 10.0,
+            backgroundColor: Theme.of(context).primaryColor,
+            foregroundColor: Colors.white,
+            child: Icon(Ionicons.add),
+            onPressed: () {},
           ),
-        );
-      },
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        elevation: 7.0,
+        shape: CircularNotchedRectangle(),
+        notchMargin: 9.0,
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    MyBottomBarItem(
+                      icon: Ionicons.home_outline,
+                      index: 0,
+                      onPressed: _onBottomBarItemPressed,
+                      currentIndex: _currentIndex,
+                    ),
+                    MyBottomBarItem(
+                      icon: Ionicons.search_outline,
+                      index: 1,
+                      onPressed: _onBottomBarItemPressed,
+                      currentIndex: _currentIndex,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 100.0,
+              ),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    MyBottomBarItem(
+                      icon: Ionicons.chatbubble_outline,
+                      index: 2,
+                      onPressed: _onBottomBarItemPressed,
+                      currentIndex: _currentIndex,
+                    ),
+                    MyBottomBarItem(
+                      icon: Ionicons.person_outline,
+                      index: 3,
+                      onPressed: _onBottomBarItemPressed,
+                      currentIndex: _currentIndex,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
