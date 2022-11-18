@@ -1,90 +1,89 @@
 import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/graphql/graphql_api.dart';
-import 'package:ensa/screens/form_screen.dart';
+import 'package:ensa/screens/core/form_screen.dart';
+import 'package:ensa/utils/constants.dart';
 import 'package:ensa/widgets/core/text_form_field_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:validators/validators.dart';
 
-class SigninScreen extends StatefulWidget {
-  static const routeName = '/signin';
-  const SigninScreen({Key? key}) : super(key: key);
+class SignupScreen extends StatefulWidget {
+  static const routeName = '/signup';
+  const SignupScreen({Key? key}) : super(key: key);
 
   @override
-  _SigninScreenState createState() => _SigninScreenState();
+  _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _SigninScreenState extends State<SigninScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
-
   String _email = '';
+  String _fullName = '';
   String _password = '';
+  String _avatar = '';
+  List<String> _usedEmails = [];
 
   bool _isLoading = false;
 
-  List<String> _invalidEmails = [];
-
   Future<void> handleSubmit() async {
-    if (!_formKey.currentState!.validate()) {
-      const snackBar =
-          SnackBar(content: Text('Please enter valid information'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      return;
-    }
-    try {
+    if (_formKey.currentState!.validate()) {
+      final words = _fullName.split(' ');
+      final userInput = UserInput(
+          avatar: _avatar,
+          email: _email,
+          firstName: words[0],
+          lastName: words.getRange(1, words.length).join(' '),
+          password: _password);
       setState(() {
         _isLoading = true;
       });
-      final credentials = Credentials(email: _email, password: _password);
-      await userBloc.signIn(credentials);
-      Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
-    } on InvalidEmailError {
-      const snackBar = SnackBar(
-        content: Text('The email you have entered does not exist'),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      try {
+        await userBloc.signUp(userInput);
+        Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+      } on EmailTakenError {
+        setState(() {
+          _usedEmails.add(_email);
+          // _formKey.currentState!.validate();
+        });
+      } catch (e) {
+        final snackBar = SnackBar(
+          content: Text('Something went wrong!'),
+          duration: Duration(milliseconds: 1500),
+          backgroundColor: Colors.red,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
       setState(() {
-        _invalidEmails.add(_email);
+        _isLoading = false;
       });
-    } on InvalidPasswordError {
-      const snackBar = SnackBar(
-        content: Text('The credentials you have entered are incorrect'),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    } catch (e) {
-      print(e);
-      const snackBar = SnackBar(
-        content: Text('Something went wrong'),
-        backgroundColor: Colors.red,
-      );
+    } else {
+      final snackBar =
+          SnackBar(content: Text('Please enter valid information'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return FormScreen(
-      title: 'Sign In',
+      title: 'Sign Up',
       subtitle:
-          'Please enter your valid information below in order to login to your account',
+          'Please enter your valid information in order to create your account',
       bottomText: RichText(
         textAlign: TextAlign.center,
         text: TextSpan(
           style: Theme.of(context).textTheme.bodyText2,
-          text: 'Don\'t have an account? ',
+          text: 'Already have an account? ',
           children: [
             TextSpan(
-              text: 'Create One',
+              text: 'Sign In',
               style: TextStyle(
-                color: Theme.of(context).primaryColor,
+                color: kPrimaryColor,
               ),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pushNamed('/signin');
                 },
             ),
           ],
@@ -94,6 +93,31 @@ class _SigninScreenState extends State<SigninScreen> {
         key: _formKey,
         child: Column(
           children: [
+            MyTextFormField(
+              labelText: 'Full name',
+              hintText: 'John Smith',
+              textCapitalization: TextCapitalization.words,
+              icon: Icon(
+                Ionicons.person_outline,
+              ),
+              onChanged: (v) {
+                setState(() {
+                  _fullName = v;
+                });
+              },
+              validator: (String? value) {
+                if (value == null || value == '') {
+                  return 'This field is required';
+                }
+                value = value.trim();
+                if (value.split(' ').length < 2 ||
+                    value.split(' ').contains('') ||
+                    value.length < 5) {
+                  return 'Please enter the full name';
+                }
+              },
+            ),
+            SizedBox(height: 25.0),
             MyTextFormField(
               labelText: 'Email address',
               hintText: 'name@example.com',
@@ -111,8 +135,8 @@ class _SigninScreenState extends State<SigninScreen> {
                 if (!isEmail(value)) {
                   return 'Please enter a valid email';
                 }
-                if (_invalidEmails.contains(value)) {
-                  return 'This email is not valid';
+                if (_usedEmails.contains(value)) {
+                  return 'This email has already been taken';
                 }
               },
             ),
@@ -151,11 +175,9 @@ class _SigninScreenState extends State<SigninScreen> {
                     ? SizedBox(
                         width: 19.0,
                         height: 19.0,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                        ),
+                        child: CircularProgressIndicator(color: Colors.white),
                       )
-                    : Text('Sign in'),
+                    : Text('Sign up'),
               ),
             ),
             SizedBox(

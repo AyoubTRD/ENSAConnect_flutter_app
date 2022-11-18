@@ -1,5 +1,5 @@
 import 'package:ensa/models/chat_model.dart';
-import 'package:ensa/screens/chat_screen.dart';
+import 'package:ensa/screens/chat/chat_screen.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;

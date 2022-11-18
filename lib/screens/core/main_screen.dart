@@ -1,10 +1,8 @@
 import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/pages/feed_page.dart';
-import 'package:ensa/pages/settings_page.dart';
-import 'package:ensa/screens/chats_list_screen.dart';
-import 'package:ensa/screens/notifications_screen.dart';
-import 'package:ensa/screens/signin_screen.dart';
-import 'package:ensa/screens/splash_screen.dart';
+import 'package:ensa/screens/settings/settings_screen.dart';
+import 'package:ensa/screens/chat/chats_list_screen.dart';
+import 'package:ensa/screens/onboarding/signin_screen.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';

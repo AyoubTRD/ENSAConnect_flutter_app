@@ -1,10 +1,10 @@
 import 'package:ensa/blocs/user_bloc.dart';
-import 'package:ensa/screens/chat_screen.dart';
-import 'package:ensa/screens/introduction_screen.dart';
-import 'package:ensa/screens/main_screen.dart';
-import 'package:ensa/screens/notifications_screen.dart';
-import 'package:ensa/screens/signin_screen.dart';
-import 'package:ensa/screens/signup_screen.dart';
+import 'package:ensa/screens/chat/chat_screen.dart';
+import 'package:ensa/screens/onboarding/introduction_screen.dart';
+import 'package:ensa/screens/core/main_screen.dart';
+import 'package:ensa/screens/notifications/notifications_screen.dart';
+import 'package:ensa/screens/onboarding/signin_screen.dart';
+import 'package:ensa/screens/onboarding/signup_screen.dart';
 import 'package:ensa/utils/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

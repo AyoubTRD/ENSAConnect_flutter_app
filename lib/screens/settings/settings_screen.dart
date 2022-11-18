@@ -1,6 +1,6 @@
 import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/graphql/graphql_api.dart';
-import 'package:ensa/screens/notifications_screen.dart';
+import 'package:ensa/screens/notifications/notifications_screen.dart';
 import 'package:ensa/services/rest_client_service.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:ensa/widgets/core/app_bar_widget.dart';
