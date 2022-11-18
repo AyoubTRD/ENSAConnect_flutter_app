@@ -1,8 +1,8 @@
 import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/screens/main_screen.dart';
 import 'package:ensa/screens/splash_screen.dart';
-import 'package:ensa/widgets/intro_page_widget.dart';
-import 'package:ensa/widgets/page_view_indicator_widget.dart';
+import 'package:ensa/widgets/onboarding/intro_page_widget.dart';
+import 'package:ensa/widgets/core/page_view_indicator_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

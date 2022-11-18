@@ -1,5 +1,5 @@
 import 'package:ensa/utils/constants.dart';
-import 'package:ensa/widgets/story_preview_widget.dart';
+import 'package:ensa/widgets/stories/story_preview_widget.dart';
 import 'package:flutter/material.dart';
 
 class StoriesPreview extends StatelessWidget {
