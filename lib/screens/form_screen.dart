@@ -1,4 +1,4 @@
-import 'package:ensa/widgets/app_bar_widget.dart';
+import 'package:ensa/widgets/core/app_bar_widget.dart';
 import 'package:flutter/material.dart';
 
 class FormScreen extends StatelessWidget {

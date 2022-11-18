@@ -1,7 +1,7 @@
 import 'package:ensa/models/notification_model.dart';
 import 'package:ensa/screens/paged_screen.dart';
 import 'package:ensa/utils/constants.dart';
-import 'package:ensa/widgets/app_bar_widget.dart';
+import 'package:ensa/widgets/core/app_bar_widget.dart';
 import 'package:ensa/widgets/notification_widget.dart';
 import 'package:flutter/material.dart';
 

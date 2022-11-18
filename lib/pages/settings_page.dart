@@ -3,7 +3,7 @@ import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/screens/notifications_screen.dart';
 import 'package:ensa/services/rest_client_service.dart';
 import 'package:ensa/utils/constants.dart';
-import 'package:ensa/widgets/app_bar_widget.dart';
+import 'package:ensa/widgets/core/app_bar_widget.dart';
 import 'package:ensa/widgets/settings/profile_picture_settings_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

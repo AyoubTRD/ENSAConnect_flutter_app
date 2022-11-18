@@ -1,6 +1,6 @@
 import 'package:ensa/models/post_model.dart';
 import 'package:ensa/utils/constants.dart';
-import 'package:ensa/widgets/post_media_widget.dart';
+import 'package:ensa/widgets/posts/post_media_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:timeago/timeago.dart' as timeago;

@@ -1,5 +1,5 @@
 import 'package:ensa/utils/constants.dart';
-import 'package:ensa/widgets/post_widget.dart';
+import 'package:ensa/widgets/posts/post_widget.dart';
 import 'package:flutter/material.dart';
 
 class Posts extends StatelessWidget {

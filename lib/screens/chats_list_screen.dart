@@ -1,7 +1,7 @@
 import 'package:ensa/screens/paged_screen.dart';
 import 'package:ensa/utils/constants.dart';
-import 'package:ensa/widgets/app_bar_widget.dart';
-import 'package:ensa/widgets/chat_preview_widget.dart';
+import 'package:ensa/widgets/core/app_bar_widget.dart';
+import 'package:ensa/widgets/chat/chat_preview_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 

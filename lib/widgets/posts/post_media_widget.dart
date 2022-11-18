@@ -1,5 +1,5 @@
 import 'package:ensa/models/post_model.dart';
-import 'package:ensa/widgets/post_media_item_widget.dart';
+import 'package:ensa/widgets/posts/post_media_item_widget.dart';
 import 'package:flutter/material.dart';
 
 class PostMedia extends StatelessWidget {
