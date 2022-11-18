@@ -16,6 +16,8 @@ class MyTextFormField extends StatefulWidget {
     this.validator,
     this.helperText,
     this.onChanged,
+    this.enabled = true,
+    this.initialValue,
   }) : super(key: key);
 
   final String labelText;
@@ -30,6 +32,8 @@ class MyTextFormField extends StatefulWidget {
   final TextCapitalization textCapitalization;
   final String? Function(String?)? validator;
   final Function(String)? onChanged;
+  final bool enabled;
+  final String? initialValue;
 
   @override
   _MyTextFormFieldState createState() => _MyTextFormFieldState();
@@ -44,8 +48,10 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(widget.labelText),
-        SizedBox(height: 8.0),
+        SizedBox(height: 6.0),
         TextFormField(
+          initialValue: widget.initialValue,
+          enabled: widget.enabled,
           onChanged: widget.onChanged,
           autofocus: widget.autofocus,
           autocorrect: widget.autocorrect,
@@ -55,15 +61,25 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
           obscureText: widget.obscureText && _obscureText,
           validator: widget.validator,
           autovalidateMode: AutovalidateMode.onUserInteraction,
+          textAlignVertical: TextAlignVertical.bottom,
           decoration: InputDecoration(
             helperText: widget.helperText,
             labelText: widget.hintText,
             floatingLabelBehavior: FloatingLabelBehavior.never,
-            prefixIcon: widget.icon ??
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 30.0),
-                  child: widget.icon,
-                ),
+            disabledBorder:
+                Theme.of(context).inputDecorationTheme.border?.copyWith(
+                      borderSide: BorderSide(
+                        color: Colors.grey.shade400,
+                      ),
+                    ),
+            fillColor: widget.enabled ? null : Colors.grey.shade200,
+            filled: widget.enabled ? null : true,
+            prefixIcon: widget.icon == null
+                ? null
+                : Container(
+                    margin: const EdgeInsets.only(left: 16.0, right: 8.0),
+                    child: widget.icon,
+                  ),
             suffixIcon: widget.obscureText
                 ? IconButton(
                     onPressed: () {

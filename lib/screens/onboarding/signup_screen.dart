@@ -30,11 +30,12 @@ class _SignupScreenState extends State<SignupScreen> {
     if (_formKey.currentState!.validate()) {
       final words = _fullName.split(' ');
       final userInput = UserInput(
-          avatar: _avatar,
-          email: _email,
-          firstName: words[0],
-          lastName: words.getRange(1, words.length).join(' '),
-          password: _password);
+        avatar: _avatar,
+        email: _email,
+        firstName: words[0],
+        lastName: words.getRange(1, words.length).join(' '),
+        password: _password,
+      );
       setState(() {
         _isLoading = true;
       });

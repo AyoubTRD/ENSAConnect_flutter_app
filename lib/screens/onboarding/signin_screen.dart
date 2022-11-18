@@ -27,17 +27,20 @@ class _SigninScreenState extends State<SigninScreen> {
 
   Future<void> handleSubmit() async {
     if (!_formKey.currentState!.validate()) {
-      const snackBar =
-          SnackBar(content: Text('Please enter valid information'));
+      const snackBar = SnackBar(
+        content: Text('Please enter valid information'),
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return;
     }
+
     try {
       setState(() {
         _isLoading = true;
       });
       final credentials = Credentials(email: _email, password: _password);
       await userBloc.signIn(credentials);
+
       Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
     } on InvalidEmailError {
       const snackBar = SnackBar(

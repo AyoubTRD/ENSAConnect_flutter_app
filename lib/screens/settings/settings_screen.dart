@@ -1,23 +1,22 @@
 import 'package:ensa/blocs/user_bloc.dart';
-import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/screens/notifications/notifications_screen.dart';
-import 'package:ensa/services/rest_client_service.dart';
+import 'package:ensa/screens/settings/account_settings/account_settings_screen.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:ensa/widgets/core/app_bar_widget.dart';
 import 'package:ensa/widgets/settings/profile_picture_settings_widget.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ensa/widgets/settings/settings_item_widget.dart';
+import 'package:ensa/widgets/settings/settings_section_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({Key? key}) : super(key: key);
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
+  State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,8 +40,11 @@ class _SettingsPageState extends State<SettingsPage> {
             title: 'ACCOUNT',
             children: [
               SettingsItem(
-                onTap: () {},
-                title: 'Profile Settings',
+                onTap: () {
+                  Navigator.of(context)
+                      .pushNamed(AccountSettingsScreen.routeName);
+                },
+                title: 'Account Settings',
                 icon: Ionicons.person_outline,
               ),
               SettingsItem(
@@ -79,104 +81,6 @@ class _SettingsPageState extends State<SettingsPage> {
             title: 'OTHERS',
           ),
         ],
-      ),
-    );
-  }
-}
-
-class SettingsSection extends StatelessWidget {
-  final List<Widget> children;
-  final String title;
-
-  const SettingsSection({Key? key, required this.children, required this.title})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(6.0)),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 2.0),
-            spreadRadius: 1.0,
-            color: Colors.grey.shade900.withOpacity(0.05),
-          )
-        ],
-        color: Colors.white,
-      ),
-      margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-      padding: EdgeInsets.symmetric(vertical: 6.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 12.0, bottom: 6.0),
-            child: Text(
-              title,
-              style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                    letterSpacing: 1.2,
-                  ),
-            ),
-          ),
-          ...children,
-        ],
-      ),
-    );
-  }
-}
-
-class SettingsItem extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final bool hideChevron;
-  final void Function()? onTap;
-
-  const SettingsItem({
-    required this.title,
-    required this.icon,
-    this.hideChevron = false,
-    this.onTap,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Icon(
-                  icon,
-                  color: Theme.of(context).primaryColor,
-                  size: 25.0,
-                ),
-              ),
-              Transform.translate(
-                offset: Offset(0.0, 2.0),
-                child: Text(
-                  title,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              if (!hideChevron) ...[
-                Expanded(child: Container()),
-                Icon(
-                  Ionicons.chevron_forward_outline,
-                  color: Theme.of(context).primaryColor,
-                ),
-                SizedBox(width: 12.0),
-              ],
-            ],
-          ),
-        ),
       ),
     );
   }

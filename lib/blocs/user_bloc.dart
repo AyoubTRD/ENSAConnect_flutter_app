@@ -129,6 +129,21 @@ class UserBloc {
     _currentUser.sink.add(response.data!.updateUser);
   }
 
+  Future<void> updateName(String firstName, String lastName) async {
+    final variables = UpdateUserArguments(
+      user: UpdateUserInput(firstName: firstName, lastName: lastName),
+    );
+    final mutation = UpdateUserMutation(variables: variables);
+    final response = await apiClient.execute(mutation);
+
+    if (response.hasErrors && response.errors != null) {
+      print(response.errors);
+      throw response.errors![0];
+    }
+
+    _currentUser.sink.add(response.data!.updateUser);
+  }
+
   void dispose() {
     _isReady.close();
     _isAuthenticated.close();

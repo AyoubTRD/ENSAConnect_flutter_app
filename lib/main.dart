@@ -5,6 +5,8 @@ import 'package:ensa/screens/core/main_screen.dart';
 import 'package:ensa/screens/notifications/notifications_screen.dart';
 import 'package:ensa/screens/onboarding/signin_screen.dart';
 import 'package:ensa/screens/onboarding/signup_screen.dart';
+import 'package:ensa/screens/settings/account_settings/account_settings_screen.dart';
+import 'package:ensa/screens/settings/account_settings/name_settings_screen.dart';
 import 'package:ensa/utils/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,15 +29,14 @@ class MyApp extends StatelessWidget {
         const protectedRoutes = [
           MainScreen.routeName,
           NotificationsScreen.routeName,
-          ChatScreen.routeName
+          ChatScreen.routeName,
+          AccountSettingsScreen.routeName,
         ];
         if (userBloc.isReady.value &&
             !userBloc.isAuthenticated.value &&
             protectedRoutes.contains(settings.name)) {
-          print('We are rendering the unauthenticated app');
           return CupertinoPageRoute(builder: (_) => IntroductionScreen());
         }
-        print('We are rendering the authenticated app');
         switch (settings.name) {
           case MainScreen.routeName:
             return CupertinoPageRoute(builder: (_) => MainScreen());
@@ -57,6 +58,10 @@ class MyApp extends StatelessWidget {
                 chatId: args.chatId,
               ),
             );
+          case AccountSettingsScreen.routeName:
+            return CupertinoPageRoute(builder: (_) => AccountSettingsScreen());
+          case NameSettingsScreen.routeName:
+            return CupertinoPageRoute(builder: (_) => NameSettingsScreen());
         }
       },
     );

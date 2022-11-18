@@ -42,7 +42,11 @@ final theme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.all(kPrimaryColor),
+      backgroundColor: MaterialStateProperty.resolveWith<Color>((state) {
+        if (state.contains(MaterialState.disabled))
+          return kPrimaryColor.withOpacity(0.15);
+        return kPrimaryColor;
+      }),
       elevation: MaterialStateProperty.all(0.0),
       padding: MaterialStateProperty.all(
         EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
@@ -60,6 +64,8 @@ final theme = ThemeData(
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(
+    contentPadding:
+        const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(15.0),
     ),
