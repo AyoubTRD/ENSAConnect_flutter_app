@@ -1,4 +1,4 @@
-import 'package:ensa/blocs/auth_bloc.dart';
+import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/screens/form_screen.dart';
 import 'package:ensa/widgets/text_form_field_widget.dart';
@@ -37,7 +37,7 @@ class _SigninScreenState extends State<SigninScreen> {
         _isLoading = true;
       });
       final credentials = Credentials(email: _email, password: _password);
-      await authBloc.signIn(credentials);
+      await userBloc.signIn(credentials);
       Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
     } on InvalidEmailError {
       const snackBar = SnackBar(

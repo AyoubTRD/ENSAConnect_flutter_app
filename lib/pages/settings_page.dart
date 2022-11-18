@@ -1,10 +1,13 @@
-import 'package:ensa/blocs/auth_bloc.dart';
+import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/screens/notifications_screen.dart';
+import 'package:ensa/services/rest_client_service.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:ensa/widgets/app_bar_widget.dart';
+import 'package:ensa/widgets/settings/profile_picture_settings_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -30,7 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
         physics: BouncingScrollPhysics(),
         children: [
           SizedBox(height: kDefaultPadding / 2.0),
-          BasicSettings(),
+          ProfilePictureSettings(),
           SizedBox(
             height: kDefaultPadding,
           ),
@@ -44,7 +47,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               SettingsItem(
                 onTap: () {
-                  authBloc.logout();
+                  userBloc.logout();
                   Navigator.of(context)
                       .pushNamed(NotificationsScreen.routeName);
                 },
@@ -77,61 +80,6 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class BasicSettings extends StatelessWidget {
-  const BasicSettings({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder(
-      builder: ((context, AsyncSnapshot<UserMixin?> snapshot) {
-        print(snapshot.data);
-        if (!snapshot.hasData) return Column();
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                CircleAvatar(
-                  foregroundImage:
-                      NetworkImage('https://picsum.photos/100/100'),
-                  radius: 32.0,
-                ),
-                Material(
-                  color: Theme.of(context).primaryColor.withOpacity(0.95),
-                  borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                  child: InkWell(
-                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                    onTap: () {},
-                    child: Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: Icon(
-                        Ionicons.camera_outline,
-                        size: 15.0,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: 8.0),
-            Text(
-              'Update Picture',
-              style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                    fontSize: 15.0,
-                  ),
-            )
-          ],
-        );
-      }),
-      stream: authBloc.currentUser,
     );
   }
 }

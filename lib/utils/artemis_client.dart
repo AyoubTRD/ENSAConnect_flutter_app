@@ -25,4 +25,4 @@ class AuthenticatedClient extends http.BaseClient {
 }
 
 final authClient = AuthenticatedClient();
-final apiClient = ArtemisClient(kApiUrl, httpClient: authClient);
+final apiClient = ArtemisClient(kGraphqlAPIUrl, httpClient: authClient);

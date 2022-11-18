@@ -1,4 +1,4 @@
-import 'package:ensa/blocs/auth_bloc.dart';
+import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/screens/form_screen.dart';
 import 'package:ensa/utils/constants.dart';
@@ -39,7 +39,7 @@ class _SignupScreenState extends State<SignupScreen> {
         _isLoading = true;
       });
       try {
-        await authBloc.signUp(userInput);
+        await userBloc.signUp(userInput);
         Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
       } on EmailTakenError {
         setState(() {

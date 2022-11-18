@@ -1,4 +1,4 @@
-import 'package:ensa/blocs/auth_bloc.dart';
+import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/pages/feed_page.dart';
 import 'package:ensa/pages/settings_page.dart';
 import 'package:ensa/screens/chats_list_screen.dart';
@@ -19,7 +19,6 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
-  double _opacity = 0.3;
 
   final List<Widget> _pages = [
     FeedPage(),
@@ -32,7 +31,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    if (!authBloc.isReady.value) authBloc.init();
+    if (!userBloc.isReady.value) userBloc.init();
     _controller.addListener(() {
       if (_controller.page == null) return;
       setState(() {

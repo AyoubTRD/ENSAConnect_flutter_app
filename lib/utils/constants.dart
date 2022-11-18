@@ -5,7 +5,8 @@ import 'package:ensa/models/story_model.dart';
 import 'package:ensa/models/user_model.dart';
 import 'package:flutter/material.dart';
 
-const kApiUrl = 'http://10.0.2.2:4000/graphql';
+const kGraphqlAPIUrl = 'http://10.0.2.2:4000/graphql';
+const kRestAPIUrl = 'http://10.0.2.2:4000/rest';
 
 const kPrimaryColor = Color(0xFF4C68DA);
 const kAccentColor = Color(0xFF40BADF);
@@ -17,6 +18,9 @@ const kAppBarText = Color(0xFF382E32);
 const kTitleText = Color(0xFF2A355E);
 
 const kDefaultPadding = 20.0;
+
+const kDefaultProfilePic =
+    'https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png';
 
 const kUsers = [
   User(

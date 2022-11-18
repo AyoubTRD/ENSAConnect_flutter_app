@@ -15,7 +15,7 @@ class InvalidEmailError extends InvalidCredentialsError {}
 
 class InvalidPasswordError extends InvalidCredentialsError {}
 
-class AuthBloc {
+class UserBloc {
   BehaviorSubject<bool> _isReady = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> _isAuthenticated = BehaviorSubject.seeded(false);
   BehaviorSubject<UserMixin?> _currentUser = BehaviorSubject<UserMixin?>();
@@ -78,8 +78,9 @@ class AuthBloc {
     }
 
     handleAuthSuccess(
-        token: response.data!.createUser.token,
-        user: response.data!.createUser.user);
+      token: response.data!.createUser.token,
+      user: response.data!.createUser.user,
+    );
   }
 
   Future<void> signIn(Credentials credentials) async {
@@ -98,8 +99,9 @@ class AuthBloc {
     }
 
     handleAuthSuccess(
-        token: response.data!.getToken.token,
-        user: response.data!.getToken.user);
+      token: response.data!.getToken.token,
+      user: response.data!.getToken.user,
+    );
   }
 
   Future<void> logout() async {
@@ -112,6 +114,21 @@ class AuthBloc {
     await prefs.remove('token');
   }
 
+  Future<void> updateProfilePicture(String profilePicture) async {
+    final variables = UpdateUserArguments(
+      user: UpdateUserInput(avatar: profilePicture),
+    );
+    final mutation = UpdateUserMutation(variables: variables);
+    final response = await apiClient.execute(mutation);
+
+    if (response.hasErrors && response.errors != null) {
+      print(response.errors);
+      throw response.errors![0];
+    }
+
+    _currentUser.sink.add(response.data!.updateUser);
+  }
+
   void dispose() {
     _isReady.close();
     _isAuthenticated.close();
@@ -119,4 +136,4 @@ class AuthBloc {
   }
 }
 
-final authBloc = AuthBloc();
+final userBloc = UserBloc();

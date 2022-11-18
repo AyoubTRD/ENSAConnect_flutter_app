@@ -1,4 +1,4 @@
-import 'package:ensa/blocs/auth_bloc.dart';
+import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/screens/main_screen.dart';
 import 'package:ensa/screens/splash_screen.dart';
 import 'package:ensa/widgets/intro_page_widget.dart';
@@ -24,7 +24,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<bool>(
-        stream: authBloc.isReady,
+        stream: userBloc.isReady,
         builder: (context, snapshot) {
           final isReady = snapshot.data ?? false;
           if (!isReady) return SplashScreen();
@@ -32,11 +32,14 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
             setState(() {
               _opacity = 1;
             });
-            if (authBloc.isAuthenticated.value && !redirected) {
-              redirected = true;
-              Navigator.of(context).pushNamed(MainScreen.routeName);
-            }
           });
+          if (userBloc.isAuthenticated.value && !redirected) {
+            redirected = true;
+            Future.delayed(Duration(milliseconds: 1), () {
+              print('Redirecting to main screen');
+              Navigator.of(context).popAndPushNamed(MainScreen.routeName);
+            });
+          }
           return Container(
             color: Colors.white,
             child: AnimatedOpacity(

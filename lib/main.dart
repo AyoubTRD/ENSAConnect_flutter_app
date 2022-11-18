@@ -1,4 +1,4 @@
-import 'package:ensa/blocs/auth_bloc.dart';
+import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/screens/chat_screen.dart';
 import 'package:ensa/screens/introduction_screen.dart';
 import 'package:ensa/screens/main_screen.dart';
@@ -19,50 +19,45 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<bool>(
-      stream: authBloc.isReady,
-      builder: (context, snapshot) {
-        return MaterialApp(
-          title: 'ENSA Connect',
-          theme: theme,
-          initialRoute: IntroductionScreen.routeName,
-          onGenerateRoute: (RouteSettings settings) {
-            const protectedRoutes = [
-              MainScreen.routeName,
-              NotificationsScreen.routeName,
-              ChatScreen.routeName
-            ];
-            if (authBloc.isReady.value &&
-                !authBloc.isAuthenticated.value &&
-                protectedRoutes.contains(settings.name)) {
-              print('We are rendering the unauthenticated app');
-              return CupertinoPageRoute(builder: (_) => IntroductionScreen());
-            }
-            print('We are rendering the authenticated app');
-            switch (settings.name) {
-              case MainScreen.routeName:
-                return CupertinoPageRoute(builder: (_) => MainScreen());
-              case IntroductionScreen.routeName:
-                return CupertinoPageRoute(builder: (_) => IntroductionScreen());
-              case SignupScreen.routeName:
-                return CupertinoPageRoute(builder: (_) => SignupScreen());
-              case SigninScreen.routeName:
-                return CupertinoPageRoute(builder: (_) => SigninScreen());
-              case NotificationsScreen.routeName:
-                return CupertinoPageRoute(
-                  builder: (_) => NotificationsScreen(),
-                  fullscreenDialog: true,
-                );
-              case ChatScreen.routeName:
-                final args = settings.arguments as ChatScreenArguments;
-                return CupertinoPageRoute(
-                  builder: (_) => ChatScreen(
-                    chatId: args.chatId,
-                  ),
-                );
-            }
-          },
-        );
+    return MaterialApp(
+      title: 'ENSA Connect',
+      theme: theme,
+      initialRoute: IntroductionScreen.routeName,
+      onGenerateRoute: (RouteSettings settings) {
+        const protectedRoutes = [
+          MainScreen.routeName,
+          NotificationsScreen.routeName,
+          ChatScreen.routeName
+        ];
+        if (userBloc.isReady.value &&
+            !userBloc.isAuthenticated.value &&
+            protectedRoutes.contains(settings.name)) {
+          print('We are rendering the unauthenticated app');
+          return CupertinoPageRoute(builder: (_) => IntroductionScreen());
+        }
+        print('We are rendering the authenticated app');
+        switch (settings.name) {
+          case MainScreen.routeName:
+            return CupertinoPageRoute(builder: (_) => MainScreen());
+          case IntroductionScreen.routeName:
+            return CupertinoPageRoute(builder: (_) => IntroductionScreen());
+          case SignupScreen.routeName:
+            return CupertinoPageRoute(builder: (_) => SignupScreen());
+          case SigninScreen.routeName:
+            return CupertinoPageRoute(builder: (_) => SigninScreen());
+          case NotificationsScreen.routeName:
+            return CupertinoPageRoute(
+              builder: (_) => NotificationsScreen(),
+              fullscreenDialog: true,
+            );
+          case ChatScreen.routeName:
+            final args = settings.arguments as ChatScreenArguments;
+            return CupertinoPageRoute(
+              builder: (_) => ChatScreen(
+                chatId: args.chatId,
+              ),
+            );
+        }
       },
     );
   }
