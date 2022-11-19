@@ -1,9 +1,11 @@
 fragment User on User {
-    id
-    firstName
-    lastName
-    fullName
-    email
-    avatar
-    createdAt
+  id
+  firstName
+  lastName
+  fullName
+  email
+  avatar
+  createdAt
+  canUpdateName
+  lastUpdatedName
 }

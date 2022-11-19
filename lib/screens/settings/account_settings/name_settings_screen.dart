@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 
 class NameSettingsScreen extends StatefulWidget {
@@ -103,6 +104,7 @@ class _NameSettingsScreenState extends State<NameSettingsScreen> {
                         labelText: 'First Name',
                         hintText: 'John',
                         initialValue: _firstName,
+                        enabled: snapshot.data!.canUpdateName,
                         textCapitalization: TextCapitalization.words,
                         validator: (String? val) {
                           if (val == null || val.length < 2)
@@ -121,6 +123,7 @@ class _NameSettingsScreenState extends State<NameSettingsScreen> {
                         labelText: 'Last Name',
                         hintText: 'Doe',
                         initialValue: _lastName,
+                        enabled: snapshot.data!.canUpdateName,
                         textCapitalization: TextCapitalization.words,
                         validator: (String? val) {
                           if (val == null || val.length < 2)
@@ -150,16 +153,30 @@ class _NameSettingsScreenState extends State<NameSettingsScreen> {
                               : Text('Update'),
                         ),
                       ),
-                      SizedBox(
-                        height: kDefaultPadding,
-                      ),
-                      Text(
-                        "You won't be able to change your name again for 30 days.",
-                        style: Theme.of(context).textTheme.bodyText1,
-                      )
                     ],
                   ),
                 ),
+                SizedBox(
+                  height: kDefaultPadding,
+                ),
+                if (snapshot.data!.canUpdateName)
+                  Text(
+                    "You won't be able to change your name again for 30 days.",
+                    style: Theme.of(context).textTheme.bodyText1,
+                  )
+                else
+                  Text(
+                    "You won't be able to change your name until " +
+                        DateFormat().add_yMMMMEEEEd().format(
+                              snapshot.data!.lastUpdatedName.add(
+                                const Duration(days: 30),
+                              ),
+                            ) +
+                        ".",
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                          color: Colors.red.shade400,
+                        ),
+                  )
               ],
             );
           },

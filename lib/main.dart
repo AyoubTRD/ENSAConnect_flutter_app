@@ -11,8 +11,11 @@ import 'package:ensa/screens/settings/account_settings/name_settings_screen.dart
 import 'package:ensa/utils/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() async {
+  Intl.defaultLocale = 'en_us';
+
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
