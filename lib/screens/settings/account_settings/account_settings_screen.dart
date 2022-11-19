@@ -41,69 +41,72 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                   ),
                 );
               final hasPhoneNumber = false;
-              return ListView(
-                physics: BouncingScrollPhysics(),
-                children: [
-                  SettingsSection(
-                    title: 'PERSONAL INFORMATION',
-                    children: [
-                      SettingsItem(
-                        title: 'Change First & Last Name',
-                        icon: Ionicons.person_circle_outline,
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(NameSettingsScreen.routeName);
-                        },
-                      ),
-                      SettingsItem(
-                        title: !hasPhoneNumber
-                            ? 'Add Phone Number'
-                            : 'Update Phone Number',
-                        icon: Ionicons.call_outline,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: kDefaultPadding,
-                  ),
-                  SettingsSection(
-                    title: 'SECURITY',
-                    children: [
-                      SettingsItem(
-                        title: 'Update Email Address',
-                        icon: Ionicons.mail_outline,
-                      ),
-                      SettingsItem(
-                        title: 'Change/Reset Password',
-                        icon: Ionicons.lock_closed_outline,
-                      ),
-                      SettingsItem(
-                        title: 'Notification Settings',
-                        icon: Ionicons.notifications_outline,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: kDefaultPadding,
-                  ),
-                  SettingsSection(
-                    title: 'SCHOOL',
-                    children: [
-                      SettingsItem(
-                        title: 'Change City',
-                        icon: Ionicons.location_outline,
-                      ),
-                      SettingsItem(
-                        title: 'Set Specialty & School Year',
-                        icon: Ionicons.school_outline,
-                      ),
-                      SettingsItem(
-                        title: 'Club Settings',
-                        icon: Ionicons.people_circle_outline,
-                      ),
-                    ],
-                  ),
-                ],
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                child: ListView(
+                  physics: BouncingScrollPhysics(),
+                  children: [
+                    SettingsSection(
+                      title: 'PERSONAL INFORMATION',
+                      children: [
+                        SettingsItem(
+                          title: 'Change First & Last Name',
+                          icon: Ionicons.person_circle_outline,
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(NameSettingsScreen.routeName);
+                          },
+                        ),
+                        SettingsItem(
+                          title: !hasPhoneNumber
+                              ? 'Add Phone Number'
+                              : 'Update Phone Number',
+                          icon: Ionicons.call_outline,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: kDefaultPadding,
+                    ),
+                    SettingsSection(
+                      title: 'SECURITY',
+                      children: [
+                        SettingsItem(
+                          title: 'Update Email Address',
+                          icon: Ionicons.mail_outline,
+                        ),
+                        SettingsItem(
+                          title: 'Change/Reset Password',
+                          icon: Ionicons.lock_closed_outline,
+                        ),
+                        SettingsItem(
+                          title: 'Notification Settings',
+                          icon: Ionicons.notifications_outline,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: kDefaultPadding,
+                    ),
+                    SettingsSection(
+                      title: 'SCHOOL',
+                      children: [
+                        SettingsItem(
+                          title: 'Change City',
+                          icon: Ionicons.location_outline,
+                        ),
+                        SettingsItem(
+                          title: 'Set Specialty & School Year',
+                          icon: Ionicons.school_outline,
+                        ),
+                        SettingsItem(
+                          title: 'Club Settings',
+                          icon: Ionicons.people_circle_outline,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               );
             }),
       ),

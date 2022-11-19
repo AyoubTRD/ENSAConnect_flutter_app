@@ -28,59 +28,62 @@ class _SettingsScreenState extends State<SettingsScreen> {
           style: Theme.of(context).textTheme.headline3,
         ),
       ),
-      body: ListView(
-        physics: BouncingScrollPhysics(),
-        children: [
-          SizedBox(height: kDefaultPadding / 2.0),
-          ProfilePictureSettings(),
-          SizedBox(
-            height: kDefaultPadding,
-          ),
-          SettingsSection(
-            title: 'ACCOUNT',
-            children: [
-              SettingsItem(
-                onTap: () {
-                  Navigator.of(context)
-                      .pushNamed(AccountSettingsScreen.routeName);
-                },
-                title: 'Account Settings',
-                icon: Ionicons.person_outline,
-              ),
-              SettingsItem(
-                onTap: () {
-                  userBloc.logout();
-                  Navigator.of(context)
-                      .pushNamed(NotificationsScreen.routeName);
-                },
-                title: 'Logout',
-                icon: Ionicons.log_out_outline,
-                hideChevron: true,
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 2 * kDefaultPadding,
-          ),
-          SettingsSection(
-            children: [
-              SettingsItem(
-                onTap: () {},
-                title: 'App Appearance',
-                icon: Ionicons.bulb_outline,
-              ),
-              SettingsItem(
-                title: 'Terms & Conditions',
-                icon: Ionicons.newspaper_outline,
-              ),
-              SettingsItem(
-                title: 'Help & Support',
-                icon: Ionicons.help_circle_outline,
-              )
-            ],
-            title: 'OTHERS',
-          ),
-        ],
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+        child: ListView(
+          physics: BouncingScrollPhysics(),
+          children: [
+            SizedBox(height: kDefaultPadding / 2.0),
+            ProfilePictureSettings(),
+            SizedBox(
+              height: kDefaultPadding,
+            ),
+            SettingsSection(
+              title: 'ACCOUNT',
+              children: [
+                SettingsItem(
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(AccountSettingsScreen.routeName);
+                  },
+                  title: 'Account Settings',
+                  icon: Ionicons.person_outline,
+                ),
+                SettingsItem(
+                  onTap: () {
+                    userBloc.logout();
+                    Navigator.of(context)
+                        .pushNamed(NotificationsScreen.routeName);
+                  },
+                  title: 'Logout',
+                  icon: Ionicons.log_out_outline,
+                  hideChevron: true,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 2 * kDefaultPadding,
+            ),
+            SettingsSection(
+              children: [
+                SettingsItem(
+                  onTap: () {},
+                  title: 'App Appearance',
+                  icon: Ionicons.bulb_outline,
+                ),
+                SettingsItem(
+                  title: 'Terms & Conditions',
+                  icon: Ionicons.newspaper_outline,
+                ),
+                SettingsItem(
+                  title: 'Help & Support',
+                  icon: Ionicons.help_circle_outline,
+                )
+              ],
+              title: 'OTHERS',
+            ),
+          ],
+        ),
       ),
     );
   }

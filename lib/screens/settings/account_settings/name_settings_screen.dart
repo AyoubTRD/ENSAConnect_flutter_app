@@ -166,7 +166,7 @@ class _NameSettingsScreenState extends State<NameSettingsScreen> {
                   )
                 else
                   Text(
-                    "You won't be able to change your name until " +
+                    "You won't be able to change your name again until " +
                         DateFormat().add_yMMMMEEEEd().format(
                               snapshot.data!.lastUpdatedName.add(
                                 const Duration(days: 30),
