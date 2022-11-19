@@ -5,6 +5,7 @@ class SettingsItem extends StatelessWidget {
   final String title;
   final IconData icon;
   final bool hideChevron;
+  final bool dense;
   final void Function()? onTap;
 
   const SettingsItem({
@@ -12,6 +13,7 @@ class SettingsItem extends StatelessWidget {
     required this.icon,
     this.hideChevron = false,
     this.onTap,
+    this.dense = true,
     Key? key,
   }) : super(key: key);
 
@@ -22,7 +24,7 @@ class SettingsItem extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.0),
+          padding: EdgeInsets.symmetric(vertical: dense ? 10.0 : 14.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

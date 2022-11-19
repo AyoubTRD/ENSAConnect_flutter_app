@@ -1,4 +1,5 @@
 import 'package:ensa/utils/constants.dart';
+import 'package:ensa/widgets/core/swipeable_widget.dart';
 import 'package:ensa/widgets/settings/settings_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -19,7 +20,7 @@ class ImageDialogScreenArguments {
   });
 }
 
-class ImageDialogScreen extends StatelessWidget {
+class ImageDialogScreen extends StatefulWidget {
   static const routeName = '/full-screen-image-dialog';
 
   const ImageDialogScreen({
@@ -30,56 +31,93 @@ class ImageDialogScreen extends StatelessWidget {
   final ImageDialogScreenArguments args;
 
   @override
+  State<ImageDialogScreen> createState() => _ImageDialogScreenState();
+}
+
+class _ImageDialogScreenState extends State<ImageDialogScreen> {
+  Offset offset = Offset(0, 0);
+
+  @override
   Widget build(BuildContext context) {
     return Center(
-      child: GestureDetector(
-        onLongPress: () {
-          if (!args.savable) return;
-          showModalBottomSheet(
-            context: context,
-            builder: (context) => Container(
-              padding: EdgeInsets.symmetric(vertical: kDefaultPadding),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Column(
-                children: [
-                  if (args.savable)
-                    SettingsItem(
-                      onTap: () async {
-                        try {
-                          if (args.path == null) throw Error();
-                          await GallerySaver.saveImage(args.path!);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Image saved successfully!'),
-                            ),
-                          );
-                        } catch (e) {
-                          print(e);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Failed to save image'),
-                            ),
-                          );
-                        }
-                        Navigator.of(context).pop();
-                      },
-                      title: 'Save Image',
-                      icon: Ionicons.download_outline,
-                    )
-                ],
-              ),
-            ),
-          );
+      child: Swipeable(
+        onSwipe: () {
+          Navigator.of(context).pop();
         },
-        child: PhotoView(
-          backgroundDecoration: BoxDecoration(color: Colors.transparent),
-          imageProvider: args.imageProvider,
-          tightMode: true,
-          heroAttributes: args.heroAttributes,
+        child: GestureDetector(
+          onLongPress: () {
+            if (!widget.args.savable) return;
+            showModalBottomSheet(
+              context: context,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.0),
+                  topRight: Radius.circular(16.0),
+                ),
+              ),
+              builder: (context) => ImageOptionsSheet(args: widget.args),
+            );
+          },
+          child: PhotoView(
+            backgroundDecoration: BoxDecoration(color: Colors.transparent),
+            imageProvider: widget.args.imageProvider,
+            tightMode: true,
+            heroAttributes: widget.args.heroAttributes,
+          ),
         ),
+      ),
+    );
+  }
+}
+
+class ImageOptionsSheet extends StatelessWidget {
+  const ImageOptionsSheet({
+    Key? key,
+    required this.args,
+  }) : super(key: key);
+
+  final ImageDialogScreenArguments args;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 200.0,
+      padding: EdgeInsets.symmetric(vertical: 14.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.0),
+          topRight: Radius.circular(16.0),
+        ),
+      ),
+      child: Column(
+        children: [
+          if (args.savable)
+            SettingsItem(
+              dense: false,
+              onTap: () async {
+                try {
+                  if (args.path == null) throw Error();
+                  await GallerySaver.saveImage(args.path!);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Image saved successfully!'),
+                    ),
+                  );
+                } catch (e) {
+                  print(e);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Failed to save image'),
+                    ),
+                  );
+                }
+                Navigator.of(context).pop();
+              },
+              title: 'Save Image',
+              icon: Ionicons.download_outline,
+            )
+        ],
       ),
     );
   }
