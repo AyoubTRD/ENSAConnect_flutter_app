@@ -77,42 +77,53 @@ class _ProfilePictureSettingsState extends State<ProfilePictureSettings> {
                   child: Hero(
                     tag: 'settings-avatar',
                     child: CircleAvatar(
-                      foregroundImage:
-                          (hasAvatar) ? NetworkImage(avatar!) : null,
-                      backgroundColor: Colors.grey.shade200,
-                      child: !hasAvatar
-                          ? Icon(
-                              Ionicons.person,
-                              color: Theme.of(context)
-                                  .primaryColor
-                                  .withOpacity(0.8),
-                              size: 28.0,
-                            )
+                      foregroundImage: (hasAvatar && !_isLoading)
+                          ? NetworkImage(avatar!)
                           : null,
+                      backgroundColor: Colors.grey.shade200,
+                      child: _isLoading
+                          ? SizedBox(
+                              width: 20.0,
+                              height: 20.0,
+                              child: CircularProgressIndicator(
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            )
+                          : !hasAvatar
+                              ? Icon(
+                                  Ionicons.person,
+                                  color: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.8),
+                                  size: 28.0,
+                                )
+                              : null,
                       radius: 32.0,
                     ),
                   ),
                 ),
-                Material(
-                  color: Theme.of(context).primaryColor.withOpacity(0.95),
-                  borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                  child: InkWell(
+                if (!_isLoading)
+                  Material(
+                    color: Theme.of(context).primaryColor.withOpacity(0.95),
                     borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                    onTap: () => handleUpload(ImageSource.camera),
-                    child: Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: Icon(
-                        Ionicons.camera_outline,
-                        size: 15.0,
-                        color: Colors.white,
+                    child: InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                      onTap: () => handleUpload(ImageSource.camera),
+                      child: Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Icon(
+                          Ionicons.camera_outline,
+                          size: 15.0,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-                )
+                  )
               ],
             ),
             TextButton(
-              onPressed: () => handleUpload(ImageSource.gallery),
+              onPressed:
+                  _isLoading ? null : () => handleUpload(ImageSource.gallery),
               child: Text(
                 hasAvatar ? 'Update Picture' : 'Upload Picture',
                 style: Theme.of(context).textTheme.bodyText1?.copyWith(

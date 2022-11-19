@@ -15,6 +15,8 @@ class InvalidEmailError extends InvalidCredentialsError {}
 
 class InvalidPasswordError extends InvalidCredentialsError {}
 
+class InvalidOldPasswordError extends Error {}
+
 class UserBloc {
   BehaviorSubject<bool> _isReady = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> _isAuthenticated = BehaviorSubject.seeded(false);
@@ -139,6 +141,21 @@ class UserBloc {
     if (response.hasErrors && response.errors != null) {
       print(response.errors);
       throw response.errors![0];
+    }
+
+    _currentUser.sink.add(response.data!.updateUser);
+  }
+
+  Future<void> updatePassword(String oldPassword, String newPassword) async {
+    final variables = UpdateUserArguments(
+      user: UpdateUserInput(oldPassword: oldPassword, password: newPassword),
+    );
+    final mutation = UpdateUserMutation(variables: variables);
+    final response = await apiClient.execute(mutation);
+
+    if (response.hasErrors && response.errors != null) {
+      print(response.errors);
+      throw InvalidOldPasswordError();
     }
 
     _currentUser.sink.add(response.data!.updateUser);

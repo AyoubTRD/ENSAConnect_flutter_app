@@ -1,9 +1,9 @@
 import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/screens/settings/account_settings/name_settings_screen.dart';
+import 'package:ensa/screens/settings/account_settings/password_settings_screen.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:ensa/widgets/core/app_bar_widget.dart';
-import 'package:ensa/widgets/core/text_form_field_widget.dart';
 import 'package:ensa/widgets/settings/settings_item_widget.dart';
 import 'package:ensa/widgets/settings/settings_section_widget.dart';
 import 'package:flutter/material.dart';
@@ -76,6 +76,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                           icon: Ionicons.mail_outline,
                         ),
                         SettingsItem(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(PasswordSettingsScreen.routeName);
+                          },
                           title: 'Change/Reset Password',
                           icon: Ionicons.lock_closed_outline,
                         ),

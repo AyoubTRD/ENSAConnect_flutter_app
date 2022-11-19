@@ -4,48 +4,55 @@ import 'package:ensa/screens/settings/account_settings/account_settings_screen.d
 import 'package:ensa/utils/constants.dart';
 import 'package:ensa/widgets/core/app_bar_widget.dart';
 import 'package:ensa/widgets/core/text_form_field_widget.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class NameSettingsScreen extends StatefulWidget {
-  const NameSettingsScreen({Key? key}) : super(key: key);
+class PasswordSettingsScreen extends StatefulWidget {
+  const PasswordSettingsScreen({Key? key}) : super(key: key);
 
-  static const routeName = AccountSettingsScreen.routeName + '/name';
+  static const routeName = AccountSettingsScreen.routeName + '/password';
 
   @override
-  State<NameSettingsScreen> createState() => _NameSettingsScreenState();
+  State<PasswordSettingsScreen> createState() => _PasswordSettingsScreenState();
 }
 
-class _NameSettingsScreenState extends State<NameSettingsScreen> {
+class _PasswordSettingsScreenState extends State<PasswordSettingsScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String? _firstName;
-  String? _lastName;
+  String? _oldPassword;
+  String? _newPassword;
+  String? _confirmPassword;
 
   bool _isLoading = false;
 
-  bool hasChanged() {
-    return _firstName?.toLowerCase() !=
-            userBloc.currentUser.value?.firstName.toLowerCase() ||
-        _lastName?.toLowerCase() !=
-            userBloc.currentUser.value?.lastName.toLowerCase();
-  }
-
-  bool canSave() {
-    return hasChanged() && _formKey.currentState!.validate();
-  }
-
   Future<void> handleSave() async {
-    if (!canSave()) return;
+    if (_newPassword != _confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Passwords don\'t match'),
+        ),
+      );
+      return;
+    }
+    if (!_formKey.currentState!.validate()) return;
     setState(() {
       _isLoading = true;
     });
 
     try {
-      await userBloc.updateName(_firstName!, _lastName!);
+      await userBloc.updatePassword(_oldPassword!, _newPassword!);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Your name has been updated successfully'),
+          content: Text('Your password has been updated successfully!'),
+        ),
+      );
+      await Future.delayed(const Duration(seconds: 1));
+      Navigator.of(context).pop();
+    } on InvalidOldPasswordError catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Invalid old password'),
         ),
       );
     } catch (e) {
@@ -68,7 +75,7 @@ class _NameSettingsScreenState extends State<NameSettingsScreen> {
         centerTitle: true,
         showBackButton: true,
         title: Text(
-          'Change First & Last Name',
+          'Change/Reset Password',
           style: Theme.of(context).textTheme.headline4,
         ),
       ),
@@ -84,11 +91,6 @@ class _NameSettingsScreenState extends State<NameSettingsScreen> {
                 ),
               );
 
-            if (_firstName == null && _lastName == null) {
-              _firstName = snapshot.data!.firstName;
-              _lastName = snapshot.data!.lastName;
-            }
-
             return ListView(
               physics: BouncingScrollPhysics(),
               children: [
@@ -97,18 +99,16 @@ class _NameSettingsScreenState extends State<NameSettingsScreen> {
                   child: Column(
                     children: [
                       MyTextFormField(
-                        labelText: 'First Name',
-                        hintText: 'John',
-                        initialValue: _firstName,
-                        enabled: snapshot.data!.canUpdateName,
-                        textCapitalization: TextCapitalization.words,
+                        labelText: 'Old Password',
+                        obscureText: true,
                         validator: (String? val) {
-                          if (val == null || val.length < 2)
-                            return 'Please enter a valid first name';
+                          if (val == null || val == '') {
+                            return 'Please enter your old password';
+                          }
                         },
                         onChanged: (String val) {
                           setState(() {
-                            _firstName = val;
+                            _oldPassword = val;
                           });
                         },
                       ),
@@ -116,18 +116,34 @@ class _NameSettingsScreenState extends State<NameSettingsScreen> {
                         height: kDefaultPadding,
                       ),
                       MyTextFormField(
-                        labelText: 'Last Name',
-                        hintText: 'Doe',
-                        initialValue: _lastName,
-                        enabled: snapshot.data!.canUpdateName,
-                        textCapitalization: TextCapitalization.words,
+                        labelText: 'New Password',
+                        obscureText: true,
                         validator: (String? val) {
-                          if (val == null || val.length < 2)
-                            return 'Please enter a valid last name';
+                          if (val == null || val == '') {
+                            return 'Please enter a password';
+                          }
+                          if (val.length < 6) {
+                            return 'This password is too short';
+                          }
+                          if (val.length > 32) {
+                            return 'This password is too long';
+                          }
                         },
                         onChanged: (String val) {
                           setState(() {
-                            _lastName = val;
+                            _newPassword = val;
+                          });
+                        },
+                      ),
+                      SizedBox(
+                        height: kDefaultPadding,
+                      ),
+                      MyTextFormField(
+                        obscureText: true,
+                        labelText: 'Confirm New Password',
+                        onChanged: (String val) {
+                          setState(() {
+                            _confirmPassword = val;
                           });
                         },
                       ),
@@ -137,7 +153,7 @@ class _NameSettingsScreenState extends State<NameSettingsScreen> {
                       Container(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: canSave() ? handleSave : null,
+                          onPressed: handleSave,
                           child: _isLoading
                               ? const SizedBox(
                                   width: 19.0,
@@ -155,24 +171,21 @@ class _NameSettingsScreenState extends State<NameSettingsScreen> {
                 SizedBox(
                   height: kDefaultPadding,
                 ),
-                if (snapshot.data!.canUpdateName)
-                  Text(
-                    "You won't be able to change your name again for 30 days.",
+                RichText(
+                  text: TextSpan(
                     style: Theme.of(context).textTheme.bodyText1,
-                  )
-                else
-                  Text(
-                    "You won't be able to change your name again until " +
-                        DateFormat().add_yMMMMEEEEd().format(
-                              snapshot.data!.lastUpdatedName.add(
-                                const Duration(days: 30),
-                              ),
-                            ) +
-                        ".",
-                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                          color: Colors.red.shade400,
+                    text: 'Forgot your password? ',
+                    children: [
+                      TextSpan(
+                        text: 'Reset it here.',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
                         ),
-                  )
+                        recognizer: TapGestureRecognizer()..onTap = () {},
+                      ),
+                    ],
+                  ),
+                )
               ],
             );
           },

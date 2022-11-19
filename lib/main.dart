@@ -8,6 +8,7 @@ import 'package:ensa/screens/onboarding/signin_screen.dart';
 import 'package:ensa/screens/onboarding/signup_screen.dart';
 import 'package:ensa/screens/settings/account_settings/account_settings_screen.dart';
 import 'package:ensa/screens/settings/account_settings/name_settings_screen.dart';
+import 'package:ensa/screens/settings/account_settings/password_settings_screen.dart';
 import 'package:ensa/utils/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +18,11 @@ void main() async {
   Intl.defaultLocale = 'en_us';
 
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(ENSAConnect());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class ENSAConnect extends StatelessWidget {
+  const ENSAConnect({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +67,8 @@ class MyApp extends StatelessWidget {
             return CupertinoPageRoute(builder: (_) => AccountSettingsScreen());
           case NameSettingsScreen.routeName:
             return CupertinoPageRoute(builder: (_) => NameSettingsScreen());
+          case PasswordSettingsScreen.routeName:
+            return CupertinoPageRoute(builder: (_) => PasswordSettingsScreen());
           case ImageDialogScreen.routeName:
             final args = settings.arguments as ImageDialogScreenArguments;
             return PageRouteBuilder(
