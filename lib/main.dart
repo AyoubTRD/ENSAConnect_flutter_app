@@ -1,5 +1,6 @@
 import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/screens/chat/chat_screen.dart';
+import 'package:ensa/screens/core/image_dialog_screen.dart';
 import 'package:ensa/screens/onboarding/introduction_screen.dart';
 import 'package:ensa/screens/core/main_screen.dart';
 import 'package:ensa/screens/notifications/notifications_screen.dart';
@@ -62,6 +63,15 @@ class MyApp extends StatelessWidget {
             return CupertinoPageRoute(builder: (_) => AccountSettingsScreen());
           case NameSettingsScreen.routeName:
             return CupertinoPageRoute(builder: (_) => NameSettingsScreen());
+          case ImageDialogScreen.routeName:
+            final args = settings.arguments as ImageDialogScreenArguments;
+            return PageRouteBuilder(
+              fullscreenDialog: true,
+              opaque: false,
+              barrierDismissible: true,
+              barrierColor: Colors.black.withOpacity(0.3),
+              pageBuilder: (_, __, ___) => ImageDialogScreen(args: args),
+            );
         }
       },
     );

@@ -1,10 +1,13 @@
 import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/graphql/graphql_api.dart';
+import 'package:ensa/screens/core/image_dialog_screen.dart';
 import 'package:ensa/services/rest_client_service.dart';
+import 'package:ensa/widgets/core/image_dialog_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:photo_view/photo_view.dart';
 
 class ProfilePictureSettings extends StatefulWidget {
   const ProfilePictureSettings({
@@ -54,18 +57,41 @@ class _ProfilePictureSettingsState extends State<ProfilePictureSettings> {
             Stack(
               alignment: Alignment.bottomRight,
               children: [
-                CircleAvatar(
-                  foregroundImage: (hasAvatar) ? NetworkImage(avatar!) : null,
-                  backgroundColor: Colors.grey.shade200,
-                  child: !hasAvatar
-                      ? Icon(
-                          Ionicons.person,
-                          color:
-                              Theme.of(context).primaryColor.withOpacity(0.8),
-                          size: 28.0,
-                        )
-                      : null,
-                  radius: 32.0,
+                InkWell(
+                  borderRadius: BorderRadius.circular(50.0),
+                  onTap: (!hasAvatar || _isLoading)
+                      ? null
+                      : () {
+                          Navigator.of(context).pushNamed(
+                            ImageDialogScreen.routeName,
+                            arguments: ImageDialogScreenArguments(
+                              NetworkImage(avatar!),
+                              heroAttributes: PhotoViewHeroAttributes(
+                                tag: 'settings-avatar',
+                              ),
+                              path: avatar,
+                              savable: true,
+                            ),
+                          );
+                        },
+                  child: Hero(
+                    tag: 'settings-avatar',
+                    child: CircleAvatar(
+                      foregroundImage:
+                          (hasAvatar) ? NetworkImage(avatar!) : null,
+                      backgroundColor: Colors.grey.shade200,
+                      child: !hasAvatar
+                          ? Icon(
+                              Ionicons.person,
+                              color: Theme.of(context)
+                                  .primaryColor
+                                  .withOpacity(0.8),
+                              size: 28.0,
+                            )
+                          : null,
+                      radius: 32.0,
+                    ),
+                  ),
                 ),
                 Material(
                   color: Theme.of(context).primaryColor.withOpacity(0.95),
