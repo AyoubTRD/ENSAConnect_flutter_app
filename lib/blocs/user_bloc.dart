@@ -17,6 +17,8 @@ class InvalidPasswordError extends InvalidCredentialsError {}
 
 class InvalidOldPasswordError extends Error {}
 
+class DeleteSelfError extends Error {}
+
 class UserBloc {
   BehaviorSubject<bool> _isReady = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> _isAuthenticated = BehaviorSubject.seeded(false);
@@ -159,6 +161,17 @@ class UserBloc {
     }
 
     _currentUser.sink.add(response.data!.updateUser);
+  }
+
+  Future<void> deleteSelf() async {
+    final response = await apiClient.execute(DeleteMeMutation());
+
+    if (response.hasErrors && response.errors != null) {
+      print(response.errors);
+      throw DeleteSelfError();
+    }
+
+    await logout();
   }
 
   void dispose() {

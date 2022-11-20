@@ -1,5 +1,6 @@
 import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/graphql/graphql_api.dart';
+import 'package:ensa/screens/onboarding/introduction_screen.dart';
 import 'package:ensa/screens/settings/account_settings/name_settings_screen.dart';
 import 'package:ensa/screens/settings/account_settings/password_settings_screen.dart';
 import 'package:ensa/utils/constants.dart';
@@ -19,6 +20,66 @@ class AccountSettingsScreen extends StatefulWidget {
 }
 
 class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
+  bool _isLoading = false;
+
+  Future<void> confirmDelete() async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+            'Are you sure you want to delete your account? This action is irreversible!'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: handleDelete,
+            style: ButtonStyle(
+              foregroundColor: MaterialStateColor.resolveWith(
+                (states) => Colors.red.shade400,
+              ),
+              overlayColor: MaterialStateColor.resolveWith(
+                (states) => Colors.red.shade400.withOpacity(0.05),
+              ),
+            ),
+            child: _isLoading
+                ? SizedBox(
+                    width: 18.0,
+                    height: 18.0,
+                    child: CircularProgressIndicator(
+                      color: Colors.red.shade400,
+                    ),
+                  )
+                : Text('Delete'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> handleDelete() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await userBloc.deleteSelf();
+      Navigator.of(context).popAndPushNamed(IntroductionScreen.routeName);
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('An error has ocurred'),
+        ),
+      );
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,6 +147,13 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                         SettingsItem(
                           title: 'Notification Settings',
                           icon: Ionicons.notifications_outline,
+                        ),
+                        SettingsItem(
+                          danger: true,
+                          title: 'Delete Account',
+                          icon: Ionicons.trash_outline,
+                          hideChevron: true,
+                          onTap: confirmDelete,
                         ),
                       ],
                     ),

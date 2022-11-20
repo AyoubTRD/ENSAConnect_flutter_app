@@ -6,6 +6,7 @@ class SettingsItem extends StatelessWidget {
   final IconData icon;
   final bool hideChevron;
   final bool dense;
+  final bool danger;
   final void Function()? onTap;
 
   const SettingsItem({
@@ -14,6 +15,7 @@ class SettingsItem extends StatelessWidget {
     this.hideChevron = false,
     this.onTap,
     this.dense = true,
+    this.danger = false,
     Key? key,
   }) : super(key: key);
 
@@ -32,15 +34,19 @@ class SettingsItem extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Icon(
                   icon,
-                  color: Theme.of(context).primaryColor,
+                  color: danger
+                      ? Colors.red.shade400
+                      : Theme.of(context).primaryColor,
                   size: 25.0,
                 ),
               ),
               Transform.translate(
-                offset: Offset(0.0, 2.0),
+                offset: const Offset(0.0, 2.0),
                 child: Text(
                   title,
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        color: danger ? Colors.red.shade400 : null,
+                      ),
                 ),
               ),
               if (!hideChevron) ...[
