@@ -1,6 +1,7 @@
 import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/screens/notifications/notifications_screen.dart';
 import 'package:ensa/screens/settings/account_settings/account_settings_screen.dart';
+import 'package:ensa/screens/settings/app_appearance/app_appearance_screen.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:ensa/widgets/core/app_bar_widget.dart';
 import 'package:ensa/widgets/settings/profile_picture_settings_widget.dart';
@@ -53,7 +54,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onTap: () {
                     userBloc.logout();
                     Navigator.of(context)
-                        .pushNamed(NotificationsScreen.routeName);
+                        .popAndPushNamed(NotificationsScreen.routeName);
                   },
                   title: 'Logout',
                   icon: Ionicons.log_out_outline,
@@ -67,7 +68,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SettingsSection(
               children: [
                 SettingsItem(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(AppAppearanceScreen.routeName);
+                  },
                   title: 'App Appearance',
                   icon: Ionicons.bulb_outline,
                 ),

@@ -88,12 +88,16 @@ class ChatsListScreen extends StatelessWidget {
           IconButton(
             onPressed: () {},
             icon: Icon(Ionicons.search_outline),
-            color: kAppBarText,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : kAppBarText,
           ),
           IconButton(
             onPressed: () {},
             icon: Icon(Icons.create_outlined),
-            color: kAppBarText,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : kAppBarText,
           ),
         ],
       ),

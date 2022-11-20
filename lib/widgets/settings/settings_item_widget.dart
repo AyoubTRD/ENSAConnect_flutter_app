@@ -8,6 +8,7 @@ class SettingsItem extends StatelessWidget {
   final bool dense;
   final bool danger;
   final void Function()? onTap;
+  final Widget? suffix;
 
   const SettingsItem({
     required this.title,
@@ -16,6 +17,7 @@ class SettingsItem extends StatelessWidget {
     this.onTap,
     this.dense = true,
     this.danger = false,
+    this.suffix,
     Key? key,
   }) : super(key: key);
 
@@ -49,12 +51,14 @@ class SettingsItem extends StatelessWidget {
                       ),
                 ),
               ),
-              if (!hideChevron) ...[
+              if (!hideChevron || suffix != null) ...[
                 Expanded(child: Container()),
-                Icon(
-                  Ionicons.chevron_forward_outline,
-                  color: Theme.of(context).primaryColor,
-                ),
+                suffix != null
+                    ? suffix!
+                    : Icon(
+                        Ionicons.chevron_forward_outline,
+                        color: Theme.of(context).primaryColor,
+                      ),
                 SizedBox(width: 12.0),
               ],
             ],

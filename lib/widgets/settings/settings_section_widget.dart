@@ -20,7 +20,9 @@ class SettingsSection extends StatelessWidget {
             color: Colors.grey.shade900.withOpacity(0.05),
           )
         ],
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.grey.shade800
+            : Colors.white,
       ),
       padding: EdgeInsets.symmetric(vertical: 6.0),
       child: Column(

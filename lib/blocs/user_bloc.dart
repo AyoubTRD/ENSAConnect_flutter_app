@@ -1,7 +1,6 @@
-import 'package:artemis/artemis.dart';
 import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/utils/artemis_client.dart';
-import 'package:ensa/utils/constants.dart';
+import 'package:ensa/utils/preferences_instant.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,8 +28,7 @@ class UserBloc {
   ValueStream<UserMixin?> get currentUser => _currentUser.stream;
 
   Future<void> init() async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token');
+    final token = prefsInstance.getString('token');
 
     if (token != null && token != '') {
       updateToAuthenticatedClient(token);
@@ -40,7 +38,7 @@ class UserBloc {
 
       if (response.hasErrors) {
         print(response.errors);
-        await prefs.remove('token');
+        await prefsInstance.remove('token');
       } else {
         _isAuthenticated.sink.add(true);
         _currentUser.sink.add(response.data!.getMe);
@@ -59,8 +57,8 @@ class UserBloc {
 
   void handleAuthSuccess(
       {required String token, required UserMixin user}) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', token);
+    final prefsInstance = await SharedPreferences.getInstance();
+    await prefsInstance.setString('token', token);
 
     // Restart.restartApp();
 
@@ -114,8 +112,8 @@ class UserBloc {
 
     authClient.removeToken();
 
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token');
+    final prefsInstance = await SharedPreferences.getInstance();
+    await prefsInstance.remove('token');
   }
 
   Future<void> updateProfilePicture(String profilePicture) async {

@@ -27,7 +27,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-            'Are you sure you want to delete your account? This action is irreversible!'),
+          'Are you sure you want to delete your account? This action is irreversible!',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),

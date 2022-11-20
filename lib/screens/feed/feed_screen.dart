@@ -39,7 +39,9 @@ class _FeedScreenState extends State<FeedScreen> {
                   Navigator.of(context).pushNamed('/notifications');
                 },
                 icon: Icon(Ionicons.notifications_outline),
-                color: kTextSecondary,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : kTextSecondary,
               )
             ],
           ),

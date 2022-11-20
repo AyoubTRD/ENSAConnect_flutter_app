@@ -64,10 +64,10 @@ class _MainScreenState extends State<MainScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        elevation: 7.0,
+        elevation: Theme.of(context).brightness == Brightness.dark ? 30.0 : 7.0,
         shape: CircularNotchedRectangle(),
         notchMargin: 9.0,
-        color: Colors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
           child: Row(
@@ -148,7 +148,11 @@ class MyBottomBarItem extends StatelessWidget {
     final bool _isActive = index == currentIndex;
 
     return IconButton(
-      color: _isActive ? Theme.of(context).primaryColor : kTextSecondary,
+      color: _isActive
+          ? Theme.of(context).primaryColor
+          : Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : kTextSecondary,
       onPressed: () {
         onPressed(index);
       },

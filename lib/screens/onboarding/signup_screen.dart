@@ -80,7 +80,7 @@ class _SignupScreenState extends State<SignupScreen> {
             TextSpan(
               text: 'Sign In',
               style: TextStyle(
-                color: kPrimaryColor,
+                color: Theme.of(context).primaryColor,
               ),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {

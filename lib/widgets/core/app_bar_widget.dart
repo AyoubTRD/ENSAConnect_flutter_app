@@ -43,7 +43,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                 },
                 icon: Icon(
                   Ionicons.chevron_back,
-                  color: kTitleText,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : kTitleText,
                 ),
                 iconSize: 26.0,
               )

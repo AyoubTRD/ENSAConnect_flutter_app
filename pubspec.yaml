@@ -46,6 +46,7 @@ dependencies:
   photo_view: ^0.14.0
   gallery_saver: ^2.3.2
   intl: ^0.17.0
+  dynamic_themes: ^1.1.0
 
 dev_dependencies:
   flutter_test:

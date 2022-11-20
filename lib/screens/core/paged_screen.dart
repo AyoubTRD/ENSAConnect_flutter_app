@@ -65,7 +65,9 @@ class _PagedScreenState extends State<PagedScreen> {
               margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.grey[200],
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.grey.shade800
+                      : Colors.grey[200],
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: ToggleButtons(
@@ -77,7 +79,9 @@ class _PagedScreenState extends State<PagedScreen> {
                     minHeight: 43.0,
                   ),
                   selectedColor: Colors.white,
-                  color: Colors.grey[800],
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.grey[800],
                   fillColor: Theme.of(context).primaryColor,
                   borderWidth: 0.0,
                   borderRadius: BorderRadius.circular(8.0),

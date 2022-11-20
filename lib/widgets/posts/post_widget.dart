@@ -13,19 +13,21 @@ class FeedPost extends StatelessWidget {
   bool get _hasContent => post.content != null && post.content != '';
   bool get _hasMedia => post.images.isNotEmpty || post.videos.isNotEmpty;
 
-  final _shadow = BoxShadow(
-    color: Colors.black.withOpacity(0.05),
-    blurRadius: 10.0,
-    offset: const Offset(0, 10.0),
-    spreadRadius: 2.0,
-  );
+  BoxShadow getShadow(BuildContext context) => BoxShadow(
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.white.withOpacity(0.05)
+            : Colors.black.withOpacity(0.05),
+        blurRadius: 10.0,
+        offset: const Offset(0, 10.0),
+        spreadRadius: 2.0,
+      );
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 38.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
       ),
       child: Column(
         children: [
@@ -76,7 +78,7 @@ class FeedPost extends StatelessWidget {
     if (_hasMedia) {
       return Container(
         decoration: BoxDecoration(
-          boxShadow: [_shadow],
+          boxShadow: [getShadow(context)],
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(15.0),
@@ -91,7 +93,7 @@ class FeedPost extends StatelessWidget {
                   padding: const EdgeInsets.only(
                       bottom: 8.0, top: 38.0, left: 30.0, right: 30.0),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     // borderRadius: BorderRadius.circular(5.0),
                   ),
                   child: _buildBarBody(context),
@@ -106,8 +108,8 @@ class FeedPost extends StatelessWidget {
       height: 50.0,
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       decoration: BoxDecoration(
-        boxShadow: [_shadow],
-        color: Colors.white,
+        boxShadow: [getShadow(context)],
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(5.0),
       ),
       child: _buildBarBody(context),
