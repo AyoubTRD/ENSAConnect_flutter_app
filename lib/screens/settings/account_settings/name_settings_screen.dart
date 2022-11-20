@@ -35,6 +35,38 @@ class _NameSettingsScreenState extends State<NameSettingsScreen> {
     return hasChanged() && _formKey.currentState!.validate();
   }
 
+  void confirmSave() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Confirm name change'),
+        content: Text(
+          'You will not be able to change your name again until ' +
+              DateFormat().add_yMMMMEEEEd().format(
+                    DateTime.now().add(
+                      const Duration(days: 30),
+                    ),
+                  ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              handleSave();
+            },
+            child: Text(
+              'Update',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> handleSave() async {
     if (!canSave()) return;
     setState(() {
@@ -137,7 +169,7 @@ class _NameSettingsScreenState extends State<NameSettingsScreen> {
                       Container(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: canSave() ? handleSave : null,
+                          onPressed: canSave() ? confirmSave : null,
                           child: _isLoading
                               ? const SizedBox(
                                   width: 19.0,
