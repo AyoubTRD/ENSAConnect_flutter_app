@@ -8,6 +8,7 @@ import 'package:ensa/screens/core/main_screen.dart';
 import 'package:ensa/screens/notifications/notifications_screen.dart';
 import 'package:ensa/screens/onboarding/signin_screen.dart';
 import 'package:ensa/screens/onboarding/signup_screen.dart';
+import 'package:ensa/screens/posts/create_post_screen.dart';
 import 'package:ensa/screens/settings/account_settings/account_settings_screen.dart';
 import 'package:ensa/screens/settings/account_settings/name_settings_screen.dart';
 import 'package:ensa/screens/settings/account_settings/password_settings_screen.dart';
@@ -55,6 +56,11 @@ class ENSAConnect extends StatelessWidget {
           switch (settings.name) {
             case MainScreen.routeName:
               return CupertinoPageRoute(builder: (_) => MainScreen());
+            case CreatePostScreen.routeName:
+              return CupertinoPageRoute(
+                builder: (_) => CreatePostScreen(),
+                fullscreenDialog: true,
+              );
             case IntroductionScreen.routeName:
               return CupertinoPageRoute(builder: (_) => IntroductionScreen());
             case SignupScreen.routeName:

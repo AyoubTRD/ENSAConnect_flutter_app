@@ -22,7 +22,7 @@ class SettingsSection extends StatelessWidget {
         ],
         color: Theme.of(context).brightness == Brightness.dark
             ? Colors.grey.shade800
-            : Colors.white,
+            : Theme.of(context).scaffoldBackgroundColor,
       ),
       padding: EdgeInsets.symmetric(vertical: 6.0),
       child: Column(
