@@ -1,3 +1,4 @@
+import 'package:ensa/blocs/posts_bloc.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:ensa/widgets/core/app_bar_widget.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,31 @@ class CreatePostScreen extends StatefulWidget {
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
+  String _text = '';
+  bool _isLoading = false;
+
+  Future<void> handleSave() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await postsBloc.createPost(text: _text);
+      Navigator.of(context).pop();
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Something went wrong!'),
+        ),
+      );
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,13 +59,26 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         actions: [
           FittedBox(
             child: TextButton(
-              onPressed: () {},
-              child: Text(
-                'Done',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              onPressed: _text != '' ? handleSave : null,
+              child: _isLoading
+                  ? SizedBox(
+                      width: 14.0,
+                      height: 14.0,
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.grey.shade900,
+                      ),
+                    )
+                  : Opacity(
+                      opacity: _text == '' ? 0.5 : 1.0,
+                      child: Text(
+                        'Done',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
               style: ButtonStyle(
                 overlayColor: MaterialStateColor.resolveWith(
                   (states) => Theme.of(context).brightness == Brightness.dark
@@ -59,8 +98,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       body: Column(
         children: [
           Expanded(
-            child: TextField(
+            child: TextFormField(
               maxLines: null,
+              onChanged: (val) {
+                setState(() {
+                  _text = val;
+                });
+              },
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
                 border: InputBorder.none,

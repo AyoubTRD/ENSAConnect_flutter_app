@@ -69,10 +69,16 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
             disabledBorder:
                 Theme.of(context).inputDecorationTheme.border?.copyWith(
                       borderSide: BorderSide(
-                        color: Colors.grey.shade400,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.grey.shade900
+                            : Colors.grey.shade400,
                       ),
                     ),
-            fillColor: widget.enabled ? null : Colors.grey.shade200,
+            fillColor: widget.enabled
+                ? null
+                : Theme.of(context).brightness == Brightness.dark
+                    ? Colors.grey.shade800.withOpacity(0.5)
+                    : Colors.grey.shade200,
             filled: widget.enabled ? null : true,
             prefixIcon: widget.icon == null
                 ? null
