@@ -3,6 +3,7 @@ import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/screens/onboarding/introduction_screen.dart';
 import 'package:ensa/screens/settings/account_settings/name_settings_screen.dart';
 import 'package:ensa/screens/settings/account_settings/password_settings_screen.dart';
+import 'package:ensa/screens/settings/account_settings/phone_number_settings_screen.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:ensa/widgets/core/app_bar_widget.dart';
 import 'package:ensa/widgets/settings/settings_item_widget.dart';
@@ -102,7 +103,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                     color: Theme.of(context).primaryColor,
                   ),
                 );
-              final hasPhoneNumber = false;
+              final hasPhoneNumber = snapshot.data!.phoneNumber != null;
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
                 child: ListView(
@@ -120,6 +121,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                           },
                         ),
                         SettingsItem(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(PhoneNumberSettingsScreen.routeName);
+                          },
                           title: !hasPhoneNumber
                               ? 'Add Phone Number'
                               : 'Update Phone Number',

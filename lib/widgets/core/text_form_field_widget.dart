@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ionicons/ionicons.dart';
 
 class MyTextFormField extends StatefulWidget {
@@ -18,6 +19,7 @@ class MyTextFormField extends StatefulWidget {
     this.onChanged,
     this.enabled = true,
     this.initialValue,
+    this.inputFormatters,
   }) : super(key: key);
 
   final String labelText;
@@ -34,6 +36,7 @@ class MyTextFormField extends StatefulWidget {
   final Function(String)? onChanged;
   final bool enabled;
   final String? initialValue;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   _MyTextFormFieldState createState() => _MyTextFormFieldState();
@@ -50,6 +53,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
         Text(widget.labelText),
         SizedBox(height: 6.0),
         TextFormField(
+          inputFormatters: widget.inputFormatters,
           initialValue: widget.initialValue,
           enabled: widget.enabled,
           onChanged: widget.onChanged,

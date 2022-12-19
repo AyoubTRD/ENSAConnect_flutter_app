@@ -1,5 +1,5 @@
 import 'package:ensa/utils/constants.dart';
-import 'package:ensa/widgets/posts/posts_widget.dart';
+import 'package:ensa/widgets/posts/feed_posts_widget.dart';
 import 'package:ensa/widgets/stories/stories_preview_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
@@ -66,7 +66,7 @@ class _FeedScreenState extends State<FeedScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.all(kDefaultPadding),
-                child: Posts(),
+                child: FeedPosts(),
               ),
             ],
           ),

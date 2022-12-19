@@ -1,0 +1,9 @@
+fragment FeedPost on Post {
+  id
+  files
+  text
+  createdAt
+  author {
+    ...PostAuthor
+  }
+}

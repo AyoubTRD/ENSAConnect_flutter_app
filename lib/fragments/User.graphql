@@ -4,6 +4,7 @@ fragment User on User {
   lastName
   fullName
   email
+  phoneNumber
   avatar
   createdAt
   canUpdateName

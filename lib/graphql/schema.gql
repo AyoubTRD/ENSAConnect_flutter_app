@@ -55,6 +55,7 @@ input UpdateUserInput {
   lastName: String
   oldPassword: String
   password: String
+  phoneNumber: String
 }
 
 type User {
@@ -67,6 +68,7 @@ type User {
   id: String!
   lastName: String!
   lastUpdatedName: DateTime
+  phoneNumber: String
 }
 
 input UserInput {

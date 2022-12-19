@@ -18,6 +18,8 @@ class InvalidOldPasswordError extends Error {}
 
 class DeleteSelfError extends Error {}
 
+class UpdatePhoneNumberError extends Error {}
+
 class UserBloc {
   BehaviorSubject<bool> _isReady = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> _isAuthenticated = BehaviorSubject.seeded(false);
@@ -59,8 +61,6 @@ class UserBloc {
       {required String token, required UserMixin user}) async {
     final prefsInstance = await SharedPreferences.getInstance();
     await prefsInstance.setString('token', token);
-
-    // Restart.restartApp();
 
     _currentUser.sink.add(user);
     _isAuthenticated.sink.add(true);
@@ -156,6 +156,21 @@ class UserBloc {
     if (response.hasErrors && response.errors != null) {
       print(response.errors);
       throw InvalidOldPasswordError();
+    }
+
+    _currentUser.sink.add(response.data!.updateUser);
+  }
+
+  Future<void> updatePhoneNumber(String phoneNumber) async {
+    final variables = UpdateUserArguments(
+      user: UpdateUserInput(phoneNumber: phoneNumber),
+    );
+    final mutation = UpdateUserMutation(variables: variables);
+    final response = await apiClient.execute(mutation);
+
+    if (response.hasErrors && response.errors != null) {
+      print(response.errors);
+      throw UpdatePhoneNumberError();
     }
 
     _currentUser.sink.add(response.data!.updateUser);

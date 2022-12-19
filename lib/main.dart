@@ -12,11 +12,13 @@ import 'package:ensa/screens/posts/create_post_screen.dart';
 import 'package:ensa/screens/settings/account_settings/account_settings_screen.dart';
 import 'package:ensa/screens/settings/account_settings/name_settings_screen.dart';
 import 'package:ensa/screens/settings/account_settings/password_settings_screen.dart';
+import 'package:ensa/screens/settings/account_settings/phone_number_settings_screen.dart';
 import 'package:ensa/screens/settings/app_appearance/app_appearance_screen.dart';
 import 'package:ensa/utils/preferences_instant.dart';
 import 'package:ensa/utils/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:intl/intl.dart';
 
 void main() async {
@@ -24,6 +26,8 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   await loadSharedPreferencesInstance();
+
+  await FlutterLibphonenumber().init();
 
   preferencesBloc.init();
   loadThemeCollection();
@@ -89,6 +93,9 @@ class ENSAConnect extends StatelessWidget {
             case PasswordSettingsScreen.routeName:
               return CupertinoPageRoute(
                   builder: (_) => PasswordSettingsScreen());
+            case PhoneNumberSettingsScreen.routeName:
+              return CupertinoPageRoute(
+                  builder: (_) => PhoneNumberSettingsScreen());
             case ImageDialogScreen.routeName:
               final args = settings.arguments as ImageDialogScreenArguments;
               return PageRouteBuilder(

@@ -1,4 +1,4 @@
-import 'package:ensa/models/post_model.dart';
+import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:ensa/widgets/posts/post_media_widget.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +8,10 @@ import 'package:timeago/timeago.dart' as timeago;
 class FeedPost extends StatelessWidget {
   FeedPost(this.post, {Key? key}) : super(key: key);
 
-  final Post post;
+  final FeedPostMixin post;
 
-  bool get _hasContent => post.content != null && post.content != '';
-  bool get _hasMedia => post.images.isNotEmpty || post.videos.isNotEmpty;
+  bool get _hasContent => post.text.isNotEmpty;
+  bool get _hasMedia => post.files.isNotEmpty;
 
   BoxShadow getShadow(BuildContext context) => BoxShadow(
         color: Theme.of(context).brightness == Brightness.dark
@@ -35,7 +35,11 @@ class FeedPost extends StatelessWidget {
             children: [
               CircleAvatar(
                 backgroundColor: Theme.of(context).accentColor.withOpacity(0.1),
-                backgroundImage: NetworkImage(post.user.profilePicture),
+                backgroundImage: NetworkImage(
+                  (post.author.avatar == null || post.author.avatar == '')
+                      ? kDefaultProfilePic
+                      : post.author.avatar!,
+                ),
                 radius: 30.0,
               ),
               SizedBox(
@@ -48,11 +52,11 @@ class FeedPost extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      post.user.fullName,
+                      post.author.fullName,
                       style: Theme.of(context).textTheme.headline4,
                     ),
                     Text(
-                      timeago.format(DateTime.parse(post.createdAt)),
+                      timeago.format(post.createdAt),
                     ),
                   ],
                 ),
@@ -64,7 +68,7 @@ class FeedPost extends StatelessWidget {
           ),
           if (_hasContent)
             Text(
-              post.content!,
+              post.text,
               maxLines: 5,
               overflow: TextOverflow.ellipsis,
             ),
@@ -85,13 +89,17 @@ class FeedPost extends StatelessWidget {
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              PostMedia(post),
+              // PostMedia(post),
               ClipPath(
                 clipper: MyClipper(),
                 child: Container(
                   height: 80.0,
                   padding: const EdgeInsets.only(
-                      bottom: 8.0, top: 38.0, left: 30.0, right: 30.0),
+                    bottom: 8.0,
+                    top: 38.0,
+                    left: 30.0,
+                    right: 30.0,
+                  ),
                   decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     // borderRadius: BorderRadius.circular(5.0),
@@ -130,7 +138,7 @@ class FeedPost extends StatelessWidget {
         ),
         SizedBox(width: 3.0),
         Text(
-          '${post.reactionsCount}',
+          '0',
           style: TextStyle(fontSize: textSize),
         ),
         SizedBox(
@@ -143,7 +151,7 @@ class FeedPost extends StatelessWidget {
         ),
         SizedBox(width: 3.0),
         Text(
-          '${post.commentsCount}',
+          '0',
           style: TextStyle(fontSize: textSize),
         ),
         Expanded(child: Container()),

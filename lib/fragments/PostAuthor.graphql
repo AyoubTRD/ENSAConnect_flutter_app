@@ -1,0 +1,7 @@
+fragment PostAuthor on User {
+  id
+  avatar
+  fullName
+  firstName
+  lastName
+}
