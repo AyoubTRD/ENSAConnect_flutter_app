@@ -3,6 +3,7 @@ import 'package:ensa/utils/constants.dart';
 import 'package:ensa/widgets/posts/post_media_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:readmore/readmore.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class FeedPost extends StatelessWidget {
@@ -67,10 +68,22 @@ class FeedPost extends StatelessWidget {
             height: kDefaultPadding,
           ),
           if (_hasContent)
-            Text(
-              post.text,
-              maxLines: 5,
-              overflow: TextOverflow.ellipsis,
+            SizedBox(
+              width: double.infinity,
+              child: ReadMoreText(
+                post.text,
+                trimLines: 5,
+                trimCollapsedText: 'Show more',
+                trimExpandedText: ' Show less',
+                trimMode: TrimMode.Line,
+                textAlign: TextAlign.left,
+                moreStyle: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                ),
+                lessStyle: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
             ),
           _buildBar(context),
         ],

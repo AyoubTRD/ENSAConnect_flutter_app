@@ -48,6 +48,7 @@ dependencies:
   intl: ^0.17.0
   dynamic_themes: ^1.1.0
   flutter_libphonenumber: ^1.2.4
+  readmore: ^2.2.0
 
 dev_dependencies:
   flutter_test:
