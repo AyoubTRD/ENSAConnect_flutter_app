@@ -66,7 +66,7 @@ class _PagedScreenState extends State<PagedScreen> {
               child: Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.grey.shade800
+                      ? Colors.grey.shade900.withOpacity(0.60)
                       : Colors.grey[200],
                   borderRadius: BorderRadius.circular(8.0),
                 ),
@@ -81,7 +81,7 @@ class _PagedScreenState extends State<PagedScreen> {
                   selectedColor: Colors.white,
                   color: Theme.of(context).brightness == Brightness.dark
                       ? Colors.white
-                      : Colors.grey[800],
+                      : Colors.grey.shade800,
                   fillColor: Theme.of(context).primaryColor,
                   borderWidth: 0.0,
                   borderRadius: BorderRadius.circular(8.0),

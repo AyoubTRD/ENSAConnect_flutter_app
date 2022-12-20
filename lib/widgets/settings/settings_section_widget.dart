@@ -17,11 +17,13 @@ class SettingsSection extends StatelessWidget {
           BoxShadow(
             offset: Offset(0, 2.0),
             spreadRadius: 1.0,
-            color: Colors.grey.shade900.withOpacity(0.05),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white.withOpacity(0.10)
+                : Colors.grey.shade900.withOpacity(0.05),
           )
         ],
         color: Theme.of(context).brightness == Brightness.dark
-            ? Colors.grey.shade800
+            ? Colors.grey.shade900.withOpacity(0.2)
             : Theme.of(context).scaffoldBackgroundColor,
       ),
       padding: EdgeInsets.symmetric(vertical: 6.0),

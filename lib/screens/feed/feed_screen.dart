@@ -11,9 +11,14 @@ class FeedScreen extends StatefulWidget {
   _FeedScreenState createState() => _FeedScreenState();
 }
 
-class _FeedScreenState extends State<FeedScreen> {
+class _FeedScreenState extends State<FeedScreen>
+    with AutomaticKeepAliveClientMixin<FeedScreen> {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Column(
       children: [
         Container(

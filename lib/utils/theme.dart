@@ -122,7 +122,7 @@ ThemeData _getLightTheme(Color primaryColor) => ThemeData(
     );
 
 ThemeData _getDarkTheme(Color primaryColor) => ThemeData(
-      scaffoldBackgroundColor: Colors.grey.shade900,
+      scaffoldBackgroundColor: Colors.black,
       brightness: Brightness.dark,
       primaryColor: primaryColor,
       accentColor: kAccentColor,
