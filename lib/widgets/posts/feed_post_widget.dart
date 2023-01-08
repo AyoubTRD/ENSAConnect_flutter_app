@@ -26,9 +26,23 @@ class FeedPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 38.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: BorderRadius.circular(24.0),
+        gradient: Theme.of(context).brightness == Brightness.dark
+            ? LinearGradient(
+                tileMode: TileMode.clamp,
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.grey.shade900.withOpacity(0.9),
+                  Colors.grey.shade900.withOpacity(0.6),
+                ],
+              )
+            : null,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.grey.shade900.withOpacity(0.5)
+            : Colors.white,
       ),
       child: Column(
         children: [
@@ -41,13 +55,13 @@ class FeedPost extends StatelessWidget {
                       ? kDefaultProfilePic
                       : post.author.avatar!,
                 ),
-                radius: 30.0,
+                radius: 26.0,
               ),
               SizedBox(
                 width: 15.0,
               ),
               SizedBox(
-                height: 50.0,
+                height: 46.0,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,6 +72,13 @@ class FeedPost extends StatelessWidget {
                     ),
                     Text(
                       timeago.format(post.createdAt),
+                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                            color: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                ?.color
+                                ?.withOpacity(0.6),
+                          ),
                     ),
                   ],
                 ),
@@ -92,46 +113,42 @@ class FeedPost extends StatelessWidget {
   }
 
   Widget _buildBar(BuildContext context) {
-    if (_hasMedia) {
-      return Container(
-        decoration: BoxDecoration(
-          boxShadow: [getShadow(context)],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(15.0),
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              // PostMedia(post),
-              ClipPath(
-                clipper: MyClipper(),
-                child: Container(
-                  height: 80.0,
-                  padding: const EdgeInsets.only(
-                    bottom: 8.0,
-                    top: 38.0,
-                    left: 30.0,
-                    right: 30.0,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    // borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  child: _buildBarBody(context),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
+    // if (_hasMedia) {
+    //   return Container(
+    //     decoration: BoxDecoration(
+    //       boxShadow: [getShadow(context)],
+    //     ),
+    //     child: ClipRRect(
+    //       borderRadius: BorderRadius.circular(15.0),
+    //       child: Stack(
+    //         alignment: Alignment.bottomCenter,
+    //         children: [
+    //           // PostMedia(post),
+    //           ClipPath(
+    //             clipper: MyClipper(),
+    //             child: Container(
+    //               height: 80.0,
+    //               padding: const EdgeInsets.only(
+    //                 bottom: 8.0,
+    //                 top: 38.0,
+    //                 left: 30.0,
+    //                 right: 30.0,
+    //               ),
+    //               decoration: BoxDecoration(
+    //                 color: Theme.of(context).scaffoldBackgroundColor,
+    //                 // borderRadius: BorderRadius.circular(5.0),
+    //               ),
+    //               child: _buildBarBody(context),
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   );
+    // }
     return Container(
-      height: 50.0,
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      decoration: BoxDecoration(
-        boxShadow: [getShadow(context)],
-        color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: BorderRadius.circular(5.0),
+      margin: const EdgeInsets.only(
+        top: kDefaultPadding,
       ),
       child: _buildBarBody(context),
     );
@@ -142,7 +159,7 @@ class FeedPost extends StatelessWidget {
     double textSize = 16.0;
 
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Icon(
           Ionicons.heart_outline,

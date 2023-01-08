@@ -18,9 +18,12 @@ class FeedPosts extends StatelessWidget {
         return Column(
           children: snapshot.data!
               .map(
-                (e) => FeedPost(
-                  e,
-                  key: Key(e.id),
+                (e) => Container(
+                  margin: const EdgeInsets.only(bottom: kDefaultPadding),
+                  child: FeedPost(
+                    e,
+                    key: Key(e.id),
+                  ),
                 ),
               )
               .toList(),
