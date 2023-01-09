@@ -26,7 +26,7 @@ class FeedPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24.0),
         gradient: Theme.of(context).brightness == Brightness.dark
@@ -35,8 +35,8 @@ class FeedPost extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.grey.shade900.withOpacity(0.9),
-                  Colors.grey.shade900.withOpacity(0.6),
+                  Colors.grey.shade800.withOpacity(0.75),
+                  Colors.grey.shade800.withOpacity(0.5),
                 ],
               )
             : null,
@@ -46,66 +46,76 @@ class FeedPost extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Row(
-            children: [
-              CircleAvatar(
-                backgroundColor: Theme.of(context).accentColor.withOpacity(0.1),
-                backgroundImage: NetworkImage(
-                  (post.author.avatar == null || post.author.avatar == '')
-                      ? kDefaultProfilePic
-                      : post.author.avatar!,
-                ),
-                radius: 26.0,
-              ),
-              SizedBox(
-                width: 15.0,
-              ),
-              SizedBox(
-                height: 46.0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              children: [
+                Row(
                   children: [
-                    Text(
-                      post.author.fullName,
-                      style: Theme.of(context).textTheme.headline4,
+                    CircleAvatar(
+                      backgroundColor:
+                          Theme.of(context).accentColor.withOpacity(0.1),
+                      backgroundImage: NetworkImage(
+                        (post.author.avatar == null || post.author.avatar == '')
+                            ? kDefaultProfilePic
+                            : post.author.avatar!,
+                      ),
+                      radius: 26.0,
                     ),
-                    Text(
-                      timeago.format(post.createdAt),
-                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                            color: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                ?.color
-                                ?.withOpacity(0.6),
+                    SizedBox(
+                      width: 15.0,
+                    ),
+                    SizedBox(
+                      height: 46.0,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            post.author.fullName,
+                            style: Theme.of(context).textTheme.headline4,
                           ),
+                          Text(
+                            timeago.format(post.createdAt),
+                            style:
+                                Theme.of(context).textTheme.bodyText1?.copyWith(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          ?.color
+                                          ?.withOpacity(0.6),
+                                    ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: kDefaultPadding,
-          ),
-          if (_hasContent)
-            SizedBox(
-              width: double.infinity,
-              child: ReadMoreText(
-                post.text,
-                trimLines: 5,
-                trimCollapsedText: 'Show more',
-                trimExpandedText: ' Show less',
-                trimMode: TrimMode.Line,
-                textAlign: TextAlign.left,
-                moreStyle: TextStyle(
-                  color: Theme.of(context).primaryColor,
+                SizedBox(
+                  height: kDefaultPadding,
                 ),
-                lessStyle: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
+                if (_hasContent)
+                  SizedBox(
+                    width: double.infinity,
+                    child: ReadMoreText(
+                      post.text,
+                      trimLines: 5,
+                      trimCollapsedText: 'Show more',
+                      trimExpandedText: ' Show less',
+                      trimMode: TrimMode.Line,
+                      textAlign: TextAlign.left,
+                      moreStyle: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      lessStyle: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ),
+              ],
             ),
+          ),
+          if (_hasMedia) PostMedia(post),
           _buildBar(context),
         ],
       ),
@@ -149,6 +159,8 @@ class FeedPost extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(
         top: kDefaultPadding,
+        left: 16.0,
+        right: 16.0,
       ),
       child: _buildBarBody(context),
     );

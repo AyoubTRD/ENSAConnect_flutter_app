@@ -4,13 +4,25 @@ import 'package:ensa/utils/constants.dart';
 import 'package:ensa/widgets/posts/feed_post_widget.dart';
 import 'package:flutter/material.dart';
 
-class FeedPosts extends StatelessWidget {
+class FeedPosts extends StatefulWidget {
   const FeedPosts({Key? key}) : super(key: key);
 
   @override
+  State<FeedPosts> createState() => _FeedPostsState();
+}
+
+class _FeedPostsState extends State<FeedPosts> {
+  @override
+  void initState() {
+    super.initState();
+
+    postsBloc.getFeedPosts();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<FeedPostMixin>>(
-      future: postsBloc.getFeedPosts(),
+    return StreamBuilder<List<FeedPostMixin>>(
+      stream: postsBloc.feedPosts,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Text('Loading...');

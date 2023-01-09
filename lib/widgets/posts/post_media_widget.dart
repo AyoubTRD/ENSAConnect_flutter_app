@@ -1,3 +1,4 @@
+import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/models/post_model.dart';
 import 'package:ensa/widgets/posts/post_media_item_widget.dart';
 import 'package:flutter/material.dart';
@@ -5,9 +6,9 @@ import 'package:flutter/material.dart';
 class PostMedia extends StatelessWidget {
   PostMedia(this.post, {Key? key}) : super(key: key);
 
-  final Post post;
+  final FeedPostMixin post;
 
-  int get _mediaCount => post.images.length + post.videos.length;
+  int get _mediaCount => post.files.length;
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +21,7 @@ class PostMedia extends StatelessWidget {
             child: PageView(
               physics: BouncingScrollPhysics(),
               children: [
-                ...post.videoThumbnails
-                    .map((e) => PostMediaItem(
-                          e,
-                          mediaType: MediaType.VIDEO,
-                        ))
-                    .toList(),
-                ...post.images
+                ...post.files
                     .map((e) => PostMediaItem(
                           e,
                           mediaType: MediaType.IMAGE,
@@ -38,15 +33,12 @@ class PostMedia extends StatelessWidget {
         ],
       );
     }
-    if (post.videos.isNotEmpty) {
+    if (_mediaCount == 1)
       return PostMediaItem(
-        post.videos[0],
-        mediaType: MediaType.VIDEO,
+        post.files[0],
+        mediaType: MediaType.IMAGE,
       );
-    }
-    return PostMediaItem(
-      post.images[0],
-      mediaType: MediaType.IMAGE,
-    );
+
+    return Container();
   }
 }

@@ -1,7 +1,9 @@
 import 'package:ensa/blocs/posts_bloc.dart';
+import 'package:ensa/services/rest_client_service.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:ensa/widgets/core/app_bar_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 
 class CreatePostScreen extends StatefulWidget {
@@ -17,13 +19,17 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   String _text = '';
   bool _isLoading = false;
 
+  List<String> _files = [];
+
+  bool get canSave => _text != '' || _files.isNotEmpty;
+
   Future<void> handleSave() async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      await postsBloc.createPost(text: _text);
+      await postsBloc.createPost(text: _text, files: _files);
       Navigator.of(context).pop();
     } catch (e) {
       print(e);
@@ -37,6 +43,39 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  Future<void> handleUploadFromGallery() async {
+    try {
+      final picker = ImagePicker();
+      final images = await picker.pickMultiImage();
+
+      if (images.isEmpty) return;
+
+      for (int i = 0; i < images.length; i++) {
+        final url = await restClientService.uploadFile(images[i]);
+
+        final files = new List<String>.from(_files);
+        files.add(url);
+
+        setState(() {
+          _files = files;
+        });
+      }
+    } catch (e) {
+      print(e);
+
+      const snackBar = SnackBar(
+        content: Text(
+          'An error has ocurred!',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.red,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   @override
@@ -59,7 +98,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         actions: [
           FittedBox(
             child: TextButton(
-              onPressed: _text != '' ? handleSave : null,
+              onPressed: canSave ? handleSave : null,
               child: _isLoading
                   ? SizedBox(
                       width: 14.0,
@@ -71,7 +110,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       ),
                     )
                   : Opacity(
-                      opacity: _text == '' ? 0.5 : 1.0,
+                      opacity: !canSave ? 0.5 : 1.0,
                       child: Text(
                         'Done',
                         style: TextStyle(
@@ -133,6 +172,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               children: [
                 Expanded(
                   child: renderMediaButton(
+                    onTap: handleUploadFromGallery,
                     context: context,
                     icon: Ionicons.images_outline,
                     text: 'Gallery',

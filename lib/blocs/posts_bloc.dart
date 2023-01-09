@@ -11,9 +11,12 @@ class PostsBloc {
 
   ValueStream<List<FeedPostMixin>> get feedPosts => _feedPosts.stream;
 
-  Future<void> createPost({required String text}) async {
+  Future<void> createPost({required String text, List<String>? files}) async {
     final variables = CreatePostArguments(
-      post: PostInput(text: text),
+      post: PostInput(
+        text: text,
+        files: files,
+      ),
     );
 
     final mutation = CreatePostMutation(variables: variables);
@@ -33,6 +36,8 @@ class PostsBloc {
       print(response.errors);
       throw LoadFeedPostsError();
     }
+
+    _feedPosts.sink.add(response.data!.getPosts);
 
     return response.data!.getPosts;
   }

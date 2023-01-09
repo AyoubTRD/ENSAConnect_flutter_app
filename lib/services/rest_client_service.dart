@@ -24,7 +24,6 @@ class RestClientService {
       throw Error();
     }
     final body = jsonDecode(await utf8.decodeStream(response.stream));
-    print(body);
 
     return body['filePath'];
   }
