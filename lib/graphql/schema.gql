@@ -22,6 +22,7 @@ type Mutation {
   createPost(post: PostInput!): Post!
   createUser(user: UserInput!): AuthResult!
   deleteMe: Boolean!
+  deletePost(postId: String!): Boolean!
   deleteToken: Boolean!
   updateUser(user: UpdateUserInput!): User!
 }

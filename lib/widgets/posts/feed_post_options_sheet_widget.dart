@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ensa/blocs/posts_bloc.dart';
 import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/widgets/settings/options_sheet_widget.dart';
@@ -83,7 +84,8 @@ class _MaterialDeletePostDialogState extends State<MaterialDeletePostDialog> {
     });
 
     try {
-      throw Error();
+      await postsBloc.deletePost(widget.postId);
+      Navigator.of(context).pop();
       Navigator.of(context).pop();
     } catch (e) {
       print(e);
@@ -161,7 +163,8 @@ class _CupertinoDeletePostDialogState extends State<CupertinoDeletePostDialog> {
     });
 
     try {
-      throw Error();
+      await postsBloc.deletePost(widget.postId);
+      Navigator.of(context).pop();
       Navigator.of(context).pop();
     } catch (e) {
       print(e);

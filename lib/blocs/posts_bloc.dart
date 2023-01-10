@@ -6,6 +6,8 @@ class CreatePostError extends Error {}
 
 class LoadFeedPostsError extends Error {}
 
+class DeletePostError extends Error {}
+
 class PostsBloc {
   BehaviorSubject<List<FeedPostMixin>> _feedPosts = BehaviorSubject.seeded([]);
 
@@ -40,6 +42,25 @@ class PostsBloc {
     _feedPosts.sink.add(response.data!.getPosts);
 
     return response.data!.getPosts;
+  }
+
+  Future<bool> deletePost(String postId) async {
+    final mutation = DeletePostMutation(
+      variables: DeletePostArguments(postId: postId),
+    );
+    final response = await apiClient.execute(mutation);
+
+    if (response.hasErrors) {
+      print(response.errors);
+      throw DeletePostError();
+    }
+
+    final List<FeedPostMixin> newPosts = List.from(feedPosts.value);
+    newPosts.removeWhere((element) => element.id == postId);
+
+    _feedPosts.sink.add(newPosts);
+
+    return response.data!.deletePost;
   }
 
   void dispose() {
