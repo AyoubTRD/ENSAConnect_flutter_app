@@ -1,5 +1,6 @@
 import 'package:ensa/utils/constants.dart';
 import 'package:ensa/widgets/core/swipeable_widget.dart';
+import 'package:ensa/widgets/settings/options_sheet_widget.dart';
 import 'package:ensa/widgets/settings/settings_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -49,12 +50,6 @@ class _ImageDialogScreenState extends State<ImageDialogScreen> {
             if (!widget.args.savable) return;
             showModalBottomSheet(
               context: context,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(16.0),
-                  topRight: Radius.circular(16.0),
-                ),
-              ),
               builder: (context) => ImageOptionsSheet(args: widget.args),
             );
           },
@@ -80,45 +75,34 @@ class ImageOptionsSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 200.0,
-      padding: EdgeInsets.symmetric(vertical: 14.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16.0),
-          topRight: Radius.circular(16.0),
-        ),
-      ),
-      child: Column(
-        children: [
-          if (args.savable)
-            SettingsItem(
-              dense: false,
-              onTap: () async {
-                try {
-                  if (args.path == null) throw Error();
-                  await GallerySaver.saveImage(args.path!);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Image saved successfully!'),
-                    ),
-                  );
-                } catch (e) {
-                  print(e);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Failed to save image'),
-                    ),
-                  );
-                }
-                Navigator.of(context).pop();
-              },
-              title: 'Save Image',
-              icon: Ionicons.download_outline,
-            )
-        ],
-      ),
+    return OptionsSheet(
+      children: [
+        if (args.savable)
+          SettingsItem(
+            dense: false,
+            onTap: () async {
+              try {
+                if (args.path == null) throw Error();
+                await GallerySaver.saveImage(args.path!);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Image saved successfully!'),
+                  ),
+                );
+              } catch (e) {
+                print(e);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Failed to save image'),
+                  ),
+                );
+              }
+              Navigator.of(context).pop();
+            },
+            title: 'Save Image',
+            icon: Ionicons.download_outline,
+          )
+      ],
     );
   }
 }

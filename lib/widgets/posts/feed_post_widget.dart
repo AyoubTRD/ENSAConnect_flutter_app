@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/utils/constants.dart';
+import 'package:ensa/widgets/posts/feed_post_options_sheet_widget.dart';
 import 'package:ensa/widgets/posts/post_media_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
@@ -13,6 +17,15 @@ class FeedPost extends StatelessWidget {
 
   bool get _hasContent => post.text.isNotEmpty;
   bool get _hasMedia => post.files.isNotEmpty;
+
+  bool get isOwnPost => userBloc.currentUser.value?.id == post.author.id;
+
+  void handleOpenPostSettings(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => PostOptionsSheet(post: post),
+    );
+  }
 
   BoxShadow getShadow(BuildContext context) => BoxShadow(
         color: Theme.of(context).brightness == Brightness.dark
@@ -51,6 +64,7 @@ class FeedPost extends StatelessWidget {
             child: Column(
               children: [
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CircleAvatar(
                       backgroundColor:
@@ -89,6 +103,15 @@ class FeedPost extends StatelessWidget {
                         ],
                       ),
                     ),
+                    Expanded(
+                      child: Container(),
+                    ),
+                    InkWell(
+                      onTap: () => handleOpenPostSettings(context),
+                      child: Icon(
+                        Ionicons.ellipsis_horizontal_outline,
+                      ),
+                    )
                   ],
                 ),
                 SizedBox(
@@ -123,39 +146,6 @@ class FeedPost extends StatelessWidget {
   }
 
   Widget _buildBar(BuildContext context) {
-    // if (_hasMedia) {
-    //   return Container(
-    //     decoration: BoxDecoration(
-    //       boxShadow: [getShadow(context)],
-    //     ),
-    //     child: ClipRRect(
-    //       borderRadius: BorderRadius.circular(15.0),
-    //       child: Stack(
-    //         alignment: Alignment.bottomCenter,
-    //         children: [
-    //           // PostMedia(post),
-    //           ClipPath(
-    //             clipper: MyClipper(),
-    //             child: Container(
-    //               height: 80.0,
-    //               padding: const EdgeInsets.only(
-    //                 bottom: 8.0,
-    //                 top: 38.0,
-    //                 left: 30.0,
-    //                 right: 30.0,
-    //               ),
-    //               decoration: BoxDecoration(
-    //                 color: Theme.of(context).scaffoldBackgroundColor,
-    //                 // borderRadius: BorderRadius.circular(5.0),
-    //               ),
-    //               child: _buildBarBody(context),
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   );
-    // }
     return Container(
       margin: const EdgeInsets.only(
         top: kDefaultPadding,
@@ -205,31 +195,4 @@ class FeedPost extends StatelessWidget {
       ],
     );
   }
-}
-
-class MyClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.lineTo(0, size.height);
-    path.quadraticBezierTo(
-      3.0,
-      25.0,
-      50.0,
-      25.0,
-    );
-    path.lineTo(size.width - 15.0, 25.0);
-    path.quadraticBezierTo(
-      size.width - 2.0,
-      25.0,
-      size.width,
-      0,
-    );
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> old) => true;
 }
