@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:ensa/blocs/posts_bloc.dart';
 import 'package:ensa/screens/posts/uploaded_file_preview_widget.dart';
 import 'package:ensa/services/rest_client_service.dart';
@@ -27,91 +29,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   bool get canSave =>
       (_text != '' || _files.isNotEmpty) &&
       _files.every((element) => !element.isUploading);
-
-  Future<void> handleSave() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      final List<String> files = [];
-      _files.forEach((element) {
-        files.add(element.path!);
-      });
-      await postsBloc.createPost(text: _text, files: files);
-      Navigator.of(context).pop();
-    } catch (e) {
-      print(e);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Something went wrong!'),
-        ),
-      );
-    }
-
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
-  Future<void> handleUploadFromGallery() async {
-    try {
-      final picker = ImagePicker();
-      final images = await picker.pickMultiImage();
-
-      if (images.isEmpty) return;
-
-      List<UploadedMediaFile> files = List.from(_files);
-      for (int i = 0; i < images.length; i++) {
-        files.add(
-          UploadedMediaFile(
-            type: MediaType.IMAGE,
-            file: images[i],
-            isUploading: true,
-            bytes: await images[i].readAsBytes(),
-          ),
-        );
-      }
-
-      setState(() {
-        _files = files;
-      });
-
-      for (int i = 0; i < images.length; i++) {
-        final url = await restClientService.uploadFile(images[i]);
-
-        setState(() {
-          final UploadedMediaFile? uploadedFile =
-              _files.firstWhereOrNull((element) => element.file == images[i]);
-
-          if (uploadedFile == null) return;
-          uploadedFile.isUploading = false;
-          uploadedFile.path = url;
-        });
-      }
-    } catch (e) {
-      print(e);
-
-      const snackBar = SnackBar(
-        content: Text(
-          'An error has ocurred!',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: Colors.red,
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-  }
-
-  void handleRemoveUploadedFile(int index) {
-    final List<UploadedMediaFile> files = List.from(_files);
-    files.removeAt(index);
-    setState(() {
-      _files = files;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -199,10 +116,25 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             padding: const EdgeInsets.only(top: kDefaultPadding),
             child: SizedBox(
               height: UploadedFilePreview.uploadedFilePreviewHeight,
-              child: ListView.builder(
-                itemBuilder: (context, index) => Padding(
-                  padding: EdgeInsets.only(
-                    left: index == 0 ? kDefaultPadding : 0,
+              child: ReorderableListView.builder(
+                onReorder: handleFilesReorder,
+                proxyDecorator: (child, index, animation) => AnimatedBuilder(
+                  animation: animation,
+                  builder: (context, child) {
+                    final animValue =
+                        Curves.easeInOut.transform(animation.value);
+                    final double scale = lerpDouble(1, 1.2, animValue)!;
+
+                    return Transform.scale(
+                      scale: scale,
+                      child: child,
+                    );
+                  },
+                  child: child,
+                ),
+                itemBuilder: (context, index) => Container(
+                  key: Key(_files[index].file.hashCode.toString()),
+                  margin: const EdgeInsets.only(
                     right: kDefaultPadding,
                   ),
                   child: UploadedFilePreview(
@@ -210,6 +142,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     onRemove: () => handleRemoveUploadedFile(index),
                   ),
                 ),
+                header: const SizedBox(width: kDefaultPadding),
                 itemCount: _files.length,
                 scrollDirection: Axis.horizontal,
               ),
@@ -302,5 +235,98 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         ),
       ),
     );
+  }
+
+  void handleFilesReorder(int oldIndex, int newIndex) {
+    setState(() {
+      final temp = _files[oldIndex];
+      _files.removeAt(oldIndex);
+      _files.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, temp);
+    });
+  }
+
+  Future<void> handleSave() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final List<String> files = [];
+      _files.forEach((element) {
+        files.add(element.path!);
+      });
+      await postsBloc.createPost(text: _text, files: files);
+      Navigator.of(context).pop();
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Something went wrong!'),
+        ),
+      );
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  Future<void> handleUploadFromGallery() async {
+    try {
+      final picker = ImagePicker();
+      final images = await picker.pickMultiImage();
+
+      if (images.isEmpty) return;
+
+      List<UploadedMediaFile> files = List.from(_files);
+      for (int i = 0; i < images.length; i++) {
+        files.add(
+          UploadedMediaFile(
+            type: MediaType.IMAGE,
+            file: images[i],
+            isUploading: true,
+            bytes: await images[i].readAsBytes(),
+          ),
+        );
+      }
+
+      setState(() {
+        _files = files;
+      });
+
+      for (int i = 0; i < images.length; i++) {
+        final url = await restClientService.uploadFile(images[i]);
+
+        setState(() {
+          final UploadedMediaFile? uploadedFile =
+              _files.firstWhereOrNull((element) => element.file == images[i]);
+
+          if (uploadedFile == null) return;
+          uploadedFile.isUploading = false;
+          uploadedFile.path = url;
+        });
+      }
+    } catch (e) {
+      print(e);
+
+      const snackBar = SnackBar(
+        content: Text(
+          'An error has ocurred!',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Colors.red,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  void handleRemoveUploadedFile(int index) {
+    final List<UploadedMediaFile> files = List.from(_files);
+    files.removeAt(index);
+    setState(() {
+      _files = files;
+    });
   }
 }

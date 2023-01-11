@@ -43,8 +43,8 @@ class UploadedFilePreview extends StatelessWidget {
         ),
         if (onRemove != null)
           Positioned(
-            top: -8.0,
-            right: -8.0,
+            top: 0,
+            right: 0,
             child: Material(
               borderRadius: BorderRadius.circular(50.0),
               elevation: 1.0,
