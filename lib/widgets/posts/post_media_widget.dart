@@ -1,5 +1,6 @@
 import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/models/post_model.dart';
+import 'package:ensa/utils/types/uploaded_media_file.dart';
 import 'package:ensa/widgets/posts/post_media_item_widget.dart';
 import 'package:flutter/material.dart';
 

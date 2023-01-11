@@ -1,7 +1,6 @@
 import 'package:ensa/utils/constants.dart';
+import 'package:ensa/utils/types/uploaded_media_file.dart';
 import 'package:flutter/material.dart';
-
-enum MediaType { IMAGE, VIDEO }
 
 class PostMediaItem extends StatefulWidget {
   const PostMediaItem(this.url, {Key? key, required this.mediaType})

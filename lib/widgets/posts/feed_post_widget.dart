@@ -110,6 +110,7 @@ class FeedPost extends StatelessWidget {
                       onTap: () => handleOpenPostSettings(context),
                       child: Icon(
                         Ionicons.ellipsis_horizontal_outline,
+                        color: Theme.of(context).textTheme.bodyText1?.color,
                       ),
                     )
                   ],

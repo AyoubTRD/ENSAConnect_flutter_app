@@ -1,10 +1,13 @@
 import 'package:ensa/blocs/posts_bloc.dart';
+import 'package:ensa/screens/posts/uploaded_file_preview_widget.dart';
 import 'package:ensa/services/rest_client_service.dart';
 import 'package:ensa/utils/constants.dart';
+import 'package:ensa/utils/types/uploaded_media_file.dart';
 import 'package:ensa/widgets/core/app_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:collection/collection.dart';
 
 class CreatePostScreen extends StatefulWidget {
   static const routeName = '/create-post';
@@ -19,9 +22,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   String _text = '';
   bool _isLoading = false;
 
-  List<String> _files = [];
+  List<UploadedMediaFile> _files = [];
 
-  bool get canSave => _text != '' || _files.isNotEmpty;
+  bool get canSave =>
+      (_text != '' || _files.isNotEmpty) &&
+      _files.every((element) => !element.isUploading);
 
   Future<void> handleSave() async {
     setState(() {
@@ -29,7 +34,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     });
 
     try {
-      await postsBloc.createPost(text: _text, files: _files);
+      final List<String> files = [];
+      _files.forEach((element) {
+        files.add(element.path!);
+      });
+      await postsBloc.createPost(text: _text, files: files);
       Navigator.of(context).pop();
     } catch (e) {
       print(e);
@@ -52,14 +61,32 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
       if (images.isEmpty) return;
 
+      List<UploadedMediaFile> files = List.from(_files);
+      for (int i = 0; i < images.length; i++) {
+        files.add(
+          UploadedMediaFile(
+            type: MediaType.IMAGE,
+            file: images[i],
+            isUploading: true,
+            bytes: await images[i].readAsBytes(),
+          ),
+        );
+      }
+
+      setState(() {
+        _files = files;
+      });
+
       for (int i = 0; i < images.length; i++) {
         final url = await restClientService.uploadFile(images[i]);
 
-        final files = new List<String>.from(_files);
-        files.add(url);
-
         setState(() {
-          _files = files;
+          final UploadedMediaFile? uploadedFile =
+              _files.firstWhereOrNull((element) => element.file == images[i]);
+
+          if (uploadedFile == null) return;
+          uploadedFile.isUploading = false;
+          uploadedFile.path = url;
         });
       }
     } catch (e) {
@@ -76,6 +103,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+  }
+
+  void handleRemoveUploadedFile(int index) {
+    final List<UploadedMediaFile> files = List.from(_files);
+    files.removeAt(index);
+    setState(() {
+      _files = files;
+    });
   }
 
   @override
@@ -161,6 +196,26 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             ),
           ),
           Padding(
+            padding: const EdgeInsets.only(top: kDefaultPadding),
+            child: SizedBox(
+              height: UploadedFilePreview.uploadedFilePreviewHeight,
+              child: ListView.builder(
+                itemBuilder: (context, index) => Padding(
+                  padding: EdgeInsets.only(
+                    left: index == 0 ? kDefaultPadding : 0,
+                    right: kDefaultPadding,
+                  ),
+                  child: UploadedFilePreview(
+                    _files[index],
+                    onRemove: () => handleRemoveUploadedFile(index),
+                  ),
+                ),
+                itemCount: _files.length,
+                scrollDirection: Axis.horizontal,
+              ),
+            ),
+          ),
+          Padding(
             padding: EdgeInsets.fromLTRB(
               kDefaultPadding,
               kDefaultPadding,
@@ -196,11 +251,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     );
   }
 
-  Widget renderMediaButton(
-      {required BuildContext context,
-      required IconData icon,
-      required String text,
-      void Function()? onTap}) {
+  Widget renderMediaButton({
+    required BuildContext context,
+    required IconData icon,
+    required String text,
+    void Function()? onTap,
+  }) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -227,6 +283,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 children: [
                   Icon(
                     icon,
+                    color: Theme.of(context).textTheme.bodyText1?.color,
                   ),
                   SizedBox(
                     width: 16.0,
