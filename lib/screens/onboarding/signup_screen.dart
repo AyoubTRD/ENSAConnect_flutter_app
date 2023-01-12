@@ -29,7 +29,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Future<void> handleSubmit() async {
     if (_formKey.currentState!.validate()) {
       final words = _fullName.split(' ');
-      final userInput = UserInput(
+      final userInput = CreateUserInput(
         avatar: _avatar,
         email: _email,
         firstName: words[0],

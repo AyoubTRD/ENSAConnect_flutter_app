@@ -113,7 +113,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                       title: 'PERSONAL INFORMATION',
                       children: [
                         SettingsItem(
-                          title: 'Change First & Last Name',
+                          title: const Text('Change First & Last Name'),
                           icon: Ionicons.person_circle_outline,
                           onTap: () {
                             Navigator.of(context)
@@ -125,9 +125,11 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                             Navigator.of(context)
                                 .pushNamed(PhoneNumberSettingsScreen.routeName);
                           },
-                          title: !hasPhoneNumber
-                              ? 'Add Phone Number'
-                              : 'Update Phone Number',
+                          title: Text(
+                            !hasPhoneNumber
+                                ? 'Add Phone Number'
+                                : 'Update Phone Number',
+                          ),
                           icon: Ionicons.call_outline,
                         ),
                       ],
@@ -139,7 +141,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                       title: 'SECURITY',
                       children: [
                         SettingsItem(
-                          title: 'Update Email Address',
+                          title: const Text('Update Email Address'),
                           icon: Ionicons.mail_outline,
                         ),
                         SettingsItem(
@@ -147,16 +149,16 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                             Navigator.of(context)
                                 .pushNamed(PasswordSettingsScreen.routeName);
                           },
-                          title: 'Change/Reset Password',
+                          title: const Text('Change/Reset Password'),
                           icon: Ionicons.lock_closed_outline,
                         ),
                         SettingsItem(
-                          title: 'Notification Settings',
+                          title: const Text('Notification Settings'),
                           icon: Ionicons.notifications_outline,
                         ),
                         SettingsItem(
                           danger: true,
-                          title: 'Delete Account',
+                          title: const Text('Delete Account'),
                           icon: Ionicons.trash_outline,
                           hideChevron: true,
                           onTap: confirmDelete,
@@ -170,15 +172,15 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                       title: 'SCHOOL',
                       children: [
                         SettingsItem(
-                          title: 'Change City',
+                          title: const Text('Change City'),
                           icon: Ionicons.location_outline,
                         ),
                         SettingsItem(
-                          title: 'Set Specialty & School Year',
+                          title: const Text('Set Specialty & School Year'),
                           icon: Ionicons.school_outline,
                         ),
                         SettingsItem(
-                          title: 'Club Settings',
+                          title: const Text('Club Settings'),
                           icon: Ionicons.people_circle_outline,
                         ),
                       ],

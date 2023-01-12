@@ -1,0 +1,8 @@
+query getToken($credentials: CredentialsInput!) {
+  getToken(credentials: $credentials) {
+    token
+    user {
+      ...User
+    }
+  }
+}

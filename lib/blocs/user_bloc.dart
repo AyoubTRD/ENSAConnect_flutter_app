@@ -68,7 +68,7 @@ class UserBloc {
     authClient.setToken(token);
   }
 
-  Future<void> signUp(UserInput user) async {
+  Future<void> signUp(CreateUserInput user) async {
     final variables = CreateUserArguments(user: user);
     final response =
         await apiClient.execute(CreateUserMutation(variables: variables));
@@ -85,7 +85,7 @@ class UserBloc {
     );
   }
 
-  Future<void> signIn(Credentials credentials) async {
+  Future<void> signIn(CredentialsInput credentials) async {
     final variables = GetTokenArguments(credentials: credentials);
     final query = GetTokenQuery(variables: variables);
     final response = await apiClient.execute(query);

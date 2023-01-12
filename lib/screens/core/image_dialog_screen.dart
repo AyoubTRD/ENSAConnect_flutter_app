@@ -79,6 +79,7 @@ class ImageOptionsSheet extends StatelessWidget {
       children: [
         if (args.savable)
           SettingsItem(
+            forceDarkText: true,
             dense: false,
             onTap: () async {
               try {
@@ -99,7 +100,7 @@ class ImageOptionsSheet extends StatelessWidget {
               }
               Navigator.of(context).pop();
             },
-            title: 'Save Image',
+            title: const Text('Save Image'),
             icon: Ionicons.download_outline,
           )
       ],

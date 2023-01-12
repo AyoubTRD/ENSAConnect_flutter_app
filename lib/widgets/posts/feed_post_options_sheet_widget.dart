@@ -42,19 +42,22 @@ class PostOptionsSheet extends StatelessWidget {
     return OptionsSheet(
       children: [
         SettingsItem(
-          title: 'Save',
+          forceDarkText: true,
+          title: const Text('Save'),
           icon: Ionicons.bookmark_outline,
           hideChevron: true,
         ),
         if (isOwnPost)
           SettingsItem(
-            title: 'Edit Post',
+            forceDarkText: true,
+            title: const Text('Edit Post'),
             icon: Icons.edit_outlined,
           ),
         if (isOwnPost)
           SettingsItem(
+            forceDarkText: true,
             onTap: () => confirmDeletePost(context),
-            title: 'Delete Post',
+            title: const Text('Delete Post'),
             icon: Ionicons.trash_outline,
             hideChevron: true,
             danger: true,

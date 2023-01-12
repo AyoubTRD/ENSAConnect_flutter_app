@@ -8,7 +8,20 @@ type AuthResult {
   user: User!
 }
 
-input Credentials {
+input CreatePostInput {
+  files: [String!] = []
+  text: String = ""
+}
+
+input CreateUserInput {
+  avatar: String!
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+}
+
+input CredentialsInput {
   email: String!
   password: String!
 }
@@ -19,11 +32,12 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 scalar DateTime
 
 type Mutation {
-  createPost(post: PostInput!): Post!
-  createUser(user: UserInput!): AuthResult!
+  createPost(post: CreatePostInput!): Post!
+  createUser(user: CreateUserInput!): AuthResult!
   deleteMe: Boolean!
   deletePost(postId: String!): Boolean!
   deleteToken: Boolean!
+  updatePost(input: UpdatePostInput!, postId: String!): Post!
   updateUser(user: UpdateUserInput!): User!
 }
 
@@ -36,17 +50,17 @@ type Post {
   updatedAt: DateTime!
 }
 
-input PostInput {
-  files: [String!] = []
-  text: String = ""
-}
-
 type Query {
   getMe: User!
   getPosts: [Post!]!
-  getToken(credentials: Credentials!): AuthResult!
+  getToken(credentials: CredentialsInput!): AuthResult!
   getUser(id: String!): User
   getUsers: [User!]!
+}
+
+input UpdatePostInput {
+  files: [String!]
+  text: String
 }
 
 input UpdateUserInput {
@@ -70,12 +84,4 @@ type User {
   lastName: String!
   lastUpdatedName: DateTime
   phoneNumber: String
-}
-
-input UserInput {
-  avatar: String!
-  email: String!
-  firstName: String!
-  lastName: String!
-  password: String!
 }

@@ -9,5 +9,5 @@ targets:
           schema_mapping:
             - output: lib/graphql/graphql_api.dart
               schema: lib/graphql/schema.gql
-              queries_glob: lib/graphql/**.graphql
-              fragments_glob: lib/fragments/**.graphql
+              queries_glob: lib/graphql/**/*.graphql
+              fragments_glob: lib/fragments/**/*.graphql

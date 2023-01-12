@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
 class SettingsItem extends StatelessWidget {
-  final String title;
+  final Widget title;
   final IconData icon;
   final bool hideChevron;
   final bool dense;
   final bool danger;
   final void Function()? onTap;
   final Widget? suffix;
+  final bool forceDarkText;
 
   const SettingsItem({
     required this.title,
@@ -18,6 +19,7 @@ class SettingsItem extends StatelessWidget {
     this.dense = true,
     this.danger = false,
     this.suffix,
+    this.forceDarkText = false,
     Key? key,
   }) : super(key: key);
 
@@ -44,11 +46,15 @@ class SettingsItem extends StatelessWidget {
               ),
               Transform.translate(
                 offset: const Offset(0.0, 2.0),
-                child: Text(
-                  title,
-                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        color: danger ? Colors.red.shade400 : null,
+                child: DefaultTextStyle(
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        color: danger
+                            ? Colors.red
+                            : forceDarkText
+                                ? Colors.grey.shade900
+                                : null,
                       ),
+                  child: title,
                 ),
               ),
               if (!hideChevron || suffix != null) ...[

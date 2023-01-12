@@ -38,7 +38,7 @@ class _SigninScreenState extends State<SigninScreen> {
       setState(() {
         _isLoading = true;
       });
-      final credentials = Credentials(email: _email, password: _password);
+      final credentials = CredentialsInput(email: _email, password: _password);
       await userBloc.signIn(credentials);
 
       Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);

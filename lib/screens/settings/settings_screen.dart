@@ -47,7 +47,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Navigator.of(context)
                         .pushNamed(AccountSettingsScreen.routeName);
                   },
-                  title: 'Account Settings',
+                  title: const Text('Account Settings'),
                   icon: Ionicons.person_outline,
                 ),
                 SettingsItem(
@@ -56,7 +56,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Navigator.of(context)
                         .popAndPushNamed(NotificationsScreen.routeName);
                   },
-                  title: 'Logout',
+                  title: const Text('Logout'),
                   icon: Ionicons.log_out_outline,
                   hideChevron: true,
                 ),
@@ -72,15 +72,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Navigator.of(context)
                         .pushNamed(AppAppearanceScreen.routeName);
                   },
-                  title: 'App Appearance',
+                  title: const Text('App Appearance'),
                   icon: Ionicons.bulb_outline,
                 ),
                 SettingsItem(
-                  title: 'Terms & Conditions',
+                  title: const Text('Terms & Conditions'),
                   icon: Ionicons.newspaper_outline,
                 ),
                 SettingsItem(
-                  title: 'Help & Support',
+                  title: const Text('Help & Support'),
                   icon: Ionicons.help_circle_outline,
                 )
               ],

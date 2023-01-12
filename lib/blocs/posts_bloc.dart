@@ -15,7 +15,7 @@ class PostsBloc {
 
   Future<void> createPost({required String text, List<String>? files}) async {
     final variables = CreatePostArguments(
-      post: PostInput(
+      post: CreatePostInput(
         text: text,
         files: files,
       ),

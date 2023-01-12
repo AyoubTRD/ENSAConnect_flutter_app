@@ -111,7 +111,7 @@ class _AppAppearanceScreenState extends State<AppAppearanceScreen> {
                             : 1.0,
                         child: SettingsItem(
                           icon: Ionicons.moon_outline,
-                          title: 'Use Dark Mode',
+                          title: const Text('Use Dark Mode'),
                           suffix: SizedBox(
                             height: 20.0,
                             child: Switch(
@@ -136,7 +136,7 @@ class _AppAppearanceScreenState extends State<AppAppearanceScreen> {
                       ),
                       SettingsItem(
                         icon: Ionicons.cog_outline,
-                        title: 'Use System Mode',
+                        title: const Text('Use System Mode'),
                         suffix: SizedBox(
                           height: 20.0,
                           child: Switch(
