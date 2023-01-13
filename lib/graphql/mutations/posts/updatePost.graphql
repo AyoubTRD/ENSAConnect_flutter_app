@@ -1,0 +1,5 @@
+mutation updatePost($postId: String!, $input: UpdatePostInput!) {
+  updatePost(postId: $postId, input: $input) {
+    ...FeedPost
+  }
+}

@@ -17,7 +17,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class ChatScreenArguments {
-  late String chatId;
+  final String chatId;
   ChatScreenArguments({required this.chatId});
 }
 

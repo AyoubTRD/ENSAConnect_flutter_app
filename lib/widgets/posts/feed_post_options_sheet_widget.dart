@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:ensa/blocs/posts_bloc.dart';
 import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/graphql/graphql_api.dart';
+import 'package:ensa/screens/posts/post_form_screen.dart';
 import 'package:ensa/widgets/settings/options_sheet_widget.dart';
 import 'package:ensa/widgets/settings/settings_item_widget.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,15 @@ class PostOptionsSheet extends StatelessWidget {
     }
   }
 
+  void handleEdit(BuildContext context) {
+    Navigator.of(context).pushNamed(
+      PostFormScreen.routeName,
+      arguments: PostFormScreenArguments(
+        feedPost: post,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return OptionsSheet(
@@ -49,6 +59,7 @@ class PostOptionsSheet extends StatelessWidget {
         ),
         if (isOwnPost)
           SettingsItem(
+            onTap: () => handleEdit(context),
             forceDarkText: true,
             title: const Text('Edit Post'),
             icon: Icons.edit_outlined,

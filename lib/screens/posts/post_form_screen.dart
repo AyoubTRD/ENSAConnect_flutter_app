@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:ensa/blocs/posts_bloc.dart';
+import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/screens/posts/uploaded_file_preview_widget.dart';
 import 'package:ensa/services/rest_client_service.dart';
 import 'package:ensa/utils/constants.dart';
@@ -11,24 +12,54 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:collection/collection.dart';
 
-class CreatePostScreen extends StatefulWidget {
-  static const routeName = '/create-post';
+class PostFormScreenArguments {
+  final FeedPostMixin? feedPost;
 
-  const CreatePostScreen({Key? key}) : super(key: key);
-
-  @override
-  State<CreatePostScreen> createState() => _CreatePostScreenState();
+  const PostFormScreenArguments({this.feedPost});
 }
 
-class _CreatePostScreenState extends State<CreatePostScreen> {
-  String _text = '';
-  bool _isLoading = false;
+class PostFormScreen extends StatefulWidget {
+  static const routeName = '/post-form';
 
-  List<UploadedMediaFile> _files = [];
+  PostFormScreen({Key? key, this.feedPost}) : super(key: key);
+
+  final FeedPostMixin? feedPost;
+
+  @override
+  State<PostFormScreen> createState() => _PostFormScreenState();
+}
+
+class _PostFormScreenState extends State<PostFormScreen> {
+  bool get isEditMode => widget.feedPost != null;
 
   bool get canSave =>
       (_text != '' || _files.isNotEmpty) &&
       _files.every((element) => !element.isUploading);
+
+  late String _text;
+  late List<UploadedMediaFile> _files;
+
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      if (isEditMode) {
+        _text = widget.feedPost!.text;
+        _files = widget.feedPost!.files
+            .map((e) => UploadedMediaFile(
+                  type: MediaType.IMAGE,
+                  isUploading: false,
+                  path: e,
+                ))
+            .toList();
+      } else {
+        _text = '';
+        _files = [];
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +74,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             : Colors.grey.shade900.withOpacity(0.1),
         showBackButton: true,
         title: Text(
-          'Create Post',
+          isEditMode ? 'Edit Post' : 'Create Post',
           style: Theme.of(context).textTheme.headline3,
         ),
         centerTitle: true,
@@ -96,6 +127,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   _text = val;
                 });
               },
+              initialValue: _text,
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
                 border: InputBorder.none,
@@ -255,7 +287,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       _files.forEach((element) {
         files.add(element.path!);
       });
-      await postsBloc.createPost(text: _text, files: files);
+      if (isEditMode) {
+        await postsBloc.updatePost(
+            postId: widget.feedPost!.id, text: _text, files: files);
+      } else {
+        await postsBloc.createPost(text: _text, files: files);
+      }
       Navigator.of(context).pop();
     } catch (e) {
       print(e);

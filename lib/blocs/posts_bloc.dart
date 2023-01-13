@@ -4,6 +4,8 @@ import 'package:rxdart/rxdart.dart';
 
 class CreatePostError extends Error {}
 
+class UpdatePostError extends Error {}
+
 class LoadFeedPostsError extends Error {}
 
 class DeletePostError extends Error {}
@@ -28,6 +30,33 @@ class PostsBloc {
       print(response.errors);
       throw CreatePostError();
     }
+  }
+
+  Future<void> updatePost(
+      {required String postId,
+      required String text,
+      List<String>? files}) async {
+    final variables = UpdatePostArguments(
+      postId: postId,
+      input: UpdatePostInput(
+        text: text,
+        files: files,
+      ),
+    );
+
+    final mutation = UpdatePostMutation(variables: variables);
+    final response = await apiClient.execute(mutation);
+
+    if (response.hasErrors) {
+      print(response.errors);
+      throw UpdatePostError();
+    }
+
+    final FeedPostMixin updatedPost = response.data!.updatePost;
+
+    _feedPosts.sink.add(feedPosts.value
+        .map((e) => e.id == updatedPost.id ? updatedPost : e)
+        .toList());
   }
 
   Future<List<FeedPostMixin>> getFeedPosts() async {

@@ -119,20 +119,25 @@ class FeedPost extends StatelessWidget {
                   height: kDefaultPadding,
                 ),
                 if (_hasContent)
-                  SizedBox(
-                    width: double.infinity,
-                    child: ReadMoreText(
-                      post.text,
-                      trimLines: 5,
-                      trimCollapsedText: 'Show more',
-                      trimExpandedText: ' Show less',
-                      trimMode: TrimMode.Line,
-                      textAlign: TextAlign.left,
-                      moreStyle: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      lessStyle: TextStyle(
-                        color: Theme.of(context).primaryColor,
+                  Padding(
+                    padding: _hasMedia
+                        ? const EdgeInsets.only(bottom: kDefaultPadding)
+                        : const EdgeInsets.all(0.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ReadMoreText(
+                        post.text,
+                        trimLines: 5,
+                        trimCollapsedText: 'Show more',
+                        trimExpandedText: ' Show less',
+                        trimMode: TrimMode.Line,
+                        textAlign: TextAlign.left,
+                        moreStyle: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        lessStyle: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
                     ),
                   ),

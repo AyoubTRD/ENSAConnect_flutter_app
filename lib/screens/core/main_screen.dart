@@ -1,6 +1,6 @@
 import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/screens/feed/feed_screen.dart';
-import 'package:ensa/screens/posts/create_post_screen.dart';
+import 'package:ensa/screens/posts/post_form_screen.dart';
 import 'package:ensa/screens/settings/settings_screen.dart';
 import 'package:ensa/screens/chat/chats_list_screen.dart';
 import 'package:ensa/screens/onboarding/signin_screen.dart';
@@ -60,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
             foregroundColor: Colors.white,
             child: Icon(Ionicons.add),
             onPressed: () {
-              Navigator.of(context).pushNamed(CreatePostScreen.routeName);
+              Navigator.of(context).pushNamed(PostFormScreen.routeName);
             },
           ),
         ),
