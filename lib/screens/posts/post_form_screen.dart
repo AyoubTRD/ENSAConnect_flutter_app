@@ -49,9 +49,10 @@ class _PostFormScreenState extends State<PostFormScreen> {
         _text = widget.feedPost!.text;
         _files = widget.feedPost!.files
             .map((e) => UploadedMediaFile(
-                  type: MediaType.IMAGE,
+                  type: MediaFileType.image,
                   isUploading: false,
-                  path: e,
+                  path: e.filePath,
+                  fileId: e.id,
                 ))
             .toList();
       } else {
@@ -165,7 +166,7 @@ class _PostFormScreenState extends State<PostFormScreen> {
                   child: child,
                 ),
                 itemBuilder: (context, index) => Container(
-                  key: Key(_files[index].file.hashCode.toString()),
+                  key: Key(_files[index].hashCode.toString()),
                   margin: const EdgeInsets.only(
                     right: kDefaultPadding,
                   ),
@@ -195,7 +196,7 @@ class _PostFormScreenState extends State<PostFormScreen> {
                     onTap: handleUploadFromGallery,
                     context: context,
                     icon: Ionicons.images_outline,
-                    text: 'Gallery',
+                    text: 'Images',
                   ),
                 ),
                 SizedBox(
@@ -204,8 +205,8 @@ class _PostFormScreenState extends State<PostFormScreen> {
                 Expanded(
                   child: renderMediaButton(
                     context: context,
-                    icon: Ionicons.attach_outline,
-                    text: 'Attachment',
+                    icon: Ionicons.videocam_outline,
+                    text: 'Videos',
                   ),
                 ),
               ],
@@ -285,13 +286,13 @@ class _PostFormScreenState extends State<PostFormScreen> {
     try {
       final List<String> files = [];
       _files.forEach((element) {
-        files.add(element.path!);
+        files.add(element.fileId!);
       });
       if (isEditMode) {
         await postsBloc.updatePost(
-            postId: widget.feedPost!.id, text: _text, files: files);
+            postId: widget.feedPost!.id, text: _text, fileIds: files);
       } else {
-        await postsBloc.createPost(text: _text, files: files);
+        await postsBloc.createPost(text: _text, fileIds: files);
       }
       Navigator.of(context).pop();
     } catch (e) {
@@ -319,7 +320,7 @@ class _PostFormScreenState extends State<PostFormScreen> {
       for (int i = 0; i < images.length; i++) {
         files.add(
           UploadedMediaFile(
-            type: MediaType.IMAGE,
+            type: MediaFileType.image,
             file: images[i],
             isUploading: true,
             bytes: await images[i].readAsBytes(),
@@ -332,7 +333,7 @@ class _PostFormScreenState extends State<PostFormScreen> {
       });
 
       for (int i = 0; i < images.length; i++) {
-        final url = await restClientService.uploadFile(images[i]);
+        final file = await restClientService.uploadFile(images[i]);
 
         setState(() {
           final UploadedMediaFile? uploadedFile =
@@ -340,7 +341,8 @@ class _PostFormScreenState extends State<PostFormScreen> {
 
           if (uploadedFile == null) return;
           uploadedFile.isUploading = false;
-          uploadedFile.path = url;
+          uploadedFile.path = file.filePath;
+          uploadedFile.fileId = file.id;
         });
       }
     } catch (e) {

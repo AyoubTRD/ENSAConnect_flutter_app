@@ -15,11 +15,11 @@ class PostsBloc {
 
   ValueStream<List<FeedPostMixin>> get feedPosts => _feedPosts.stream;
 
-  Future<void> createPost({required String text, List<String>? files}) async {
+  Future<void> createPost({required String text, List<String>? fileIds}) async {
     final variables = CreatePostArguments(
       post: CreatePostInput(
         text: text,
-        files: files,
+        fileIds: fileIds,
       ),
     );
 
@@ -32,15 +32,16 @@ class PostsBloc {
     }
   }
 
-  Future<void> updatePost(
-      {required String postId,
-      required String text,
-      List<String>? files}) async {
+  Future<void> updatePost({
+    required String postId,
+    required String text,
+    List<String>? fileIds,
+  }) async {
     final variables = UpdatePostArguments(
       postId: postId,
       input: UpdatePostInput(
         text: text,
-        files: files,
+        fileIds: fileIds,
       ),
     );
 

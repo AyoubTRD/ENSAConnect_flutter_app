@@ -23,10 +23,9 @@ class PostMedia extends StatelessWidget {
               physics: BouncingScrollPhysics(),
               children: [
                 ...post.files
-                    .map((e) => PostMediaItem(
-                          e,
-                          mediaType: MediaType.IMAGE,
-                        ))
+                    .map(
+                      (e) => PostMediaItem(e),
+                    )
                     .toList(),
               ],
             ),
@@ -34,11 +33,7 @@ class PostMedia extends StatelessWidget {
         ],
       );
     }
-    if (_mediaCount == 1)
-      return PostMediaItem(
-        post.files[0],
-        mediaType: MediaType.IMAGE,
-      );
+    if (_mediaCount == 1) return PostMediaItem(post.files[0]);
 
     return Container();
   }

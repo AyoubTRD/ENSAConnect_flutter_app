@@ -1,6 +1,8 @@
 fragment FeedPost on Post {
   id
-  files
+  files {
+    ...MediaFile
+  }
   text
   createdAt
   author {

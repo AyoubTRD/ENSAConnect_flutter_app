@@ -1,0 +1,7 @@
+fragment MediaFile on MediaFile {
+  id
+  userId
+  filePath
+  fileType
+  blurhashCode
+}

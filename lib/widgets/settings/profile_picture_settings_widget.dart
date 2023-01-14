@@ -32,7 +32,7 @@ class _ProfilePictureSettingsState extends State<ProfilePictureSettings> {
 
       final profilePicture = await restClientService.uploadFile(image);
 
-      await userBloc.updateProfilePicture(profilePicture);
+      await userBloc.updateProfilePicture(profilePicture.filePath);
     } catch (e) {
       print(e);
       const snackBar = SnackBar(

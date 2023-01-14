@@ -9,7 +9,7 @@ type AuthResult {
 }
 
 input CreatePostInput {
-  files: [String!] = []
+  fileIds: [String!] = []
   text: String = ""
 }
 
@@ -31,6 +31,24 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
+type MediaFile {
+  blurhashCode: String
+  createdAt: DateTime!
+  filePath: String!
+  fileType: MediaFileType!
+  id: String!
+  updatedAt: DateTime!
+  userId: String!
+}
+
+"""The types of media files"""
+enum MediaFileType {
+  DOCUMENT
+  IMAGE
+  OTHER
+  VIDEO
+}
+
 type Mutation {
   createPost(post: CreatePostInput!): Post!
   createUser(user: CreateUserInput!): AuthResult!
@@ -43,8 +61,10 @@ type Mutation {
 
 type Post {
   author: User!
+  authorId: String!
   createdAt: DateTime!
-  files: [String!]!
+  fileIds: [String!]!
+  files: [MediaFile!]!
   id: String!
   text: String!
   updatedAt: DateTime!
@@ -59,7 +79,7 @@ type Query {
 }
 
 input UpdatePostInput {
-  files: [String!]
+  fileIds: [String!]
   text: String
 }
 
