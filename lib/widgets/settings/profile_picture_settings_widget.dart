@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class ProfilePictureSettings extends StatefulWidget {
   const ProfilePictureSettings({
@@ -25,14 +26,32 @@ class _ProfilePictureSettingsState extends State<ProfilePictureSettings> {
     _isLoading = true;
 
     try {
-      final ImagePicker picker = ImagePicker();
-      final XFile? image = await picker.pickImage(source: source);
+      UploadedFileResponse? profilePicture;
+      if (source == ImageSource.camera) {
+        final picker = ImagePicker();
+        final image = await picker.pickImage(source: source);
 
-      if (image == null) return;
+        if (image != null) {
+          profilePicture = await restClientService.uploadXFile(image);
+        }
+      } else {
+        final List<AssetEntity>? images = await AssetPicker.pickAssets(
+          context,
+          pickerConfig: AssetPickerConfig(
+            maxAssets: 1,
+            specialPickerType: SpecialPickerType.noPreview,
+          ),
+        );
 
-      final profilePicture = await restClientService.uploadFile(image);
+        final image = images?[0];
+        if (image != null) {
+          profilePicture = await restClientService.uploadAssetEntity(image);
+        }
+      }
 
-      await userBloc.updateProfilePicture(profilePicture.filePath);
+      if (profilePicture != null) {
+        await userBloc.updateProfilePicture(profilePicture.filePath);
+      }
     } catch (e) {
       print(e);
       const snackBar = SnackBar(
@@ -41,7 +60,9 @@ class _ProfilePictureSettingsState extends State<ProfilePictureSettings> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
 
-    _isLoading = false;
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override

@@ -1,5 +1,6 @@
+import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/utils/types/uploaded_media_file.dart';
-import 'package:flutter/foundation.dart';
+import 'package:ensa/widgets/core/utility/play_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
@@ -56,6 +57,12 @@ class UploadedFilePreview extends StatelessWidget {
               ),
             ),
           ),
+        if (file.type == MediaFileType.video)
+          Positioned.fill(
+              child: Align(
+            alignment: Alignment.center,
+            child: PlayButton(),
+          ))
       ],
     );
   }

@@ -50,6 +50,7 @@ dependencies:
   flutter_libphonenumber: ^1.2.4
   readmore: ^2.2.0
   pull_to_refresh: ^2.0.0
+  wechat_assets_picker: ^8.3.1+1
 
 dev_dependencies:
   flutter_test:

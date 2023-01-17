@@ -11,7 +11,7 @@ class LoadFeedPostsError extends Error {}
 class DeletePostError extends Error {}
 
 class PostsBloc {
-  BehaviorSubject<List<FeedPostMixin>> _feedPosts = BehaviorSubject.seeded([]);
+  BehaviorSubject<List<FeedPostMixin>> _feedPosts = BehaviorSubject();
 
   ValueStream<List<FeedPostMixin>> get feedPosts => _feedPosts.stream;
 
@@ -29,6 +29,13 @@ class PostsBloc {
     if (response.hasErrors) {
       print(response.errors);
       throw CreatePostError();
+    }
+
+    if (feedPosts.hasValue) {
+      final posts = feedPosts.value;
+      posts.add(response.data!.createPost as FeedPostMixin);
+
+      _feedPosts.sink.add(posts);
     }
   }
 
@@ -55,9 +62,13 @@ class PostsBloc {
 
     final FeedPostMixin updatedPost = response.data!.updatePost;
 
-    _feedPosts.sink.add(feedPosts.value
-        .map((e) => e.id == updatedPost.id ? updatedPost : e)
-        .toList());
+    if (feedPosts.hasValue) {
+      _feedPosts.sink.add(
+        feedPosts.value
+            .map((e) => e.id == updatedPost.id ? updatedPost : e)
+            .toList(),
+      );
+    }
   }
 
   Future<List<FeedPostMixin>> getFeedPosts() async {
@@ -69,9 +80,11 @@ class PostsBloc {
       throw LoadFeedPostsError();
     }
 
-    _feedPosts.sink.add(response.data!.getPosts);
+    final List<FeedPostMixin> posts = response.data!.getPosts;
 
-    return response.data!.getPosts;
+    _feedPosts.sink.add(posts);
+
+    return posts;
   }
 
   Future<bool> deletePost(String postId) async {

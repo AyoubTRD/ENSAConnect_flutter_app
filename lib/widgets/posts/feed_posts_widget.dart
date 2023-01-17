@@ -1,6 +1,7 @@
 import 'package:ensa/blocs/posts_bloc.dart';
 import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/utils/constants.dart';
+import 'package:ensa/widgets/core/empty_state_widget.dart';
 import 'package:ensa/widgets/posts/feed_post_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +28,10 @@ class _FeedPostsState extends State<FeedPosts> {
         if (!snapshot.hasData) {
           return Text('Loading...');
         }
+        if (snapshot.data!.isEmpty)
+          return EmptyState(
+            text: 'No posts available today',
+          );
         return Column(
           children: snapshot.data!
               .map(

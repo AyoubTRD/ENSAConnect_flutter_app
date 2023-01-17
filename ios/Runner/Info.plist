@@ -43,10 +43,18 @@
 	<false/>
 
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Uploading a profile picture and sharing images</string>
+	<string>Upload images and videos</string>
 
 	<key>NSCameraUsageDescription</key>
-	<string>Uploading a profile picture and sharing images</string>
+	<string>Upload images and videos</string>
+
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Upload images and videos.</string>
 
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Record videos and voice messages</string>

@@ -37,6 +37,7 @@ type MediaFile {
   filePath: String!
   fileType: MediaFileType!
   id: String!
+  thumbnailPath: String
   updatedAt: DateTime!
   userId: String!
 }

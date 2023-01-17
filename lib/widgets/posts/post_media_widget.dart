@@ -9,32 +9,20 @@ class PostMedia extends StatelessWidget {
 
   final FeedPostMixin post;
 
-  int get _mediaCount => post.files.length;
-
   @override
   Widget build(BuildContext context) {
-    if (_mediaCount > 1) {
-      return Stack(
-        alignment: Alignment.topCenter,
+    return Container(
+      height: 260.0,
+      child: PageView(
+        physics: BouncingScrollPhysics(),
         children: [
-          Container(
-            height: 260.0,
-            child: PageView(
-              physics: BouncingScrollPhysics(),
-              children: [
-                ...post.files
-                    .map(
-                      (e) => PostMediaItem(e),
-                    )
-                    .toList(),
-              ],
-            ),
-          ),
+          ...post.files
+              .map(
+                (e) => PostMediaItem(e),
+              )
+              .toList(),
         ],
-      );
-    }
-    if (_mediaCount == 1) return PostMediaItem(post.files[0]);
-
-    return Container();
+      ),
+    );
   }
 }
