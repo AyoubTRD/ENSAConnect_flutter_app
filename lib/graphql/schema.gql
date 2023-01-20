@@ -85,7 +85,7 @@ input UpdatePostInput {
 }
 
 input UpdateUserInput {
-  avatar: String
+  avatarFileId: String
   email: String
   firstName: String
   lastName: String
@@ -95,7 +95,8 @@ input UpdateUserInput {
 }
 
 type User {
-  avatar: String
+  avatar: MediaFile
+  avatarFileId: String
   canUpdateName: Boolean!
   createdAt: DateTime!
   email: String!

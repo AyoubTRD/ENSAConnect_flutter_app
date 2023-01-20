@@ -70,9 +70,9 @@ class FeedPost extends StatelessWidget {
                       backgroundColor:
                           Theme.of(context).accentColor.withOpacity(0.1),
                       backgroundImage: NetworkImage(
-                        (post.author.avatar == null || post.author.avatar == '')
+                        (post.author.avatar == null)
                             ? kDefaultProfilePic
-                            : post.author.avatar!,
+                            : post.author.avatar!.filePath,
                       ),
                       radius: 26.0,
                     ),

@@ -5,7 +5,9 @@ fragment User on User {
   fullName
   email
   phoneNumber
-  avatar
+  avatar {
+    filePath
+  }
   createdAt
   canUpdateName
   lastUpdatedName

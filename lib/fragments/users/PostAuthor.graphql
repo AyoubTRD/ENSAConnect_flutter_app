@@ -1,6 +1,8 @@
 fragment PostAuthor on User {
   id
-  avatar
+  avatar {
+    filePath
+  }
   fullName
   firstName
   lastName

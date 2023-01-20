@@ -116,9 +116,9 @@ class UserBloc {
     await prefsInstance.remove('token');
   }
 
-  Future<void> updateProfilePicture(String profilePicture) async {
+  Future<void> updateProfilePicture(String profilePictureFileId) async {
     final variables = UpdateUserArguments(
-      user: UpdateUserInput(avatar: profilePicture),
+      user: UpdateUserInput(avatarFileId: profilePictureFileId),
     );
     final mutation = UpdateUserMutation(variables: variables);
     final response = await apiClient.execute(mutation);

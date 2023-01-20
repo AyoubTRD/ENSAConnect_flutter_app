@@ -50,7 +50,7 @@ class _ProfilePictureSettingsState extends State<ProfilePictureSettings> {
       }
 
       if (profilePicture != null) {
-        await userBloc.updateProfilePicture(profilePicture.filePath);
+        await userBloc.updateProfilePicture(profilePicture.id);
       }
     } catch (e) {
       print(e);
@@ -71,7 +71,7 @@ class _ProfilePictureSettingsState extends State<ProfilePictureSettings> {
       builder: ((context, AsyncSnapshot<UserMixin?> snapshot) {
         if (!snapshot.hasData) return Column();
         final avatar = snapshot.data?.avatar;
-        final hasAvatar = avatar != null && avatar != '';
+        final hasAvatar = avatar != null;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -86,11 +86,11 @@ class _ProfilePictureSettingsState extends State<ProfilePictureSettings> {
                           Navigator.of(context).pushNamed(
                             ImageDialogScreen.routeName,
                             arguments: ImageDialogScreenArguments(
-                              NetworkImage(avatar!),
+                              NetworkImage(avatar!.filePath),
                               heroAttributes: PhotoViewHeroAttributes(
                                 tag: 'settings-avatar',
                               ),
-                              path: avatar,
+                              path: avatar.filePath,
                               savable: true,
                             ),
                           );
@@ -99,7 +99,7 @@ class _ProfilePictureSettingsState extends State<ProfilePictureSettings> {
                     tag: 'settings-avatar',
                     child: CircleAvatar(
                       foregroundImage: (hasAvatar && !_isLoading)
-                          ? NetworkImage(avatar!)
+                          ? NetworkImage(avatar!.filePath)
                           : null,
                       backgroundColor: Colors.grey.shade200,
                       child: _isLoading

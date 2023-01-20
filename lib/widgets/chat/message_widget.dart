@@ -19,6 +19,7 @@ class _MessageWidgetState extends State<MessageWidget> {
     super.initState();
     setState(() {
       // TODO: Get isCurrentUser
+
       isCurrentUser = widget._m.user.id == kUsers[2].id;
     });
   }
