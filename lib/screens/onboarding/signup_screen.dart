@@ -21,7 +21,6 @@ class _SignupScreenState extends State<SignupScreen> {
   String _email = '';
   String _fullName = '';
   String _password = '';
-  String _avatar = '';
   List<String> _usedEmails = [];
 
   bool _isLoading = false;
@@ -30,7 +29,6 @@ class _SignupScreenState extends State<SignupScreen> {
     if (_formKey.currentState!.validate()) {
       final words = _fullName.split(' ');
       final userInput = CreateUserInput(
-        avatar: _avatar,
         email: _email,
         firstName: words[0],
         lastName: words.getRange(1, words.length).join(' '),

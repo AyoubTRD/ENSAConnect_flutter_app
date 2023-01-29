@@ -1,0 +1,10 @@
+fragment PublicUser on PublicUser {
+  id
+  firstName
+  lastName
+  fullName
+  avatar {
+    id
+    filePath
+  }
+}

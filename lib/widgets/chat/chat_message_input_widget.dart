@@ -1,16 +1,36 @@
+import 'package:ensa/blocs/chats_bloc.dart';
+import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:ensa/widgets/core/text_form_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
 class ChatMessageInput extends StatefulWidget {
-  const ChatMessageInput({Key? key}) : super(key: key);
+  const ChatMessageInput({Key? key, required this.chatId}) : super(key: key);
+
+  final String chatId;
 
   @override
   _ChatMessageInputState createState() => _ChatMessageInputState();
 }
 
 class _ChatMessageInputState extends State<ChatMessageInput> {
+  final messageFieldController = TextEditingController();
+
+  Future<void> createMessage(BuildContext context, String message) async {
+    if (message.isEmpty) return;
+
+    messageFieldController.text = '';
+
+    try {
+      await chatsBloc.sendMessage(
+        CreateMessageInput(chatId: widget.chatId, text: message),
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,6 +51,9 @@ class _ChatMessageInputState extends State<ChatMessageInput> {
                       ),
             ),
             child: TextField(
+              controller: messageFieldController,
+              textInputAction: TextInputAction.send,
+              onSubmitted: (value) => createMessage(context, value),
               decoration: InputDecoration(
                 labelText: 'Type a message...',
                 floatingLabelBehavior: FloatingLabelBehavior.never,

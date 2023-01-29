@@ -1,4 +1,4 @@
-fragment PostAuthor on User {
+fragment PostAuthor on PublicUser {
   id
   avatar {
     filePath

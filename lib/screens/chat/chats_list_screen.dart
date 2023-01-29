@@ -1,12 +1,30 @@
+import 'package:ensa/blocs/chats_bloc.dart';
+import 'package:ensa/graphql/graphql_api.dart';
+import 'package:ensa/screens/chat/create_chat_screen.dart';
 import 'package:ensa/screens/core/paged_screen.dart';
 import 'package:ensa/utils/constants.dart';
 import 'package:ensa/widgets/core/app_bar_widget.dart';
 import 'package:ensa/widgets/chat/chat_preview_widget.dart';
+import 'package:ensa/widgets/core/empty_state_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
-class ChatsListScreen extends StatelessWidget {
+class ChatsListScreen extends StatefulWidget {
+  static const routeName = '/chats';
+
   const ChatsListScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ChatsListScreen> createState() => _ChatsListScreenState();
+}
+
+class _ChatsListScreenState extends State<ChatsListScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    chatsBloc.getAllChats();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,16 +86,34 @@ class ChatsListScreen extends StatelessWidget {
               // SizedBox(
               // height: 10.0,
               // ),
-              Column(
-                children: [
-                  ..._buildChats(context),
-                ],
+              StreamBuilder<List<ChatMixin>>(
+                stream: chatsBloc.chats,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData)
+                    return Padding(
+                      padding: const EdgeInsets.all(kDefaultPadding),
+                      child: Text("Loading..."),
+                    );
+
+                  if (snapshot.data!.isEmpty)
+                    return Padding(
+                      padding: const EdgeInsets.all(kDefaultPadding),
+                      child: EmptyState(
+                        text: "No chats available",
+                      ),
+                    );
+
+                  return Column(
+                    children: _buildChats(context, snapshot.data!),
+                  );
+                },
               )
             ],
           ),
         ),
       ],
       appBar: MyAppBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         centerTitle: true,
         showBackButton: false,
         title: Text(
@@ -93,8 +129,10 @@ class ChatsListScreen extends StatelessWidget {
                 : kAppBarText,
           ),
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.create_outlined),
+            onPressed: () {
+              Navigator.of(context).pushNamed(CreateChatScreen.routeName);
+            },
+            icon: Icon(Ionicons.create_outline),
             color: Theme.of(context).brightness == Brightness.dark
                 ? Colors.white
                 : kAppBarText,
@@ -106,11 +144,11 @@ class ChatsListScreen extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildChats(BuildContext context) {
+  List<Widget> _buildChats(BuildContext context, List<ChatMixin> chats) {
     List<Widget> widgets = [];
-    for (int i = 0; i < kChats.length; i++) {
-      widgets.add(ChatPreview(kChats[i]));
-      if (i != kChats.length - 1) {
+    for (int i = 0; i < chats.length; i++) {
+      widgets.add(ChatPreview(chats[i]));
+      if (i != chats.length - 1) {
         widgets.add(
           Container(
             margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),

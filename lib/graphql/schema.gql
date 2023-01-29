@@ -8,13 +8,33 @@ type AuthResult {
   user: User!
 }
 
+type Chat {
+  createdAt: DateTime!
+  id: String!
+  lastMessage: Message
+  name: String
+  updatedAt: DateTime!
+  userIds: [String!]!
+  users: [PublicUser!]!
+}
+
+input CreateChatInput {
+  name: String
+  userIds: [String!]!
+}
+
+input CreateMessageInput {
+  chatId: String!
+  fileIds: [String!] = []
+  text: String!
+}
+
 input CreatePostInput {
   fileIds: [String!] = []
   text: String = ""
 }
 
 input CreateUserInput {
-  avatar: String!
   email: String!
   firstName: String!
   lastName: String!
@@ -50,7 +70,19 @@ enum MediaFileType {
   VIDEO
 }
 
+type Message {
+  chatId: String!
+  createdAt: DateTime!
+  fileIds: [String!]!
+  id: String!
+  text: String!
+  updatedAt: DateTime!
+  userId: String!
+}
+
 type Mutation {
+  createChat(input: CreateChatInput!): Chat!
+  createMessage(input: CreateMessageInput!): Message!
   createPost(post: CreatePostInput!): Post!
   createUser(user: CreateUserInput!): AuthResult!
   deleteMe: Boolean!
@@ -61,7 +93,7 @@ type Mutation {
 }
 
 type Post {
-  author: User!
+  author: PublicUser!
   authorId: String!
   createdAt: DateTime!
   fileIds: [String!]!
@@ -71,12 +103,24 @@ type Post {
   updatedAt: DateTime!
 }
 
+type PublicUser {
+  avatar: MediaFile
+  createdAt: DateTime!
+  firstName: String!
+  fullName: String!
+  id: String!
+  lastName: String!
+}
+
 type Query {
+  getAllUsers: [PublicUser!]!
+  getChatById(chatId: String!): Chat!
+  getChatMessages(chatId: String!): [Message!]!
+  getChats: [Chat!]!
   getMe: User!
   getPosts: [Post!]!
   getToken(credentials: CredentialsInput!): AuthResult!
   getUser(id: String!): User
-  getUsers: [User!]!
 }
 
 input UpdatePostInput {

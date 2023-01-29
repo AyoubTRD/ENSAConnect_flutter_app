@@ -2,6 +2,7 @@ import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:ensa/blocs/preferences_bloc.dart';
 import 'package:ensa/blocs/user_bloc.dart';
 import 'package:ensa/screens/chat/chat_screen.dart';
+import 'package:ensa/screens/chat/create_chat_screen.dart';
 import 'package:ensa/screens/core/image_dialog_screen.dart';
 import 'package:ensa/screens/onboarding/introduction_screen.dart';
 import 'package:ensa/screens/core/main_screen.dart';
@@ -85,6 +86,11 @@ class ENSAConnect extends StatelessWidget {
                 builder: (_) => ChatScreen(
                   chatId: args.chatId,
                 ),
+              );
+            case CreateChatScreen.routeName:
+              return CupertinoPageRoute(
+                fullscreenDialog: true,
+                builder: (_) => CreateChatScreen(),
               );
             case AppAppearanceScreen.routeName:
               return CupertinoPageRoute(builder: (_) => AppAppearanceScreen());

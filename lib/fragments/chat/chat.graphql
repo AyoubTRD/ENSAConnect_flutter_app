@@ -1,0 +1,11 @@
+fragment Chat on Chat {
+  name
+  id
+  userIds
+  lastMessage {
+    ...Message
+  }
+  users {
+    ...PublicUser
+  }
+}

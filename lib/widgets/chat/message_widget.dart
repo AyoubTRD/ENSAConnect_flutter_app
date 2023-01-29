@@ -1,11 +1,15 @@
+import 'package:ensa/blocs/user_bloc.dart';
+import 'package:ensa/graphql/graphql_api.dart';
 import 'package:ensa/models/message_model.dart';
 import 'package:ensa/utils/constants.dart';
+import 'package:ensa/widgets/core/utility/user_avatar_widget.dart';
 import 'package:flutter/material.dart';
 
 class MessageWidget extends StatefulWidget {
-  MessageWidget(this._m, {Key? key}) : super(key: key);
+  MessageWidget(this._m, {Key? key, required this.otherUser}) : super(key: key);
 
-  final Message _m;
+  final MessageMixin _m;
+  final PublicUserMixin otherUser;
 
   @override
   _MessageWidgetState createState() => _MessageWidgetState();
@@ -18,14 +22,17 @@ class _MessageWidgetState extends State<MessageWidget> {
   void initState() {
     super.initState();
     setState(() {
-      // TODO: Get isCurrentUser
-
-      isCurrentUser = widget._m.user.id == kUsers[2].id;
+      isCurrentUser = widget._m.userId == userBloc.currentUser.value!.id;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = userBloc.currentUser.value!;
+    final senderAvatar = isCurrentUser
+        ? currentUser.avatar?.filePath
+        : widget.otherUser.avatar?.filePath;
+
     return Align(
       alignment: isCurrentUser ? Alignment.topRight : Alignment.topLeft,
       child: Container(
@@ -40,10 +47,8 @@ class _MessageWidgetState extends State<MessageWidget> {
             : Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(widget._m.user.profilePicture),
-                    backgroundColor: Theme.of(context).accentColor,
+                  UserAvatar(
+                    avatarPath: senderAvatar,
                     radius: 26.0,
                   ),
                   SizedBox(

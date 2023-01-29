@@ -20,14 +20,18 @@ class DeleteSelfError extends Error {}
 
 class UpdatePhoneNumberError extends Error {}
 
+class GetUsersError extends Error {}
+
 class UserBloc {
   BehaviorSubject<bool> _isReady = BehaviorSubject.seeded(false);
   BehaviorSubject<bool> _isAuthenticated = BehaviorSubject.seeded(false);
   BehaviorSubject<UserMixin?> _currentUser = BehaviorSubject<UserMixin?>();
+  BehaviorSubject<List<PublicUserMixin>> _publicUsers = BehaviorSubject();
 
   ValueStream<bool> get isReady => _isReady.stream;
   ValueStream<bool> get isAuthenticated => _isAuthenticated.stream;
   ValueStream<UserMixin?> get currentUser => _currentUser.stream;
+  ValueStream<List<PublicUserMixin>> get publicUsers => _publicUsers.stream;
 
   Future<void> init() async {
     final token = prefsInstance.getString('token');
@@ -55,6 +59,23 @@ class UserBloc {
 
   void updateToRegularClient() {
     authClient.removeToken();
+  }
+
+  Future<List<PublicUserMixin>> getAllUsers() async {
+    final query = GetUsersQuery();
+
+    final response = await apiClient.execute(query);
+
+    if (response.hasErrors) {
+      print(response.errors);
+      throw GetUsersError();
+    }
+
+    final List<PublicUserMixin> publicUsers = response.data!.getAllUsers;
+    print(publicUsers);
+    this._publicUsers.sink.add(publicUsers);
+
+    return publicUsers;
   }
 
   void handleAuthSuccess(
@@ -191,6 +212,7 @@ class UserBloc {
     _isReady.close();
     _isAuthenticated.close();
     _currentUser.close();
+    _publicUsers.close();
   }
 }
 

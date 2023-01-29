@@ -1,0 +1,5 @@
+query getChatById($chatId: String!) {
+  getChatById(chatId: $chatId) {
+    ...Chat
+  }
+}
