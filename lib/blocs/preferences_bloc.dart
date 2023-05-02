@@ -30,9 +30,10 @@ final List<Color> themeColors = [
 ];
 
 class PreferencesBloc {
-  BehaviorSubject<ThemeModePreference> _themeMode =
+  late BehaviorSubject<ThemeModePreference> _themeMode =
       BehaviorSubject.seeded(ThemeModePreference.system);
-  BehaviorSubject<Color> _primaryColor = BehaviorSubject.seeded(kPrimaryColor);
+  late BehaviorSubject<Color> _primaryColor =
+      BehaviorSubject.seeded(kPrimaryColor);
 
   ValueStream<ThemeModePreference> get themeMode => _themeMode.stream;
   ValueStream<Color> get primaryColor => _primaryColor.stream;

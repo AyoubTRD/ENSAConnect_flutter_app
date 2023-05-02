@@ -11,7 +11,7 @@ class LoadFeedPostsError extends Error {}
 class DeletePostError extends Error {}
 
 class PostsBloc {
-  BehaviorSubject<List<FeedPostMixin>> _feedPosts = BehaviorSubject();
+  late BehaviorSubject<List<FeedPostMixin>> _feedPosts = BehaviorSubject();
 
   ValueStream<List<FeedPostMixin>> get feedPosts => _feedPosts.stream;
 

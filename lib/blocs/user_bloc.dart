@@ -23,10 +23,10 @@ class UpdatePhoneNumberError extends Error {}
 class GetUsersError extends Error {}
 
 class UserBloc {
-  BehaviorSubject<bool> _isReady = BehaviorSubject.seeded(false);
-  BehaviorSubject<bool> _isAuthenticated = BehaviorSubject.seeded(false);
-  BehaviorSubject<UserMixin?> _currentUser = BehaviorSubject<UserMixin?>();
-  BehaviorSubject<List<PublicUserMixin>> _publicUsers = BehaviorSubject();
+  late BehaviorSubject<bool> _isReady = BehaviorSubject.seeded(false);
+  late BehaviorSubject<bool> _isAuthenticated = BehaviorSubject.seeded(false);
+  late BehaviorSubject<UserMixin?> _currentUser = BehaviorSubject<UserMixin?>();
+  late BehaviorSubject<List<PublicUserMixin>> _publicUsers = BehaviorSubject();
 
   ValueStream<bool> get isReady => _isReady.stream;
   ValueStream<bool> get isAuthenticated => _isAuthenticated.stream;
@@ -137,11 +137,10 @@ class UserBloc {
     await prefsInstance.remove('token');
   }
 
-  Future<void> updateProfilePicture(String profilePictureFileId) async {
-    final variables = UpdateUserArguments(
-      user: UpdateUserInput(avatarFileId: profilePictureFileId),
-    );
-    final mutation = UpdateUserMutation(variables: variables);
+  Future<void> _updateUser({
+    required UpdateUserArguments variables,
+    required UpdateUserMutation mutation,
+  }) async {
     final response = await apiClient.execute(mutation);
 
     if (response.hasErrors && response.errors != null) {
@@ -150,6 +149,15 @@ class UserBloc {
     }
 
     _currentUser.sink.add(response.data!.updateUser);
+  }
+
+  Future<void> updateProfilePicture(String profilePictureFileId) async {
+    final variables = UpdateUserArguments(
+      user: UpdateUserInput(avatarFileId: profilePictureFileId),
+    );
+    final mutation = UpdateUserMutation(variables: variables);
+
+    await _updateUser(variables: variables, mutation: mutation);
   }
 
   Future<void> updateName(String firstName, String lastName) async {
@@ -157,14 +165,8 @@ class UserBloc {
       user: UpdateUserInput(firstName: firstName, lastName: lastName),
     );
     final mutation = UpdateUserMutation(variables: variables);
-    final response = await apiClient.execute(mutation);
 
-    if (response.hasErrors && response.errors != null) {
-      print(response.errors);
-      throw response.errors![0];
-    }
-
-    _currentUser.sink.add(response.data!.updateUser);
+    await _updateUser(variables: variables, mutation: mutation);
   }
 
   Future<void> updatePassword(String oldPassword, String newPassword) async {
@@ -172,14 +174,8 @@ class UserBloc {
       user: UpdateUserInput(oldPassword: oldPassword, password: newPassword),
     );
     final mutation = UpdateUserMutation(variables: variables);
-    final response = await apiClient.execute(mutation);
 
-    if (response.hasErrors && response.errors != null) {
-      print(response.errors);
-      throw InvalidOldPasswordError();
-    }
-
-    _currentUser.sink.add(response.data!.updateUser);
+    await _updateUser(variables: variables, mutation: mutation);
   }
 
   Future<void> updatePhoneNumber(String phoneNumber) async {
@@ -187,14 +183,8 @@ class UserBloc {
       user: UpdateUserInput(phoneNumber: phoneNumber),
     );
     final mutation = UpdateUserMutation(variables: variables);
-    final response = await apiClient.execute(mutation);
 
-    if (response.hasErrors && response.errors != null) {
-      print(response.errors);
-      throw UpdatePhoneNumberError();
-    }
-
-    _currentUser.sink.add(response.data!.updateUser);
+    await _updateUser(variables: variables, mutation: mutation);
   }
 
   Future<void> deleteSelf() async {

@@ -5,8 +5,8 @@ import 'package:ensa/models/story_model.dart';
 import 'package:ensa/models/user_model.dart';
 import 'package:flutter/material.dart';
 
-const kGraphqlAPIUrl = 'http://localhost:4000/graphql';
-const kRestAPIUrl = 'http://localhost:4000/rest';
+const kGraphqlAPIUrl = 'https://ensaconnect-api.ayoubtrd.com/graphql';
+const kRestAPIUrl = 'https://ensaconnect-api.ayoubtrd.com/rest';
 
 const kPrimaryColor = Color(0xFF4C68DA);
 const kAccentColor = Color(0xFF40BADF);

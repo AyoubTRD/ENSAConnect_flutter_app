@@ -9,9 +9,9 @@ class GetChatsError extends Error {}
 class CreateChatError extends Error {}
 
 class ChatsBloc {
-  BehaviorSubject<List<ChatMixin>> _chatsBS =
+  late BehaviorSubject<List<ChatMixin>> _chatsBS =
       BehaviorSubject<List<ChatMixin>>();
-  BehaviorSubject<Map<String, List<MessageMixin>>> _chatMessagesBS =
+  late BehaviorSubject<Map<String, List<MessageMixin>>> _chatMessagesBS =
       BehaviorSubject.seeded(Map());
 
   ValueStream<List<ChatMixin>> get chats => _chatsBS.stream;
